@@ -1,9 +1,17 @@
 // See: https://sass-lang.com/
 
 body {
-  background-color: #EEE;
+
+  .game {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   h1 {
     color: #244751;
   }
+
+
 }
