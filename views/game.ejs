@@ -33,7 +33,7 @@
   <body>
     <div class='board'>
 
-      <div class='p2-won row'>
+      <!-- <div class='p2-won row'>
         <div class='centering'>
         </div>
         <div class='p2-cards-won'>
@@ -45,7 +45,7 @@
         <div class='p2-cards-won'>
           <img src='/images/cards/2C.png' />
         </div>
-      </div>
+      </div> -->
 
       <div class='p2-hand row'>
         <div class='centering'>
@@ -168,7 +168,7 @@
 
       </div>
 
-      <div class='p1-won row'>
+      <!-- <div class='p1-won row'>
         <div class='centering'>
         </div>
         <div class='p1-cards-won'>
@@ -177,65 +177,10 @@
         <div class='p1-cards-won'>
           <img src='/images/cards/2C.png' />
         </div>
-      </div>
+      </div> -->
 
   </div>
 
-  </body>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-
-
-    <script>
-      $(function () {
-        const socket = io('http://localhost:8080/game');
-        $('form').submit(function(e){
-          e.preventDefault(); // prevents page reloading
-          socket.emit('chat message', `{ "id": "${socket.id}", "msg": "${$('#m').val()}" }`);
-          $('#m').val('');
-          return false;
-        });
-
-        // when recieveing chat message from server display message
-        socket.on('chat message', function(msg){
-          console.log(msg);
-          const data = JSON.parse(msg);
-          $('#messages').append($('<li>').text(data.msg));
-        });
-
-        socket.on('game info', function(msg){
-          // display string version of object
-          $('#messages').append($('<li>').text(msg));
-
-          // display object items from server
-          const data = JSON.parse(msg);
-          if (data.id === 0) $('#messages').append($('<li>').text(
-            `${data.char}: ` + data.hand, data.heldCard, data.currentBid
-          ));
-          if (data.id > 0) $('#messages').append($('<li>').text(
-            `${data.char}: ` + data.hand, data.wonBids, data.score, data.socketID, data.currentBid
-          ));
-
-        });
-      });
-    </script>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
-  </body>
+ </body>
 
 </html>
