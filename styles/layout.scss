@@ -2,13 +2,10 @@
 
 body {
 
-<<<<<<< HEAD
   font-family: 'Montserrat', sans-serif;
   color: white;
 
 
-=======
->>>>>>> origin/master
   .game {
     height: 100vh;
     display: flex;
@@ -20,5 +17,9 @@ body {
     color: #244751;
   }
 
+  #messages {
+    position: absolute;
+    top: 10px;
+  }
 
 }
