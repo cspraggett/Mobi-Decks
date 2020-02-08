@@ -4,11 +4,14 @@ require('dotenv').config();
 // Web server config
 const PORT       = process.env.PORT || 8080;
 const ENV        = process.env.ENV || "development";
-const express    = require("express");
 const bodyParser = require("body-parser");
 const sass       = require("node-sass-middleware");
-const app        = express();
 const morgan     = require('morgan');
+
+const express    = require("express");
+const app        = express();
+const http       = require('http').createServer(app);
+const io         = require('socket.io').listen(http);
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -33,13 +36,13 @@ app.use(express.static("public"));
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
-const usersRoutes = require("./routes/users");
-const widgetsRoutes = require("./routes/widgets");
+// const usersRoutes = require("./routes/users");
+// const widgetsRoutes = require("./routes/widgets");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
-app.use("/api/users", usersRoutes(db));
-app.use("/api/widgets", widgetsRoutes(db));
+// app.use("/api/users", usersRoutes(db));
+// app.use("/api/widgets", widgetsRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 
@@ -51,9 +54,73 @@ app.get("/", (req, res) => {
 });
 
 app.get("/game", (req, res) => {
+  res.sendFile(__dirname + '/views/game.html');
   res.render("game");
 });
 
-app.listen(PORT, () => {
+const players = {
+  "count": 0,
+  "player1": null,
+  "player2": null
+};
+
+io.of("/game").on('connection', function(socket){
+  console.log('connect');
+  // assign player # and socket id to newly connected socket
+  for (const player in players) {
+    if (players[player] === null) {
+      players[player] = socket.id;
+      players.count += 1;
+      socket.emit('chat message', `{ "msg": "you are ${player}!" }`);
+      console.log(players);
+      break;
+    }
+  };
+
+  // send each player their own data and send everyone dealer data
+  const update = function() {
+    const player1 = JSON.stringify({id: 1, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""});
+    const player2 = JSON.stringify({id: 2, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""});
+    const dealer = JSON.stringify({id: 0, hand: [...Array(13).keys()], heldCard: [], currentCard: "" });
+
+    io.of('/game').to(players.player1).emit('game info', player1);
+    io.of('/game').to(players.player2).emit('game info', player2);
+    io.of('/game').emit('game info', dealer);
+  };
+
+  // when there are 2 connected players send notification to all and run update function
+  if (players.count === 2) {
+    console.log(players);
+    io.emit('chat message', `{ "msg": "2 players detected!" }`);
+    update();
+  }
+
+  // when a player type something in chat display message to all
+  socket.on('chat message', (msg) => {
+    const data = JSON.parse(msg);
+    console.log(data.msg);
+    for (const player in players) {
+      if (players[player] === socket.id) {
+        io.of('/game').emit('chat message', `{ "id": "${socket.id}", "msg": "${player}: ${data.msg}" }`);
+      }
+    }
+  });
+
+  // remove socket id from appropriate player slot when a player leave
+    // note: when error occurs disconnect function below may not execute properly, causing additional issues
+  socket.on('disconnect', function() {
+    for (const player in players) {
+      if (players[player] === socket.id) {
+        players[player] = null;
+        players.count -= 1;
+        console.log(players);
+        break;
+      }
+    }
+  });
+
+});
+
+http.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
