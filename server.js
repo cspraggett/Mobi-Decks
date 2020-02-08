@@ -1,6 +1,6 @@
 // load .env data into process.env
 require('dotenv').config();
-changes
+
 // Web server config
 const PORT       = process.env.PORT || 8080;
 const ENV        = process.env.ENV || "development";
@@ -52,6 +52,64 @@ app.get("/", (req, res) => {
 
 app.get("/game", (req, res) => {
   res.render("game");
+});
+
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
+
+io.on('connection', function(socket){
+  // assign player # and socket id to newly connected socket
+  for (const player in players) {
+    if (players[player] === null) {
+      players[player] = socket.id;
+      players.count += 1;
+      socket.emit('chat message', `{ "msg": "you are ${player}!" }`);
+      console.log(players);
+      break;
+    }
+  };
+
+  // send each player their own data and send everyone dealer data
+  const update = function() {
+    const player1 = JSON.stringify({id: 1, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""});
+    const player2 = JSON.stringify({id: 2, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""});
+    const dealer = JSON.stringify({id: 0, hand: [...Array(13).keys()], heldCard: [], currentCard: "" });
+
+    io.to(players.player1).emit('game info', player1);
+    io.to(players.player2).emit('game info', player2);
+    io.emit('game info', dealer);
+  };
+
+  // when there are 2 connected players send notification to all and run update function
+  if (players.count === 2) {
+    console.log(players);
+    io.emit('chat message', `{ "msg": "2 players detected!" }`);
+    update();
+  }
+
+  // when a player type something in chat display message to all
+  socket.on('chat message', (msg) => {
+    const data = JSON.parse(msg);
+    for (const player in players) {
+      if (players[player] === socket.id) {
+        io.emit('chat message', `{ "id": "${socket.id}", "msg": "${player}: ${data.msg}" }`);
+      }
+    }
+  });
+
+  // remove socket id from appropriate player slot when a player leave
+    // note: when error occurs disconnect function below may not execute properly, causing additional issues
+  socket.on('disconnect', function() {
+    for (const player in players) {
+      if (players[player] === socket.id) {
+        players[player] = null;
+        players.count -= 1;
+        console.log(players);
+        break;
+      }
+    }
+  });
+
 });
 
 app.listen(PORT, () => {
