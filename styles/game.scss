@@ -30,6 +30,16 @@
   width: 18%;
 }
 
+.top:hover {
+  position: relative;
+  top: 10px;
+}
+
+.bot:hover {
+  position: relative;
+  top: -10px;
+}
+
 .p2-hand img {
   width: 100%;
 }

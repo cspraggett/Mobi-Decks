@@ -43,6 +43,39 @@
       <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 
       <script>
+        const cardImage = {
+          heart: [
+            '<img src="/images/cards/AH.png">',
+            '<img src="/images/cards/2H.png">',
+            '<img src="/images/cards/3H.png">',
+            '<img src="/images/cards/4H.png">',
+            '<img src="/images/cards/5H.png">',
+            '<img src="/images/cards/6H.png">',
+            '<img src="/images/cards/7H.png">',
+            '<img src="/images/cards/8H.png">',
+            '<img src="/images/cards/9H.png">',
+            '<img src="/images/cards/10H.png">',
+            '<img src="/images/cards/JH.png">',
+            '<img src="/images/cards/QH.png">',
+            '<img src="/images/cards/KH.png">'
+          ],
+          spade: [
+            '<img src="/images/cards/AS.png">',
+            '<img src="/images/cards/2S.png">',
+            '<img src="/images/cards/3S.png">',
+            '<img src="/images/cards/4S.png">',
+            '<img src="/images/cards/5S.png">',
+            '<img src="/images/cards/6S.png">',
+            '<img src="/images/cards/7S.png">',
+            '<img src="/images/cards/8S.png">',
+            '<img src="/images/cards/9S.png">',
+            '<img src="/images/cards/10S.png">',
+            '<img src="/images/cards/JS.png">',
+            '<img src="/images/cards/QS.png">',
+            '<img src="/images/cards/KS.png">'
+          ]
+        }
+
         $(function () {
           const socket = io('http://localhost:8080/game');
           $('form').submit(function(e){
@@ -69,13 +102,13 @@
             console.log('system: ' + data.msg);
 
             if (data.type === 'start') {
-              $('.p2-won row').empty();
-              $('.p2-hand row').empty();
-              $('.bid-table row').empty();
-              $('.col bids').empty();
-              $('.col dealer-side').empty();
-              $('.p2-hand row').empty();
-              $('.p1-won row').empty();
+              $('.p2-won').empty();
+              $('.p2-hand').empty();
+              // $('.bid-table').empty();
+              $('.bids').empty();
+              $('.dealer-bid').empty();
+              $('.p1-hand').empty();
+              $('.p1-won').empty();
             }
 
             // console.log(data);
@@ -88,11 +121,40 @@
 
           });
 
+          const dealerPlay = function(arr) {
+            arr = arr.slice(1);
+            $('.dealer-bid').append($('<img src="/images/cards/2C.png">'));
+          }
+
+          const spawnCardsWithDelay = function(info, loc, eff) {
+            if (info.hand.length > 0) {
+              setTimeout(() => {
+                let num = info.hand.shift().toString();
+                let color = "heart";
+                if (info.id === 1) color = "spade";
+                console.log(color, num);
+                $(loc).append($(`<div class="cards ${eff}">`).append($(cardImage[color][num])));
+                spawnCardsWithDelay(info, loc, eff);
+              }, 30);
+            }
+          }
+
           socket.on('gameInfo', function(msg){
             const data = JSON.parse(msg);
             console.log(data);
-          });
+            console.log(data.phase);
 
+            //initialization
+            if (data.phase === 0) {
+              spawnCardsWithDelay(data.opponent, ".p2-hand", "top");
+              spawnCardsWithDelay(data.player, ".p1-hand", "bot");
+              data.phase = 1;
+            }
+            // at the start of each phase
+            if (data.phase < 14) {
+            dealerPlay(data.dealer.hand);
+            }
+          });
         });
       </script>
 
@@ -115,47 +177,8 @@
         </div>
       </div>
 
-      <div class='p2-hand row'>
+      <div class='p2-hand row id=p2_hand'>
         <div class='centering'>
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/gray_back.png' />
         </div>
       </div>
 
@@ -189,51 +212,9 @@
 
       </div>
 
-      <div class='p1-hand row'>
-
+      <div class='p1-hand row id=p2_hand'>
         <div class='centering'>
         </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-        <div class='cards'>
-          <img src='/images/cards/2C.png' />
-        </div>
-
-
       </div>
 
       <div class='p1-won row'>

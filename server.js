@@ -86,13 +86,9 @@ io.of("/game").on('connection', function(socket){
 
   // send each player their own data and send everyone dealer data
   const startMatch = function() {
-    const dstring = JSON.stringify(dealer);
-    const p1string = JSON.stringify(player1);
-    const p2string = JSON.stringify(player2);
-
-    io.of('/game').emit('gameInfo', dstring);
-    io.of('/game').to(players.player1).emit('gameInfo', p1string);
-    io.of('/game').to(players.player2).emit('gameInfo', p2string);
+    // io.of('/game').emit('gameInfo', JSON.stringify({ phase: 0, player1: game.player1, player2: game.player2, dealer: game.dealer }));
+    io.of('/game').to(players.player1).emit('gameInfo', JSON.stringify({ phase: 0, player_id: 1, player: game.player1, opponent: game.player2, dealer: game.dealer }));
+    io.of('/game').to(players.player2).emit('gameInfo', JSON.stringify({ phase: 0, player_id: 2, player: game.player2, opponent: game.player1, dealer: game.dealer }));
   };
 
   // when there are 2 connected players send notification to all and run update function
