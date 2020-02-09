@@ -1,3 +1,60 @@
+class Cards {
+  constructor(numCards) {
+    this.hands = Array(numCards).keys();
+  }
+  shuffle() {
+    for (let i = this.hand.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.hands[i], this.hands[j]] = [this.hands[j], this.hands[i]];
+    }
+  }
+}
+
+class Player {
+  constructor() {
+    this.hand = new Cards(13);
+    this.wonBids = [];
+    this.socketID = null;
+    this.currentBid = null;
+  }
+
+  get score() {
+    return this.wonBids.reduce((prev, curr) => prev + curr, 0);
+  }
+
+  get currentBid() {
+    return this.currentBid;
+  }
+
+  set currentBid(card) {
+    this.currentBid = card;
+  }
+
+  updateHand() {
+    this.hand = this.hand.filter(curr => curr === this.currentBid);
+  }
+
+  verifyBid() {
+    return this.hand.includes(this.currentBid);
+  }
+}
+
+class Dealer {
+  constructor() {
+    this.hand = new Cards(13).shuffle();
+    this.heldCard = null;
+    this.currentCard = this.hand[0];
+  }
+
+  addHeldCard() {
+    this.heldCard.push(this.heldCard);
+  }
+
+
+
+
+}
+
 const shuffle = (arr) => {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

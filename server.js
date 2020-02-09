@@ -64,18 +64,14 @@ const players = {
   "player2": null
 };
 
-<<<<<<< HEAD
 const game = {
   dealer: {id: 0, phase: 0, hand: [...Array(13).keys()], heldCard: [], currentCard: "" },
   player1: {id: 1, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""},
   player2: {id: 2, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""}
 
-}
+};
 
-io.of("/game").on('connection', function(socket){
-=======
 io.of("/game").on('connection', function(socket) {
->>>>>>> add verifyBid and create module to run the game
   console.log('connect');
   // assign player # and socket id to newly connected socket
   for (const player in players) {
