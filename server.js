@@ -64,6 +64,13 @@ const players = {
   "player2": null
 };
 
+const game = {
+  dealer: {id: 0, phase: 0, hand: [...Array(13).keys()], heldCard: [], currentCard: "" },
+  player1: {id: 1, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""},
+  player2: {id: 2, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""}
+
+}
+
 io.of("/game").on('connection', function(socket){
   console.log('connect');
   // assign player # and socket id to newly connected socket
@@ -71,28 +78,28 @@ io.of("/game").on('connection', function(socket){
     if (players[player] === null) {
       players[player] = socket.id;
       players.count += 1;
-      socket.emit('chat message', `{ "msg": "you are ${player}!" }`);
+      socket.emit('system', `{ "msg": "you are ${player}!" }`);
       console.log(players);
       break;
     }
   };
 
   // send each player their own data and send everyone dealer data
-  const update = function() {
-    const player1 = JSON.stringify({id: 1, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""});
-    const player2 = JSON.stringify({id: 2, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""});
-    const dealer = JSON.stringify({id: 0, hand: [...Array(13).keys()], heldCard: [], currentCard: "" });
+  const startMatch = function() {
+    const dstring = JSON.stringify(dealer);
+    const p1string = JSON.stringify(player1);
+    const p2string = JSON.stringify(player2);
 
-    io.of('/game').to(players.player1).emit('game info', player1);
-    io.of('/game').to(players.player2).emit('game info', player2);
-    io.of('/game').emit('game info', dealer);
+    io.of('/game').emit('gameInfo', dstring);
+    io.of('/game').to(players.player1).emit('gameInfo', p1string);
+    io.of('/game').to(players.player2).emit('gameInfo', p2string);
   };
 
   // when there are 2 connected players send notification to all and run update function
   if (players.count === 2) {
     console.log(players);
-    io.emit('chat message', `{ "msg": "2 players detected!" }`);
-    update();
+    io.of('/game').emit('system', `{ "type": "start", "msg": "2 players detected!" }`);
+    startMatch();
   }
 
   // when a player type something in chat display message to all
