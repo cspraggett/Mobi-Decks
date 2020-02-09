@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/game.css" type="text/css" />
 
-
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
 
@@ -24,6 +23,8 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
@@ -38,9 +39,6 @@
         #messages li { padding: 5px 10px; }
         #messages li:nth-child(odd) { background: #eee; }
       </style>
-
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
-      <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 
       <script>
         const cardImage = {
@@ -76,88 +74,123 @@
           ]
         }
 
-        $(function () {
-          const socket = io('http://localhost:8080/game');
-          $('form').submit(function(e){
-            e.preventDefault(); // prevents page reloading
-            socket.emit('chat message', `{ "id": "${socket.id}", "msg": "${$('#m').val()}" }`);
-            $('#m').val('');
-            return false;
-          });
 
-          // when recieveing chat message from server display message
-          socket.on('chat message', function(msg){
-            const data = JSON.parse(msg);
-            console.log(data.msg);
-            // $('#messages').append($('<li>').text(data.msg));
-          });
+        $(document).ready(() => {
+          console.log('document start!');
 
-          // socket.on('game start', function(msg){
-          //   const data = JSON.parse(msg);
+          //---------------------------------------------------------/
+          // socket specific events ---------------------------------/
+          //---------------------------------------------------------/
 
-          // });
+          $(function () {
+            //socket initialization
+            const socket = io('http://localhost:8080/game');
+            $('form').submit(function(e){
+              e.preventDefault(); // prevents page reloading
+              socket.emit('chat message', `{ "id": "${socket.id}", "msg": "${$('#m').val()}" }`);
+              $('#m').val('');
+              return false;
+            });
 
-          socket.on('system', function(msg){
-            const data = JSON.parse(msg);
-            console.log('system: ' + data.msg);
+            // when recieveing chat message from server display message
+            socket.on('chat message', function(msg){
+              const data = JSON.parse(msg);
+              console.log(data.msg);
+            });
 
-            if (data.type === 'start') {
-              $('.p2-won').empty();
-              $('.p2-hand').empty();
-              // $('.bid-table').empty();
-              $('.bids').empty();
-              $('.dealer-bid').empty();
-              $('.p1-hand').empty();
-              $('.p1-won').empty();
+            // system message: include clear table at start of game
+            socket.on('system', function(msg){
+              const data = JSON.parse(msg);
+              console.log('system: ' + data.msg);
+
+              if (data.type === 'start') {
+                $('.p2-won').empty();
+                $('.p2-hand').empty();
+                // $('.bid-table').empty();
+                $('.bids').empty();
+                $('.dealer-bid').empty();
+                $('.p1-hand').empty();
+                $('.p1-won').empty();
+              }
+
+            });
+
+            // display current dealer card
+            const dealerPlay = function(arr) {
+              arr = arr.slice(1);
+              $('.dealer-bid').append($('<img src="/images/cards/2C.png">'));
             }
 
-            // console.log(data);
-            // if (data.id === 0) $('#messages').append($('<li>').text(
-            //   `${data.char}: ` + data.hand, data.heldCard, data.currentBid
-            // ));
-            // if (data.id > 0) $('#messages').append($('<li>').text(
-            //   `${data.char}: ` + data.hand, data.wonBids, data.score, data.socketID, data.currentBid
-            // ));
+            // place cards at the beginning at the start of a game
+            const spawnCardsWithDelay = function(info, loc, eff, index) {
+              if (index < 13) {
+                setTimeout(() => {
+                  let num = index.toString();
+                  let color = "heart";
+                  if (info.id === 1) color = "spade";
+                  let innerDiv = $(`<div class="cards ${eff}">`).append($(cardImage[color][num]));
 
+                  // IMPORTANT: this assigns a hidden value to div that holds imgs, required to track divs!
+                  $(innerDiv).attr({
+                    value: num
+                  });
+                  $(loc).append($(innerDiv));
+                  spawnCardsWithDelay(info, loc, eff, index + 1);
+                }, 30);
+              }
+            }
+
+            // when game update information is received
+            socket.on('gameUpdate', function(msg){
+              console.log('update recieved');
+              const data = JSON.parse(msg);
+              console.log(data);
+
+
+            });
+
+            // when game phase changing data is received
+            socket.on('gamePhase', function(msg){
+              const data = JSON.parse(msg);
+              console.log(data);
+
+              //initialization
+              if (data.phase === 0) {
+                spawnCardsWithDelay(data.opponent, ".p2-hand", "top", 0);
+                spawnCardsWithDelay(data.player, ".p1-hand", "bot", 0);
+                data.phase = 1;
+              }
+              // at the start of each phase
+              if (data.phase < 14) {
+              dealerPlay(data.dealer.hand);
+              }
+
+              //-------------------------------------------------------/
+              // document ready events --------------------------------/
+              //-------------------------------------------------------/
+
+              // when player picks a card
+              $(".p1-hand").on('click', function(event) {
+                if (data.player.currentBid === "") {
+                  cardValue = $(event.target.parentNode).attr("value");
+                  cardIndex = jQuery.inArray(cardValue * 1, data.player.hand);
+                  console.log(cardValue, cardIndex);
+
+                  data.player.hand.splice(cardIndex, 1);
+                  data.player.currentBid = cardValue;
+                  console.log(data);
+
+                  socket.emit('gameUpdate', `{"player": "${data.player_id}", "item": "bid", "value": "${cardValue}" }`);
+                }
+
+              });
+
+
+
+            });
           });
-
-          const dealerPlay = function(arr) {
-            arr = arr.slice(1);
-            $('.dealer-bid').append($('<img src="/images/cards/2C.png">'));
-          }
-
-          const spawnCardsWithDelay = function(info, loc, eff) {
-            if (info.hand.length > 0) {
-              setTimeout(() => {
-                let num = info.hand.shift().toString();
-                let color = "heart";
-                if (info.id === 1) color = "spade";
-                console.log(color, num);
-                $(loc).append($(`<div class="cards ${eff}">`).append($(cardImage[color][num])));
-                spawnCardsWithDelay(info, loc, eff);
-              }, 30);
-            }
-          }
-
-          socket.on('gameInfo', function(msg){
-            const data = JSON.parse(msg);
-            console.log(data);
-            console.log(data.phase);
-
-            //initialization
-            if (data.phase === 0) {
-              spawnCardsWithDelay(data.opponent, ".p2-hand", "top");
-              spawnCardsWithDelay(data.player, ".p1-hand", "bot");
-              data.phase = 1;
-            }
-            // at the start of each phase
-            if (data.phase < 14) {
-            dealerPlay(data.dealer.hand);
-            }
-          });
-        });
+        })
       </script>
-
   </head>
 
   <body>
@@ -212,7 +245,7 @@
 
       </div>
 
-      <div class='p1-hand row id=p2_hand'>
+      <div class='p1-hand row id=p2_hand' name='hi'>
         <div class='centering'>
         </div>
       </div>
