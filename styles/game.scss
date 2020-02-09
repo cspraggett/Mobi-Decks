@@ -11,11 +11,11 @@
 }
 
 .p2-won img {
-  width: 100%;
+  width: 16vw;
 }
 
 .p2-cards-won {
-  width: 16%;
+  width: 16vw;
   margin-left: -5.4em;
   margin-top: -9.7em;
 }
@@ -27,7 +27,8 @@
 }
 
 .cards {
-  width: 18%;
+  width: 15vw;
+  margin-left: -5.4em;
 }
 
 .top:hover {
@@ -45,7 +46,8 @@
 }
 
 .centering {
-  width: 16%;
+  width: 8vw;
+  height: 9vh;
 }
 
 
@@ -54,16 +56,17 @@
 .bid-table {
   height: 50vh;
   align-content: center;
+  align-items: center;
 }
 
 .bids img {
-  width: 60%;
+  width: 15vw;
 }
 
 // User Side
 
 .user-scores img {
-  width: 30%;
+  width: 9vw;
   margin-left: 3vw;
   margin-top: 2vw;
 }
@@ -86,7 +89,7 @@
 
 .dealer-bid img {
   margin: auto 0;
-  width: 68%;
+  width: 15vw;
   text-align: center;
 }
 
@@ -100,11 +103,6 @@
   align-items: flex-start;
 }
 
-.cards {
-  width: 16%;
-  margin-left: -5.4em;
-}
-
 .p1-hand img {
   width: 100%;
 }
@@ -115,11 +113,47 @@
 }
 
 .p1-won img {
-  width: 100%;
+  width: 16vw;
 }
 
 .p1-cards-won {
-  width: 16%;
+  width: 16vw;
   margin-left: -5.4em;
 }
 
+
+
+@media only screen and (min-width: 1024px) {
+  .bid-table {
+    height: 40vh;
+  }
+
+  .p2-hand {
+    height: 25vh;
+  }
+
+  .user-scores img {
+    width: 5vw;
+  }
+
+  .user-scores .row {
+    justify-content: flex-end;
+  }
+
+  .bids img {
+    width: 6vw;
+  }
+
+  .p1-hand {
+    height: 25vh;
+  }
+
+  .cards {
+    width: 7vw;
+  }
+
+  .dealer-bid img {
+    width: 6vw;
+  }
+
+}
