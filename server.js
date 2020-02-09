@@ -64,6 +64,7 @@ const players = {
   "player2": null
 };
 
+<<<<<<< HEAD
 const game = {
   dealer: {id: 0, phase: 0, hand: [...Array(13).keys()], heldCard: [], currentCard: "" },
   player1: {id: 1, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""},
@@ -72,6 +73,9 @@ const game = {
 }
 
 io.of("/game").on('connection', function(socket){
+=======
+io.of("/game").on('connection', function(socket) {
+>>>>>>> add verifyBid and create module to run the game
   console.log('connect');
   // assign player # and socket id to newly connected socket
   for (const player in players) {
@@ -82,7 +86,7 @@ io.of("/game").on('connection', function(socket){
       console.log(players);
       break;
     }
-  };
+  }
 
   socket.on('gameUpdate', (msg) => {
     const data = JSON.parse(msg);
@@ -117,7 +121,7 @@ io.of("/game").on('connection', function(socket){
   });
 
   // remove socket id from appropriate player slot when a player leave
-    // note: when error occurs disconnect function below may not execute properly, causing additional issues
+  // note: when error occurs disconnect function below may not execute properly, causing additional issues
   socket.on('disconnect', function() {
     for (const player in players) {
       if (players[player] === socket.id) {
