@@ -29,15 +29,23 @@ const compareHands = ((p1, p2, dealer) => {
   removeElement(p2.hand, p2.currentBid);
 });
 
-const verifyBid (playerObj) => {
-  return playerObj.hand.includes(playerObj.currentBid)
-}
+const verifyBid = (playerObj) => {
+  return playerObj.hand.includes(playerObj.currentBid);
+};
 
-const player1 = {hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: '', currentBid: ''};
-const player2 = {hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: '', currentBid: ''};
-const dealer = {hand: shuffle([...Array(13).keys()]), heldCard: [], currentCard: null};
+const initializeHands = () => {
+  return {
+    dealer:  {hand: shuffle([...Array(13).keys()]), heldCard: [], currentCard: null},
+    player1: {hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: '', currentBid: ''},
+    player2: {hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: '', currentBid: ''}
+  };
+};
 
-console.log(dealer);
+// const player1 = {hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: '', currentBid: ''};
+// const player2 = {hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: '', currentBid: ''};
+// const dealer = {hand: shuffle([...Array(13).keys()]), heldCard: [], currentCard: null};
+
+// console.log(dealer);
 
 // console.log('player1:',player1.hand);
 // console.log('player2:',player2.hand);
@@ -51,4 +59,4 @@ console.log(dealer);
 // console.log('player2:', player2.hand);
 // console.log('dealer:', dealer.hand);
 
-module.exports = {compareHands, shuffle, verifyBid};
+module.exports = {compareHands, shuffle, verifyBid, initializeHands};
