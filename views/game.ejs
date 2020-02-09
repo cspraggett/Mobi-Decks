@@ -40,7 +40,6 @@
         #messages li:nth-child(odd) { background: #eee; }
       </style>
 
-<<<<<<< dd6c49b68cf2849393c37d57e4d61a5c4cdd4f3b
       <script>
         const cardImage = {
           heart: [
@@ -75,7 +74,7 @@
           ]
         }
 
-        const handDivs = {player: [], opponent: []};
+        let handDivs = {player: [], opponent: []};
 
         $(document).ready(() => {
           console.log('document start!');
@@ -153,7 +152,7 @@
 
               //initialization
               if (data.phase === 0) {
-                handDivs = {};
+                handDivs = {player: [], opponent: []};
                 spawnCardsWithDelay(data.opponent, ".p2-hand", 0);
                 spawnCardsWithDelay(data.player, ".p1-hand", 0);
                 data.phase = 1;
@@ -226,127 +225,6 @@
           });
         })
       </script>
-=======
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
-      <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-
-      <script>
-        const cardImage = {
-          heart: [
-            '<img src="/images/cards/AH.png">',
-            '<img src="/images/cards/2H.png">',
-            '<img src="/images/cards/3H.png">',
-            '<img src="/images/cards/4H.png">',
-            '<img src="/images/cards/5H.png">',
-            '<img src="/images/cards/6H.png">',
-            '<img src="/images/cards/7H.png">',
-            '<img src="/images/cards/8H.png">',
-            '<img src="/images/cards/9H.png">',
-            '<img src="/images/cards/10H.png">',
-            '<img src="/images/cards/JH.png">',
-            '<img src="/images/cards/QH.png">',
-            '<img src="/images/cards/KH.png">'
-          ],
-          spade: [
-            '<img src="/images/cards/AS.png">',
-            '<img src="/images/cards/2S.png">',
-            '<img src="/images/cards/3S.png">',
-            '<img src="/images/cards/4S.png">',
-            '<img src="/images/cards/5S.png">',
-            '<img src="/images/cards/6S.png">',
-            '<img src="/images/cards/7S.png">',
-            '<img src="/images/cards/8S.png">',
-            '<img src="/images/cards/9S.png">',
-            '<img src="/images/cards/10S.png">',
-            '<img src="/images/cards/JS.png">',
-            '<img src="/images/cards/QS.png">',
-            '<img src="/images/cards/KS.png">'
-          ]
-        }
-
-        $(function () {
-          const socket = io('http://localhost:8080/game');
-          $('form').submit(function(e){
-            e.preventDefault(); // prevents page reloading
-            socket.emit('chat message', `{ "id": "${socket.id}", "msg": "${$('#m').val()}" }`);
-            $('#m').val('');
-            return false;
-          });
-
-          // when recieveing chat message from server display message
-          socket.on('chat message', function(msg){
-            const data = JSON.parse(msg);
-            console.log(data.msg);
-            // $('#messages').append($('<li>').text(data.msg));
-          });
-
-          // socket.on('game start', function(msg){
-          //   const data = JSON.parse(msg);
-
-          // });
-
-          socket.on('system', function(msg){
-            const data = JSON.parse(msg);
-            console.log('system: ' + data.msg);
-
-            if (data.type === 'start') {
-              $('.p2-won').empty();
-              $('.p2-hand').empty();
-              // $('.bid-table').empty();
-              $('.bids').empty();
-              $('.dealer-bid').empty();
-              $('.p1-hand').empty();
-              $('.p1-won').empty();
-            }
-
-            // console.log(data);
-            // if (data.id === 0) $('#messages').append($('<li>').text(
-            //   `${data.char}: ` + data.hand, data.heldCard, data.currentBid
-            // ));
-            // if (data.id > 0) $('#messages').append($('<li>').text(
-            //   `${data.char}: ` + data.hand, data.wonBids, data.score, data.socketID, data.currentBid
-            // ));
-
-          });
-
-          const dealerPlay = function(arr) {
-            arr = arr.slice(1);
-            $('.dealer-bid').append($('<img src="/images/cards/2C.png">'));
-          }
-
-          const spawnCardsWithDelay = function(info, loc, eff) {
-            if (info.hand.length > 0) {
-              setTimeout(() => {
-                let num = info.hand.shift().toString();
-                let color = "heart";
-                if (info.id === 1) color = "spade";
-                console.log(color, num);
-                $(loc).append($(`<div class="cards ${eff}">`).append($(cardImage[color][num])));
-                spawnCardsWithDelay(info, loc, eff);
-              }, 30);
-            }
-          }
-
-          socket.on('gameInfo', function(msg){
-            const data = JSON.parse(msg);
-            console.log(data);
-            console.log(data.phase);
-
-            //initialization
-            if (data.phase === 0) {
-              spawnCardsWithDelay(data.opponent, ".p2-hand", "top");
-              spawnCardsWithDelay(data.player, ".p1-hand", "bot");
-              data.phase = 1;
-            }
-            // at the start of each phase
-            if (data.phase < 14) {
-            dealerPlay(data.dealer.hand);
-            }
-          });
-        });
-      </script>
-
->>>>>>> modified message display to console
   </head>
 
   <body>
@@ -401,11 +279,7 @@
 
       </div>
 
-<<<<<<< 42cb5095b47a9e9fb925e51eec93204e5fab6b75
-      <div class='p1-hand row id=p2_hand' name='hi'>
-=======
       <div class='p1-hand row id=p2_hand'>
->>>>>>> made proper cards appear on game.ejs
         <div class='centering'>
         </div>
       </div>
@@ -423,14 +297,6 @@
 
   </div>
 
-<<<<<<< 2612d96245e032b1d036e3ffafe857ce5578c7cc
  </body>
-=======
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
-  </body>
->>>>>>> modified message display to console
 
 </html>
