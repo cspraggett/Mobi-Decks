@@ -19,8 +19,7 @@ module.exports = function(io) {
       if (players[player] === null) {
         players[player] = socket.id;
         players.count += 1;
-        socket.emit('system', `{ "msg": "you are ${player}!" }`);
-        console.log(players);
+        socket.emit('system', `{ "type": "announcement", "msg": "you are ${player}!" }`);
         break;
       }
     };
@@ -46,16 +45,16 @@ module.exports = function(io) {
       startMatch();
     }
 
-    // when a player type something in chat display message to all
-    socket.on('chat message', (msg) => {
-      const data = JSON.parse(msg);
-      console.log(data.msg);
-      for (const player in players) {
-        if (players[player] === socket.id) {
-          io.of('/game').emit('chat message', `{ "id": "${socket.id}", "msg": "${player}: ${data.msg}" }`);
-        }
-      }
-    });
+    // // when a player type something in chat display message to all: DISABLED UNTIL REIMPLEMENTATION
+    // socket.on('chat message', (msg) => {
+    //   const data = JSON.parse(msg);
+    //   console.log(data.msg);
+    //   for (const player in players) {
+    //     if (players[player] === socket.id) {
+    //       io.of('/game').emit('chat message', `{ "id": "${socket.id}", "msg": "${player}: ${data.msg}" }`);
+    //     }
+    //   }
+    // });
 
     // remove socket id from appropriate player slot when a player leave
       // note: when error occurs disconnect function below may not execute properly, causing additional issues
