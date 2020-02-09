@@ -1,57 +1,72 @@
 class Cards {
   constructor(numCards) {
-    this.hands = Array(numCards).keys();
+    this._hands = Array(numCards).keys();
   }
   shuffle() {
-    for (let i = this.hand.length - 1; i > 0; i--) {
+    for (let i = this._hand.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [this.hands[i], this.hands[j]] = [this.hands[j], this.hands[i]];
+      [this._hands[i], this._hands[j]] = [this._hands[j], this._hands[i]];
     }
   }
 }
 
 class Player {
   constructor() {
-    this.hand = new Cards(13);
-    this.wonBids = [];
-    this.socketID = null;
-    this.currentBid = null;
+    this._hand = new Cards(13);
+    this._wonBids = [];
+    this._socketID = null;
+    this._currentBid = null;
+  }
+
+  get socketID() {
+    return this._socketID;
   }
 
   get score() {
-    return this.wonBids.reduce((prev, curr) => prev + curr, 0);
+    return this._wonBids.reduce((prev, curr) => prev + (curr + 1), 0);
   }
 
   get currentBid() {
-    return this.currentBid;
+    return this._currentBid;
   }
 
   set currentBid(card) {
-    this.currentBid = card;
+    this._currentBid = card;
+  }
+
+  addToWonBids(card) {
+    this._wonBids.push(card);
   }
 
   updateHand() {
-    this.hand = this.hand.filter(curr => curr === this.currentBid);
+    this._hand = this._hand.filter(curr => curr === this._currentBid);
   }
 
   verifyBid() {
-    return this.hand.includes(this.currentBid);
+    return this._hand.includes(this._currentBid);
+  }
+
+  compareHands(p, card) {
+    if (this._currentBid > p._currentBid) {
+      this.addToWonBids(card);
+      this.
+    }
   }
 }
 
 class Dealer {
   constructor() {
-    this.hand = new Cards(13).shuffle();
-    this.heldCard = null;
-    this.currentCard = this.hand[0];
+    this._hand = new Cards(13).shuffle();
+    this._currentCard = this.updateCurrentCard();
   }
 
-  addHeldCard() {
-    this.heldCard.push(this.heldCard);
+  get currentCard() {
+    return this._currentCard;
   }
 
-
-
+  updateCurrentCard() {
+    this._currentCard = this._hand.shift();
+  }
 
 }
 
@@ -74,46 +89,46 @@ const removeElement = ((arr, value) => {
 });
 
 const compareHands = ((p1, p2, dealer) => {
-  if (p1.currentBid > p2.currentBid) {
-    p1.wonBids.push(dealer.hand.shift());
-  } else if (p2.currentBid > p1.currentBid) {
-    p2.wonBids.push(dealer.hand.shift());
+  if (p1._currentBid > p2._currentBid) {
+    p1._wonBids.push(dealer._hand.shift());
+  } else if (p2._currentBid > p1._currentBid) {
+    p2._wonBids.push(dealer._hand.shift());
 
   } else {
-    dealer.heldCard.push(dealer.currentCard);
+    dealer.heldCard.push(dealer._currentCard);
   }
-  removeElement(p1.hand, p1.currentBid);
-  removeElement(p2.hand, p2.currentBid);
+  removeElement(p1._hand, p1._currentBid);
+  removeElement(p2._hand, p2._currentBid);
 });
 
 const verifyBid = (playerObj) => {
-  return playerObj.hand.includes(playerObj.currentBid);
+  return playerObj._hand.includes(playerObj._currentBid);
 };
 
 const initializeHands = () => {
   return {
-    dealer:  {hand: shuffle([...Array(13).keys()]), heldCard: [], currentCard: null},
-    player1: {hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: '', currentBid: ''},
-    player2: {hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: '', currentBid: ''}
+    dealer:  {_hand: shuffle([...Array(13).keys()]), heldCard: [], _currentCard: null},
+    player1: {_hand: [...Array(13).keys()], _wonBids: [], score: 0, _socketID: '', _currentBid: ''},
+    player2: {_hand: [...Array(13).keys()], _wonBids: [], score: 0, _socketID: '', _currentBid: ''}
   };
 };
 
-// const player1 = {hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: '', currentBid: ''};
-// const player2 = {hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: '', currentBid: ''};
-// const dealer = {hand: shuffle([...Array(13).keys()]), heldCard: [], currentCard: null};
+// const player1 = {_hand: [...Array(13).keys()], _wonBids: [], score: 0, _socketID: '', _currentBid: ''};
+// const player2 = {_hand: [...Array(13).keys()], _wonBids: [], score: 0, _socketID: '', _currentBid: ''};
+// const dealer = {_hand: shuffle([...Array(13).keys()]), heldCard: [], _currentCard: null};
 
 // console.log(dealer);
 
-// console.log('player1:',player1.hand);
-// console.log('player2:',player2.hand);
-// console.log('dealer:',dealer.hand[0]);
-// player1.currentBid = 4;
-// player2.currentBid = 3;
-// dealer.currentCard = dealer.hand[0];
+// console.log('player1:',player1._hand);
+// console.log('player2:',player2._hand);
+// console.log('dealer:',dealer._hand[0]);
+// player1._currentBid = 4;
+// player2._currentBid = 3;
+// dealer._currentCard = dealer._hand[0];
 // compareHands(player1, player2, dealer);
-// console.log('player1:', player1.hand);
-// console.log('player1 bids:', player1.wonBids);
-// console.log('player2:', player2.hand);
-// console.log('dealer:', dealer.hand);
+// console.log('player1:', player1._hand);
+// console.log('player1 bids:', player1._wonBids);
+// console.log('player2:', player2._hand);
+// console.log('dealer:', dealer._hand);
 
 module.exports = {compareHands, shuffle, verifyBid, initializeHands};

@@ -64,6 +64,7 @@ const players = {
   "player2": null
 };
 
+<<<<<<< HEAD
 const game = {
   dealer: {id: 0, phase: 0, hand: [...Array(13).keys()], heldCard: [], currentCard: "" },
   player1: {id: 1, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""},
@@ -71,6 +72,8 @@ const game = {
 
 };
 
+=======
+>>>>>>> ccd877ebac33665f8c6b87e0c7e5d508d8d3da25
 io.of("/game").on('connection', function(socket) {
   console.log('connect');
   // assign player # and socket id to newly connected socket
@@ -83,6 +86,7 @@ io.of("/game").on('connection', function(socket) {
       break;
     }
   }
+<<<<<<< HEAD
 
   socket.on('gameUpdate', (msg) => {
     const data = JSON.parse(msg);
@@ -90,6 +94,8 @@ io.of("/game").on('connection', function(socket) {
     console.log('updating');
     io.of('/game').emit('gameUpdate', msg);
   });
+=======
+>>>>>>> ccd877ebac33665f8c6b87e0c7e5d508d8d3da25
 
   // send each player their own data and send everyone dealer data
   const startMatch = function() {
