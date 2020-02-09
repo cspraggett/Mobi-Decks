@@ -40,6 +40,7 @@
         #messages li:nth-child(odd) { background: #eee; }
       </style>
 
+<<<<<<< dd6c49b68cf2849393c37d57e4d61a5c4cdd4f3b
       <script>
         const cardImage = {
           heart: [
@@ -225,6 +226,65 @@
           });
         })
       </script>
+=======
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+      <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+      <script>
+        $(function () {
+          const socket = io('http://localhost:8080/game');
+          $('form').submit(function(e){
+            e.preventDefault(); // prevents page reloading
+            socket.emit('chat message', `{ "id": "${socket.id}", "msg": "${$('#m').val()}" }`);
+            $('#m').val('');
+            return false;
+          });
+
+          // when recieveing chat message from server display message
+          socket.on('chat message', function(msg){
+            const data = JSON.parse(msg);
+            console.log(data.msg);
+            // $('#messages').append($('<li>').text(data.msg));
+          });
+
+          // socket.on('game start', function(msg){
+          //   const data = JSON.parse(msg);
+
+          // });
+
+          socket.on('system', function(msg){
+            const data = JSON.parse(msg);
+            console.log('system: ' + data.msg);
+
+            if (data.type === 'start') {
+              $('.p2-won row').empty();
+              $('.p2-hand row').empty();
+              $('.bid-table row').empty();
+              $('.col bids').empty();
+              $('.col dealer-side').empty();
+              $('.p2-hand row').empty();
+              $('.p1-won row').empty();
+            }
+
+            // console.log(data);
+            // if (data.id === 0) $('#messages').append($('<li>').text(
+            //   `${data.char}: ` + data.hand, data.heldCard, data.currentBid
+            // ));
+            // if (data.id > 0) $('#messages').append($('<li>').text(
+            //   `${data.char}: ` + data.hand, data.wonBids, data.score, data.socketID, data.currentBid
+            // ));
+
+          });
+
+          socket.on('gameInfo', function(msg){
+            const data = JSON.parse(msg);
+            console.log(data);
+          });
+
+        });
+      </script>
+
+>>>>>>> modified message display to console
   </head>
 
   <body>
@@ -297,6 +357,14 @@
 
   </div>
 
+<<<<<<< 2612d96245e032b1d036e3ffafe857ce5578c7cc
  </body>
+=======
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+  </body>
+>>>>>>> modified message display to console
 
 </html>
