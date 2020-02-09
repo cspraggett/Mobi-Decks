@@ -64,7 +64,7 @@ const players = {
   "player2": null
 };
 
-io.of("/game").on('connection', function(socket){
+io.of("/game").on('connection', function(socket) {
   console.log('connect');
   // assign player # and socket id to newly connected socket
   for (const player in players) {
@@ -75,7 +75,7 @@ io.of("/game").on('connection', function(socket){
       console.log(players);
       break;
     }
-  };
+  }
 
   // send each player their own data and send everyone dealer data
   const update = function() {
@@ -107,7 +107,7 @@ io.of("/game").on('connection', function(socket){
   });
 
   // remove socket id from appropriate player slot when a player leave
-    // note: when error occurs disconnect function below may not execute properly, causing additional issues
+  // note: when error occurs disconnect function below may not execute properly, causing additional issues
   socket.on('disconnect', function() {
     for (const player in players) {
       if (players[player] === socket.id) {
