@@ -1,6 +1,6 @@
 .board {
   height: 100vh;
-  padding: 1em;
+  padding: 1.5em 1em;
   background-color: #EE3E40;
 }
 
@@ -23,7 +23,7 @@
 .p2-hand {
   height: 20vh;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .cards {

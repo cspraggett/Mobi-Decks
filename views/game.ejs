@@ -13,17 +13,14 @@
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/game.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/header.css" type="text/css" />
+
 
     <!-- Scripts for Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-<<<<<<< HEAD
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
-
-=======
     <!-- Imported Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
 
@@ -35,11 +32,31 @@
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
->>>>>>> master
   </head>
 
   <body>
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light justify-content-between">
+      <a class="navbar-brand" href="#">Best Card Game Ever</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <span class="navbar-text username">
+          Logged in as: User1
+        </span>
+        <form class="form-inline">
+          <button class="btn btn-outline-danger" type="button">Logout</button>
+        </form>
+      </div>
+    </nav>
+
     <div class='board'>
+
+
 
       <!-- <div class='p2-won row'>
         <div class='centering'>
@@ -68,7 +85,7 @@
             <p>10</p>
           </div>
           <div class='row'>
-            <img src='/images/avatars/avatar.png' />
+            <img src='/images/avatars/avatar2.png' />
             <p>10</p>
           </div>
         </div>
