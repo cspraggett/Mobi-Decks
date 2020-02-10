@@ -25,8 +25,18 @@ const router  = express.Router();
 // };
 
 module.exports = (db) => {
+
   router.get("/", (req, res) => {
     res.render("error");
   });
+
+  app.get("/login", (req, res) => {
+    res.render("login");
+  });
+
+  app.get("/register", (req, res) => {
+    res.render("register");
+  });
+
   return router;
 };
