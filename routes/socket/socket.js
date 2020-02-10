@@ -35,13 +35,46 @@ module.exports = function(io) {
 
     socket.on('gameUpdate', (msg) => {
       const data = JSON.parse(msg);
-      console.log(data);
-      console.log('updating');
+      // console.log(data);
+      // console.log('updating');
 
       if (data.item === 'bid') {
-        gameData[`player${data.player}`].currentBid = data.value;
+        let currentPlayer = `player${data.player}`;
+        gameData[currentPlayer].currentBid = parseInt(data.value);
+        // verifyBid to be implemented
 
         io.of('/game').emit('gameUpdate:bid', msg);
+        if (gameData.player1.currentBid !== null & gameData.player2.currentBid !== null) {
+          compareHands(gameData.player1, gameData.player2, gameData.dealer);
+          gameData.player1.currentBid = null;
+          gameData.player2.currentBid = null;
+          console.log('--------------------');
+          console.log(gameData);
+          console.log(gameData.player1.score);
+
+          gameData.phase += 1;
+          io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({
+            phase: gameData.phase,
+            ready: false,
+            pScore: gameData.player1.score,
+            oScore: gameData.player2.score,
+            player: gameData.player1,
+            opponent: gameData.player2,
+            dealer: gameData.dealer
+          }));
+          io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({
+            phase: gameData.phase,
+            ready: false,
+            pScore: gameData.player2.score,
+            oScore: gameData.player1.score,
+            player: gameData.player2,
+            opponent: gameData.player1,
+            dealer: gameData.dealer
+          }));
+          if (gameData.phase === 14) {
+            //victory effect here;
+          }
+        }
       }
 
     });
@@ -65,6 +98,8 @@ module.exports = function(io) {
       io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({
         phase: 0, player: gameData.player2, opponent: gameData.player1, dealer: gameData.dealer
       }));
+
+      gameData.phase = 1;
     };
 
     // when there are 2 connected players send notification to all and run update function

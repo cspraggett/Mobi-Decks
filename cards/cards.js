@@ -91,6 +91,7 @@ class Dealer {
 
 
 const compareHands = ((p1, p2, dealer) => {
+  console.log(p1.currentBid > p2.currentBid);
   p1.currentBid > p2.currentBid ? p1.addToWonBids(dealer.currentCard) : p2.currentBid > p1.currentBid ? p2.addToWonBids(dealer.currentCard) : undefined;
   p1.updateHand();
   p2.updateHand();

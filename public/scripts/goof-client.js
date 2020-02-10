@@ -38,6 +38,8 @@ $(document).ready(() => {
         $('.dealer-bid').empty();
         $('.p1-hand').empty();
         $('.p1-won').empty();
+        $('.p2score').text(0);
+        $('.p1score').text(0);
       }
 
     });
@@ -46,6 +48,7 @@ $(document).ready(() => {
     const dealerPlay = function(card) {
       console.log(card);
       $('.dealer-bid').append($((cardImage.club[card])));
+      data.player.ready = true;
     }
 
     // place cards at the beginning at the start of a game
@@ -87,10 +90,11 @@ $(document).ready(() => {
 
     // when game phase changing data is received
     socket.on('gamePhase', function(msg) {
-      // $('.bids').empty(); -- set up for future
-
       data = JSON.parse(msg);
       console.log('new gamePhase: phase: ' + data.phase);
+      console.log(data);
+      console.log(data.opponent._wonBids);
+      console.log(data.player._wonBids);
 
       //initialization
       if (data.phase === 0) {
@@ -100,7 +104,18 @@ $(document).ready(() => {
         console.log('initialization');
       } else if (data.phase < 14) {
         // at the start of each phase
-        dealerPlay(data.dealer._currentCard);
+        setTimeout(() => {
+          $('.bids').empty();
+          $('.dealer-bid').empty();
+          $('.p2score').text(data.oScore);
+          $('.p1score').text(data.pScore);
+          dealerPlay(data.dealer._currentCard);
+        }, 2000);
+      } else if (data.phase === 14) {
+        let innerDivTop = $(`<div>`).append(`<p>opponent won cards: ${data.player._wonBids} </p>`);
+        let innerDivBot = $(`<div>`).append(`<p>player won cards: ${data.opponent._wonBids} </p>`);
+        $($(innerDivTop)).prependTo('.bids');
+        $($(innerDivBot)).appendTo('.bids');
       }
     })
 
@@ -146,7 +161,7 @@ $(document).ready(() => {
           for (let i = 0; i < handDivs.player.length; i++) {
             if (handDivs.player[i].attr("value") === cardValue) {
               $(handDivs.player[i]).appendTo('.bids');
-              $(handDivs.player[i]).removeClass('cards');
+              $(handDivs.player[i]).removeClass('cards bot');
               $(handDivs.player[i]).addClass('row bid-card');
             }
           }
@@ -163,7 +178,7 @@ $(document).ready(() => {
 
     // when player picks a card
     $(".p1-hand").on('click', function(event) {
-      if (data.player._currentBid === null) {
+      if (data.player._currentBid === null && data.player.ready === true) {
         // pick a card
         cardValue = $(event.target.parentNode).attr("value");
         // cardIndex = jQuery.inArray(cardValue * 1, data.player.hand);
@@ -181,6 +196,7 @@ $(document).ready(() => {
         // // console.log(data);
 
         socket.emit('gameUpdate', `{"player": "${data.player._id}", "item": "bid", "value": "${cardValue}" }`);
+        data.player.ready = false;
       }
     });
 
