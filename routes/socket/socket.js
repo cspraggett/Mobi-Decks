@@ -12,6 +12,10 @@ module.exports = function(io) {
     player2: {id: 2, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""}
   };
 
+  // testing information load in
+  // const game1 = require('../../db/sampleData.js');
+  // console.log(game1);
+
   io.of("/game").on('connection', function(socket){
     // assign player # and socket id to newly connected socket
     for (const player in players) {
