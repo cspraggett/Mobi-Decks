@@ -102,15 +102,21 @@ p2.shuffle();
 console.log('p1:', p1);
 console.log('p2:', p2);
 
-for (let i = 0; i < 3; i++) {
-  p1.currentBid = (p1._hand[i]);
-  p2.currentBid = (p2._hand[i]);
-  compareHands(p1, p2, d);
+for (let i = 0; i < 13; i++) {
+  p1.currentBid = (p1._hand[0]);
+  p2.currentBid = (p2._hand[0]);
   console.log(`---hand #${i}---`);
   console.log('dealer:', d);
+  compareHands(p1, p2, d);
   console.log('p1:', p1);
   console.log('p2:', p2);
+  console.log('\n\n-----------------------\n\n');
 }
+
+console.log('---end---');
+console.log('dealer', d);
+console.log('player 1:', p1);
+console.log('player 2', p2);
 
 // const shuffle = (arr) => {
 //   for (let i = arr.length - 1; i > 0; i--) {
