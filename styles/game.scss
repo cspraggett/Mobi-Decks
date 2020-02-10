@@ -4,6 +4,24 @@
   background-color: #EE3E40;
 }
 
+// Modal
+.pop-up {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  background-color: #17020287;
+}
+
+.card img {
+  width: 20vw;
+  max-width: 120px;
+  margin: 2vh 0 6vh;
+}
+
 // P2 Table
 .p2-won {
   height: 5vh;
