@@ -1,9 +1,10 @@
 class Cards {
   constructor(numCards) {
-    this._hands = Array(numCards).keys();
+    this._hands = [...Array(numCards).keys()];
   }
+
   shuffle() {
-    for (let i = this._hand.length - 1; i > 0; i--) {
+    for (let i = this._hands.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [this._hands[i], this._hands[j]] = [this._hands[j], this._hands[i]];
     }
@@ -12,10 +13,22 @@ class Cards {
 
 class Player {
   constructor() {
-    this._hand = new Cards(13);
+    this._hand = this.sethand();
     this._wonBids = [];
     this._socketID = null;
     this._currentBid = null;
+  }
+
+  sethand() {
+    const nh = new Cards(13);
+    return nh._hands;
+  }
+
+  shuffle() {
+    for (let i = this._hand.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this._hand[i], this._hand[j]] = [this._hand[j], this._hand[i]];
+    }
   }
 
   get socketID() {
@@ -39,7 +52,7 @@ class Player {
   }
 
   updateHand() {
-    this._hand = this._hand.filter(curr => curr === this._currentBid);
+    this._hand = this._hand.filter(curr => curr !== this._currentBid);
   }
 
   verifyBid() {
@@ -51,8 +64,14 @@ class Player {
 
 class Dealer {
   constructor() {
-    this._hand = new Cards(13).shuffle();
-    this._currentCard = this.updateCurrentCard();
+    this._hand = this.sethand();
+    this._currentCard =  this._hand.shift();
+  }
+
+  sethand() {
+    const nh = new Cards(13);
+    nh.shuffle();
+    return nh._hands;
   }
 
   get currentCard() {
@@ -67,11 +86,31 @@ class Dealer {
 
 
 const compareHands = ((p1, p2, dealer) => {
-  p1.currentBid > p2.currentBid ? p1.addToWonBids(dealer.currentCard) : p2.addToWonBids(dealer.currentCard);
+  p1.currentBid > p2.currentBid ? p1.addToWonBids(dealer.currentCard) : p2.currentBid > p1.currentBid ? p2.addToWonBids(dealer.currentCard) : undefined;
   p1.updateHand();
   p2.updateHand();
   dealer.updateCurrentCard();
 });
+
+const d = new Dealer();
+console.log(d);
+
+const p1 = new Player();
+p1.shuffle();
+const p2 = new Player();
+p2.shuffle();
+console.log('p1:', p1);
+console.log('p2:', p2);
+
+for (let i = 0; i < 3; i++) {
+  p1.currentBid = (p1._hand[i]);
+  p2.currentBid = (p2._hand[i]);
+  compareHands(p1, p2, d);
+  console.log(`---hand #${i}---`);
+  console.log('dealer:', d);
+  console.log('p1:', p1);
+  console.log('p2:', p2);
+}
 
 // const shuffle = (arr) => {
 //   for (let i = arr.length - 1; i > 0; i--) {
