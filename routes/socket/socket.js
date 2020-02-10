@@ -13,12 +13,13 @@ module.exports = function(io) {
   };
 
   io.of("/game").on('connection', function(socket){
-    console.log('connect');
     // assign player # and socket id to newly connected socket
     for (const player in players) {
       if (players[player] === null) {
         players[player] = socket.id;
         players.count += 1;
+        console.log('new connection');
+        console.log(players);
         socket.emit('system', `{ "type": "announcement", "msg": "you are ${player}!" }`);
         break;
       }
@@ -26,7 +27,7 @@ module.exports = function(io) {
 
     socket.on('gameUpdate', (msg) => {
       const data = JSON.parse(msg);
-      console.log(data.msg);
+      console.log(data);
       console.log('updating');
       io.of('/game').emit('gameUpdate', msg);
     });
@@ -40,7 +41,6 @@ module.exports = function(io) {
 
     // when there are 2 connected players send notification to all and run update function
     if (players.count === 2) {
-      console.log(players);
       io.of('/game').emit('system', `{ "type": "start", "msg": "2 players detected!" }`);
       startMatch();
     }
@@ -63,6 +63,7 @@ module.exports = function(io) {
         if (players[player] === socket.id) {
           players[player] = null;
           players.count -= 1;
+          console.log('lost connection');
           console.log(players);
           break;
         }
