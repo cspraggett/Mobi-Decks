@@ -46,7 +46,6 @@ $(document).ready(() => {
 
     // display current dealer card
     const dealerPlay = function(card) {
-      console.log(card);
       $('.dealer-bid').append($((cardImage.club[card])));
       data.player.ready = true;
     }
@@ -81,8 +80,7 @@ $(document).ready(() => {
           spawnCardsWithDelay(index + 1);
         }, 30);
       } else {
-        console.log(data.dealer);
-        dealerPlay(data.dealer._currentCard);
+        dealerPlay(data.dealer._hand[0]);
         data.phase = 1;
         console.log('new gamePhase: phase: ' + data.phase);
       }
@@ -92,9 +90,6 @@ $(document).ready(() => {
     socket.on('gamePhase', function(msg) {
       data = JSON.parse(msg);
       console.log('new gamePhase: phase: ' + data.phase);
-      console.log(data);
-      console.log(data.opponent._wonBids);
-      console.log(data.player._wonBids);
 
       //initialization
       if (data.phase === 0) {
@@ -109,8 +104,8 @@ $(document).ready(() => {
           $('.dealer-bid').empty();
           $('.p2score').text(data.oScore);
           $('.p1score').text(data.pScore);
-          dealerPlay(data.dealer._currentCard);
-        }, 2000);
+          dealerPlay(data.dealer._hand[0]);
+        }, 1000);
       } else if (data.phase === 14) {
         let innerDivTop = $(`<div>`).append(`<p>opponent won cards: ${data.player._wonBids} </p>`);
         let innerDivBot = $(`<div>`).append(`<p>player won cards: ${data.opponent._wonBids} </p>`);
@@ -122,8 +117,6 @@ $(document).ready(() => {
     // when game update information is received
     socket.on('gameUpdate:bid', function(msg){
     const update = JSON.parse(msg);
-    // console.log('update recieved');
-    // console.log(update);
 
       if (data.player._id !== update.player * 1) {
         if (update.item === "bid") {
@@ -144,8 +137,6 @@ $(document).ready(() => {
             }
           }
           console.log('opponent bid: ' + data.opponent._currentBid);
-          console.log('opponent hand: ' + data.opponent._hand);
-          // console.log(data);
         }
       } else {
         if (update.item === "bid") {
@@ -165,9 +156,7 @@ $(document).ready(() => {
               $(handDivs.player[i]).addClass('row bid-card');
             }
           }
-          console.log('opponent bid: ' + data.player._currentBid);
-          console.log('opponent hand: ' + data.player._hand);
-          // console.log(data);
+          console.log('player bid: ' + data.player._currentBid);
         }
       }
     })
@@ -179,22 +168,7 @@ $(document).ready(() => {
     // when player picks a card
     $(".p1-hand").on('click', function(event) {
       if (data.player._currentBid === null && data.player.ready === true) {
-        // pick a card
         cardValue = $(event.target.parentNode).attr("value");
-        // cardIndex = jQuery.inArray(cardValue * 1, data.player.hand);
-
-        // // remove card from hand in data
-        // data.player.hand.splice(cardIndex, 1);
-        // // update current bid in data
-        // data.player._currentBid = cardValue;
-        // // place card div in bid
-        // $(event.target.parentNode).appendTo('.bids');
-        // $(event.target.parentNode).removeClass('cards bot');
-        // $(event.target.parentNode).addClass('row bid-card');
-        // console.log('player bid: ' + data.player._currentBid);
-        // console.log('player hand: ' + data.player.hand);
-        // // console.log(data);
-
         socket.emit('gameUpdate', `{"player": "${data.player._id}", "item": "bid", "value": "${cardValue}" }`);
         data.player.ready = false;
       }

@@ -44,9 +44,14 @@ class Player {
 class GoofPlayer extends Player {
   constructor(deckObject) {
     super(deckObject, 13);
+    this._id = null;
     this._currentBid = null;
     this._wonBids = [];
     this.convertHand();
+  }
+
+  setId(id) {
+    this._id = id;
   }
 
   convertHand() {
@@ -119,9 +124,9 @@ class GoofDealer {
 //     return this._currentCard;
 //   }
 
-//   updateCurrentCard() {
-//     this._currentCard = this._hand.shift();
-//   }
+  // updateCurrentCard() {
+  //   this._currentCard = this._hand.shift();
+  // }
 
 // }
 
@@ -130,18 +135,19 @@ const compareHands = ((p1, p2, dealer) => {
   p1.currentBid > p2.currentBid ? p1.addToWonBids(dealer.currentCard) : p2.currentBid > p1.currentBid ? p2.addToWonBids(dealer.currentCard) : undefined;
   p1.updateHand();
   p2.updateHand();
-  dealer.updateCurrentCard();
+  dealer.removeCurrent();
 });
 
-const deck = new Deck(52);
-const dealer = new GoofDealer(deck);
-const player1 = new GoofPlayer(deck);
-const player2 = new GoofPlayer(deck);
+// const deck = new Deck(52);
+// const dealer = new GoofDealer(deck);
+// const player1 = new GoofPlayer(deck);
+// const player2 = new GoofPlayer(deck);
 
-console.log(dealer);
-console.log(player1);
-console.log(player2);
-console.log(deck._deck.length);
+// console.log(deck);
+// console.log(dealer);
+// console.log(player1);
+// console.log(player2);
+// console.log(deck._deck.length);
 
 // const d = new Dealer();
 // console.log(d);
@@ -232,4 +238,4 @@ console.log(deck._deck.length);
 // console.log('player2:', player2._hand);
 // console.log('dealer:', dealer._hand);
 
-// module.exports = {compareHands, Cards, Player};
+module.exports = {compareHands, Deck, GoofDealer, GoofPlayer};
