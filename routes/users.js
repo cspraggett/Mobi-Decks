@@ -5,8 +5,8 @@
  * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
  */
 
-// const express = require('express');
-// const router  = express.Router();
+const express = require('express');
+const router  = express.Router();
 
 // module.exports = (db) => {
 //   router.get("/", (req, res) => {
@@ -23,3 +23,10 @@
 //   });
 //   return router;
 // };
+
+module.exports = (db) => {
+  router.get("/", (req, res) => {
+    res.render("error");
+  });
+  return router;
+};
