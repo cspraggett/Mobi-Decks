@@ -1,0 +1,62 @@
+const cardImage = {
+  heart: [
+    '<img src="/images/cards/AH.png">',
+    '<img src="/images/cards/2H.png">',
+    '<img src="/images/cards/3H.png">',
+    '<img src="/images/cards/4H.png">',
+    '<img src="/images/cards/5H.png">',
+    '<img src="/images/cards/6H.png">',
+    '<img src="/images/cards/7H.png">',
+    '<img src="/images/cards/8H.png">',
+    '<img src="/images/cards/9H.png">',
+    '<img src="/images/cards/10H.png">',
+    '<img src="/images/cards/JH.png">',
+    '<img src="/images/cards/QH.png">',
+    '<img src="/images/cards/KH.png">'
+  ],
+  spade: [
+    '<img src="/images/cards/AS.png">',
+    '<img src="/images/cards/2S.png">',
+    '<img src="/images/cards/3S.png">',
+    '<img src="/images/cards/4S.png">',
+    '<img src="/images/cards/5S.png">',
+    '<img src="/images/cards/6S.png">',
+    '<img src="/images/cards/7S.png">',
+    '<img src="/images/cards/8S.png">',
+    '<img src="/images/cards/9S.png">',
+    '<img src="/images/cards/10S.png">',
+    '<img src="/images/cards/JS.png">',
+    '<img src="/images/cards/QS.png">',
+    '<img src="/images/cards/KS.png">'
+  ],
+  diamond: [
+    '<img src="/images/cards/AH.png">',
+    '<img src="/images/cards/2H.png">',
+    '<img src="/images/cards/3H.png">',
+    '<img src="/images/cards/4H.png">',
+    '<img src="/images/cards/5H.png">',
+    '<img src="/images/cards/6H.png">',
+    '<img src="/images/cards/7H.png">',
+    '<img src="/images/cards/8H.png">',
+    '<img src="/images/cards/9H.png">',
+    '<img src="/images/cards/10H.png">',
+    '<img src="/images/cards/JH.png">',
+    '<img src="/images/cards/QH.png">',
+    '<img src="/images/cards/KH.png">'
+  ],
+  club: [
+    '<img src="/images/cards/AS.png">',
+    '<img src="/images/cards/2S.png">',
+    '<img src="/images/cards/3S.png">',
+    '<img src="/images/cards/4S.png">',
+    '<img src="/images/cards/5S.png">',
+    '<img src="/images/cards/6S.png">',
+    '<img src="/images/cards/7S.png">',
+    '<img src="/images/cards/8S.png">',
+    '<img src="/images/cards/9S.png">',
+    '<img src="/images/cards/10S.png">',
+    '<img src="/images/cards/JS.png">',
+    '<img src="/images/cards/QS.png">',
+    '<img src="/images/cards/KS.png">'
+  ]
+};
