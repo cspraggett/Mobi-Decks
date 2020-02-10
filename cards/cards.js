@@ -126,6 +126,7 @@ class GoofDealer {
 // }
 
 const compareHands = ((p1, p2, dealer) => {
+  console.log(p1.currentBid > p2.currentBid);
   p1.currentBid > p2.currentBid ? p1.addToWonBids(dealer.currentCard) : p2.currentBid > p1.currentBid ? p2.addToWonBids(dealer.currentCard) : undefined;
   p1.updateHand();
   p2.updateHand();
@@ -141,7 +142,6 @@ console.log(dealer);
 console.log(player1);
 console.log(player2);
 console.log(deck._deck.length);
-
 
 // const d = new Dealer();
 // console.log(d);

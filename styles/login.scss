@@ -1,0 +1,31 @@
+.login-card {
+  border: 2em solid white;
+  border-radius: 25px;
+  background-color: white;
+  color: black;
+  width: 35vw;
+  min-width: 300px;
+}
+
+.card-title {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+
+.login-button {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+a {
+  color: #EE3E40;
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(170, 31, 33);
+  text-decoration: none;
+}

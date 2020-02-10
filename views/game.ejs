@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/game.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/header.css" type="text/css" />
+
 
     <!-- Scripts for Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -33,7 +35,22 @@
   </head>
 
   <body>
+    <%- include('./partials/_header'); -%>
+
+    <!-- <div class='pop-up'>
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title">You Won!</h1>
+          <img src='/images/graphics/face.png' />
+          <button type="submit" class="btn btn-danger">Play Again</button>
+        </div>
+      </div>
+    </div> -->
+
+
     <div class='board'>
+
+
 
       <!-- <div class='p2-won row'>
         <div class='centering'>
@@ -59,11 +76,11 @@
         <div class='col user-scores'>
           <div class='row'>
             <img src='/images/avatars/avatar.png' />
-            <p>10</p>
+            <p class='p2score'>0</p>
           </div>
           <div class='row'>
-            <img src='/images/avatars/avatar.png' />
-            <p>10</p>
+            <img src='/images/avatars/avatar2.png' />
+            <p class='p1score'>0</p>
           </div>
         </div>
 
