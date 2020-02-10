@@ -2,16 +2,16 @@
 require('dotenv').config();
 
 // Web server config
-const PORT       = process.env.PORT || 8080;
 const ENV        = process.env.ENV || "development";
-const bodyParser = require("body-parser");
-const sass       = require("node-sass-middleware");
-const morgan     = require('morgan');
-
 const express    = require("express");
 const app        = express();
 const http       = require('http').createServer(app);
 const io         = require('socket.io').listen(http);
+const PORT       = process.env.PORT || 8080;
+
+const bodyParser = require("body-parser");
+const sass       = require("node-sass-middleware");
+const morgan     = require('morgan');
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -19,11 +19,7 @@ const dbParams = require('./lib/db.js');
 const db = new Pool(dbParams);
 db.connect();
 
-// Load the logger first so all (static) HTTP requests are logged to STDOUT
-// 'dev' = Concise output colored by response status for development use.
-//         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan('dev'));
-
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/styles", sass({
@@ -35,29 +31,21 @@ app.use("/styles", sass({
 app.use(express.static("public"));
 
 // Separated Routes for each Resource
-// Note: Feel free to replace the example routes below with your own
-// const usersRoutes = require("./routes/users");
-// const widgetsRoutes = require("./routes/widgets");
+const usersRoutes = require("./routes/users");
 
 // Mount all resource routes
-// Note: Feel free to replace the example routes below with your own
-// app.use("/api/users", usersRoutes(db));
-// app.use("/api/widgets", widgetsRoutes(db));
-// Note: mount other resources here, using the same pattern above
+app.use("/users", usersRoutes(db));
 
-
-// Home page
-// Warning: avoid creating more routes in this file!
-// Separate them into separate routes files (see above).
+// Separate them into separate routes files
 app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/game", (req, res) => {
-  res.sendFile(__dirname + '/views/game.html');
-  res.render("game");
+app.get("/login", (req, res) => {
+  res.render("login");
 });
 
+<<<<<<< HEAD
 const players = {
   "count": 0,
   "player1": null,
@@ -128,8 +116,18 @@ io.of("/game").on('connection', function(socket) {
       }
     }
   });
-
+=======
+app.get("/register", (req, res) => {
+  res.render("register");
 });
+>>>>>>> 4625639bcea0dc2216c66a862fdfe4bd2116653a
+
+app.get("/game", (req, res) => {
+  // res.sendFile(__dirname + '/views/game.html');
+  res.render("game");
+});
+
+require('./routes/socket/socket.js')(io);
 
 http.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

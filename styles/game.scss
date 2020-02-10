@@ -1,7 +1,25 @@
 .board {
   height: 100vh;
-  padding: 1em;
+  padding: 1.5em 1em;
   background-color: #EE3E40;
+}
+
+// Modal
+.pop-up {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  background-color: #17020287;
+}
+
+.card img {
+  width: 20vw;
+  max-width: 120px;
+  margin: 2vh 0 6vh;
 }
 
 // P2 Table
@@ -23,7 +41,8 @@
 .p2-hand {
   height: 20vh;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+  margin-top: 4vh;
 }
 
 .cards {
@@ -149,7 +168,7 @@
   }
 
   .cards {
-    width: 7vw;
+    width: 5.5vw;
   }
 
   .dealer-bid img {
