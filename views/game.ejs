@@ -82,44 +82,56 @@
           }
 
           // place cards at the beginning at the start of a game
-          const spawnCardsWithDelay = function(info, loc, index) {
+          const spawnCardsWithDelay = function(index) {
             if (index < 13) {
               setTimeout(() => {
                 let num = index.toString();
-                let color = "heart";
-                if (info.id === 1) color = "spade";
-                let eff = "bot";
-                if (loc === ".p2-hand") eff = "top";
-                let innerDiv = $(`<div class="cards ${eff}">`).append($(cardImage[color][num]));
+                let playerColor, opponentColor = "";
+                // assign preset colors(suits) for each player
+                if (data.player.id === 1) {
+                  playerColor = "spade";
+                  opponentColor = "heart";
+                } else if (data.player.id === 2) {
+                  playerColor = "heart";
+                  opponentColor = "spade";
+                }
+                // make new divs and place image inside
+                let innerDivTop = $(`<div class="cards">`).append($(cardImage[opponentColor][num]));
+                let innerDivBot = $(`<div class="cards bot">`).append($(cardImage[playerColor][num]));
+                // this assigns a hidden value to div that holds imgs, required to track specific card in handDivs
+                $(innerDivTop).attr({ value: num });
+                $(innerDivBot).attr({ value: num });
+                // push newly made divs(cards) into handDivs, array that holds divs equal to hand cards
+                handDivs.opponent.push(innerDivTop);
+                handDivs.player.push(innerDivBot);
+                // append newly made divs to appropriate div in html
+                $(".p2-hand").append($(innerDivTop));
+                $(".p1-hand").append($(innerDivBot));
 
-                // this assigns a hidden value to div that holds imgs, may need it for future
-                $(innerDiv).attr({
-                  value: num
-                });
-                if (loc === ".p2-hand") handDivs.opponent.push(innerDiv);
-                if (loc === ".p1-hand") handDivs.player.push(innerDiv);
-                $(loc).append($(innerDiv));
-                spawnCardsWithDelay(info, loc, index + 1);
+                spawnCardsWithDelay(index + 1);
               }, 30);
+            } else {
+              dealerPlay(data.dealer.hand);
+              data.phase = 1;
+              console.log('new gamePhase: phase: ' + data.phase);
             }
           }
 
           // when game phase changing data is received
           socket.on('gamePhase', function(msg){
             data = JSON.parse(msg);
-            console.log(data);
+            console.log('new gamePhase: phase: ' + data.phase);
 
             //initialization
             if (data.phase === 0) {
               handDivs.player = [];
               handDivs.opponent = [];
-              spawnCardsWithDelay(data.opponent, ".p2-hand", 0);
-              spawnCardsWithDelay(data.player, ".p1-hand", 0);
-              data.phase = 1;
+              spawnCardsWithDelay(0);
+              console.log('initialization');
             }
             // at the start of each phase
             if (data.phase < 14) {
-            dealerPlay(data.dealer.hand);
+            // dealerPlay(data.dealer.hand);
             }
 
             // when game update information is received
@@ -173,7 +185,7 @@
                 data.player.currentBid = cardValue;
                 // place card div in bid
                 $(event.target.parentNode).appendTo('.bids');
-                $(event.target.parentNode).removeClass('cards');
+                $(event.target.parentNode).removeClass('cards bot');
                 $(event.target.parentNode).addClass('row bid-card');
                 console.log(data);
 
