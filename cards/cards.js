@@ -1,42 +1,60 @@
-class Cards {
+class Deck {
   constructor(numCards) {
-    this._hands = [...Array(numCards).keys()];
+    this._deck = [...Array(numCards).keys()];
   }
 
-  shuffle() {
-    for (let i = this._hands.length - 1; i > 0; i--) {
+  static shuffle(cards) {
+    for (let i = cards.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [this._hands[i], this._hands[j]] = [this._hands[j], this._hands[i]];
+      [cards[i], cards[j]] = [cards[j], cards[i]];
     }
+    return cards;
   }
+
+  static removeFirst(deck) {
+    deck.shift();
+    return deck;
+  }
+
+  static removeInnerCard(c, deck) {
+    return  deck.filter(cur => cur !== c);
+  }
+
+  deal(numCards) {
+    const ret = this._deck.slice(0, numCards);
+    this._deck.splice(0, numCards);
+    return ret;
+  }
+
 }
 
 class Player {
-  constructor() {
-    this._hand = this.sethand();
-    this._wonBids = [];
-    this._socketID = null;
+  constructor(deckObject, numOfCards) {
+    this._hand = deckObject.deal(numOfCards);
+    //this.id = '';
+  }
+  get id() {
+    return this.id;
+  }
+  // set id(id) {
+  //   this.id = id;
+  // }
+}
+
+class GoofPlayer extends Player {
+  constructor(deckObject) {
+    super(deckObject, 13);
     this._currentBid = null;
+    this._wonBids = [];
+    this.convertHand();
   }
 
-  sethand() {
-    const nh = new Cards(13);
-    return nh._hands;
-  }
-
-  shuffle() {
-    for (let i = this._hand.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [this._hand[i], this._hand[j]] = [this._hand[j], this._hand[i]];
-    }
-  }
-
-  get socketID() {
-    return this._socketID;
+  convertHand() {
+    this._hand = this._hand.map(curr => curr % 13);
   }
 
   get score() {
-    return this._wonBids.reduce((prev, curr) => prev + (curr + 1), 0);
+    return this._wonBids.reduce((prev, curr) => prev + (curr + 1), 0); // need to check logic
   }
 
   get currentBid() {
@@ -52,7 +70,8 @@ class Player {
   }
 
   updateHand() {
-    this._hand = this._hand.filter(curr => curr !== this._currentBid);
+    // this._hand = this._hand.filter(curr => curr !== this._currentBid);
+    this._hand = Deck.removeInnerCard(this._currentBid, this._hand);
   }
 
   verifyBid() {
@@ -60,30 +79,51 @@ class Player {
   }
 }
 
-
-
-class Dealer {
-  constructor() {
-    this._hand = this.sethand();
-    this._currentCard =  this._hand.shift();
+class GoofDealer {
+  constructor(deckObject) {
+    this._hand = this.getHand(deckObject);
+    this.convertHand();
   }
 
-  sethand() {
-    const nh = new Cards(13);
-    nh.shuffle();
-    return nh._hands;
+  getHand(deckObject) {
+    const ret = deckObject.deal(13);
+    return Deck.shuffle(ret);
+  }
+
+  convertHand() {
+    this._hand = this._hand.map(curr => curr % 13);
   }
 
   get currentCard() {
-    return this._currentCard;
+    return this._hand[0];
   }
 
-  updateCurrentCard() {
-    this._currentCard = this._hand.shift();
+  removeCurrent() {
+    this._hand = Deck.removeFirst(this._hand);
   }
-
 }
 
+// class Dealer {
+//   constructor() {
+//     this._hand = this.sethand();
+//     this._currentCard =  this._hand.shift();
+//   }
+
+//   sethand() {
+//     const nh = new Cards(13);
+//     nh.shuffle();
+//     return nh._hands;
+//   }
+
+//   get currentCard() {
+//     return this._currentCard;
+//   }
+
+//   updateCurrentCard() {
+//     this._currentCard = this._hand.shift();
+//   }
+
+// }
 
 const compareHands = ((p1, p2, dealer) => {
   p1.currentBid > p2.currentBid ? p1.addToWonBids(dealer.currentCard) : p2.currentBid > p1.currentBid ? p2.addToWonBids(dealer.currentCard) : undefined;
@@ -92,31 +132,42 @@ const compareHands = ((p1, p2, dealer) => {
   dealer.updateCurrentCard();
 });
 
-const d = new Dealer();
-console.log(d);
+const deck = new Deck(52);
+const dealer = new GoofDealer(deck);
+const player1 = new GoofPlayer(deck);
+const player2 = new GoofPlayer(deck);
 
-const p1 = new Player();
-p1.shuffle();
-const p2 = new Player();
-p2.shuffle();
-console.log('p1:', p1);
-console.log('p2:', p2);
+console.log(dealer);
+console.log(player1);
+console.log(player2);
+console.log(deck._deck.length);
 
-for (let i = 0; i < 13; i++) {
-  p1.currentBid = (p1._hand[0]);
-  p2.currentBid = (p2._hand[0]);
-  console.log(`---hand #${i}---`);
-  console.log('dealer:', d);
-  compareHands(p1, p2, d);
-  console.log('p1:', p1);
-  console.log('p2:', p2);
-  console.log('\n\n-----------------------\n\n');
-}
 
-console.log('---end---');
-console.log('dealer', d);
-console.log('player 1:', p1);
-console.log('player 2', p2);
+// const d = new Dealer();
+// console.log(d);
+
+// const p1 = new Player();
+// p1.shuffle();
+// const p2 = new Player();
+// p2.shuffle();
+// console.log('p1:', p1);
+// console.log('p2:', p2);
+
+// for (let i = 0; i < 13; i++) {
+//   p1.currentBid = (p1._hand[0]);
+//   p2.currentBid = (p2._hand[0]);
+//   console.log(`---hand #${i}---`);
+//   console.log('dealer:', d);
+//   compareHands(p1, p2, d);
+//   console.log('p1:', p1);
+//   console.log('p2:', p2);
+//   console.log('\n\n-----------------------\n\n');
+// }
+
+// console.log('---end---');
+// console.log('dealer', d);
+// console.log('player 1:', p1);
+// console.log('player 2', p2);
 
 // const shuffle = (arr) => {
 //   for (let i = arr.length - 1; i > 0; i--) {
@@ -181,4 +232,4 @@ console.log('player 2', p2);
 // console.log('player2:', player2._hand);
 // console.log('dealer:', dealer._hand);
 
-module.exports = {compareHands, Cards, Player};
+// module.exports = {compareHands, Cards, Player};
