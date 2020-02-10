@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/game.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/header.css" type="text/css" />
+
 
     <!-- Scripts for Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -33,7 +35,11 @@
   </head>
 
   <body>
+    <%- include('./partials/_header'); -%>
+
     <div class='board'>
+
+
 
       <!-- <div class='p2-won row'>
         <div class='centering'>
@@ -62,7 +68,7 @@
             <p class='p2score'>0</p>
           </div>
           <div class='row'>
-            <img src='/images/avatars/avatar.png' />
+            <img src='/images/avatars/avatar2.png' />
             <p class='p1score'>0</p>
           </div>
         </div>

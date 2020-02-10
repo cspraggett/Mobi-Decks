@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
     <link rel="stylesheet" href="/styles/game.css" type="text/css" />
     <link rel="stylesheet" href="/styles/header.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/index.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/login.css" type="text/css" />
 
 
 
@@ -38,27 +38,24 @@
     <%- include('./partials/_header'); -%>
 
     <div class="game container">
-      <div class="card">
-        <a href='/game'>
-          <div class="card-body">
-            <h1 class="card-title">Goofyspiel</h1>
-            <img src='/images/graphics/battle.png' />
-            <p class="card-text">Play a quick game of Goofyspiel with a random player or your friend.</p>
-          </div>
-        </a>
-    </div>
 
-    <div class="card">
-      <a href='/game'>
-        <div class="card-body">
-          <h1 class="card-title">War</h1>
-          <img src='/images/graphics/face.png' />
-          <p class="card-text">Play a quick game of War with a random player or your friend.</p>
+      <form class='login-card'>
+        <h1 class='card-title'>Log In</h1>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Username</label>
+          <input type="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Username" required>
         </div>
-      </a>
-    </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+        </div>
+        <div class='login-button'>
+          <button type="submit" class="btn btn-danger">Login</button>
+          <small id="emailHelp" class="form-text text-muted">No account? Click <a href='/register'>here</a> to register</small>
 
-
+          <!-- <button type="submit" class="btn btn-outline-danger">Register</button> -->
+        </div>
+      </form>
 
     </div>
 
