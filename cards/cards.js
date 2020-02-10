@@ -251,8 +251,4 @@ for (let i = 0; i < 13; i++) {
 // console.log('player2:', player2._hand);
 // console.log('dealer:', dealer._hand);
 
-<<<<<<< HEAD
 // module.exports = {compareHands, Cards, Player};
-=======
-module.exports = {compareHands, Dealer, Cards, Player};
->>>>>>> 4625639bcea0dc2216c66a862fdfe4bd2116653a

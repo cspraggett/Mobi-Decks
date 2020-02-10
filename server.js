@@ -45,7 +45,6 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
-<<<<<<< HEAD
 const players = {
   "count": 0,
   "player1": null,
@@ -127,6 +126,8 @@ app.get("/game", (req, res) => {
   res.render("game");
 });
 
+=======
+>>>>>>> 58df33945d32af89b913e25c1ae00715cb628c95
 require('./routes/socket/socket.js')(io);
 
 http.listen(PORT, () => {
