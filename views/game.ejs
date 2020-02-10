@@ -136,9 +136,9 @@
 
             // when game update information is received
             socket.on('gameUpdate', function(msg){
-              console.log('update recieved');
               const update = JSON.parse(msg);
-              console.log(update);
+              // console.log('update recieved');
+              // console.log(update);
 
               if (data.player_id !== update.player * 1) {
                 if (update.item === "bid") {
@@ -151,8 +151,6 @@
                   // update opponent current bid in data
                   data.opponent.currentBid = update.value;
                   // place opponent card in bid
-                  console.log('opponent hand:');
-                  console.log(handDivs);
                   for (let i = 0; i < handDivs.opponent.length; i++) {
                     if (handDivs.opponent[i].attr("value") === cardValue) {
                       $(handDivs.opponent[i]).prependTo('.bids');
@@ -160,8 +158,9 @@
                       $(handDivs.opponent[i]).addClass('row bid-card');
                     }
                   }
-                  console.log('updated opponent bid');
-                  console.log(data);
+                  console.log('opponent bid: ' + data.opponent.currentBid);
+                  console.log('opponent hand: ' + data.opponent.hand);
+                  // console.log(data);
                 }
               }
             });
@@ -173,11 +172,9 @@
             // when player picks a card
             $(".p1-hand").on('click', function(event) {
               if (data.player.currentBid === "") {
-                console.log(handDivs);
                 // pick a card
                 cardValue = $(event.target.parentNode).attr("value");
                 cardIndex = jQuery.inArray(cardValue * 1, data.player.hand);
-                console.log(cardValue, cardIndex);
 
                 // remove card from hand in data
                 data.player.hand.splice(cardIndex, 1);
@@ -187,7 +184,9 @@
                 $(event.target.parentNode).appendTo('.bids');
                 $(event.target.parentNode).removeClass('cards bot');
                 $(event.target.parentNode).addClass('row bid-card');
-                console.log(data);
+                console.log('player bid: ' + data.player.currentBid);
+                console.log('player hand: ' + data.player.hand);
+                // console.log(data);
 
                 socket.emit('gameUpdate', `{"player": "${data.player_id}", "item": "bid", "value": "${cardValue}" }`);
               }
