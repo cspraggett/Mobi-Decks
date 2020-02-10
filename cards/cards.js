@@ -186,4 +186,4 @@ const compareHands = ((p1, p2, dealer) => {
 // console.log('player2:', player2._hand);
 // console.log('dealer:', dealer._hand);
 
-module.exports = {compareHands, Cards, Player};
+module.exports = {compareHands, Dealer, Cards, Player};

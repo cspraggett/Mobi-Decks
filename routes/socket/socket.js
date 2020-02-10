@@ -1,6 +1,6 @@
 module.exports = function(io) {
 
-  const {compareHands, Cards, Player} = require('../../cards/cards.js');
+  const {compareHands, Cards, Dealer, Player} = require('../../cards/cards.js');
 
   const players = {
     "count": 0,
@@ -9,10 +9,12 @@ module.exports = function(io) {
   };
 
   const game = {
-    dealer: {id: 0, phase: 0, hand: [...Array(13).keys()], heldCard: [], currentCard: "" },
-    player1: {id: 1, hand: [...Array(13).keys()], wonBids: [], socketID: "", currentBid: ""},
-    player2: {id: 2, hand: [...Array(13).keys()], wonBids: [], socketID: "", currentBid: ""}
+    dealer: {_id: 0, _hand: [...Array(13).keys()], _currentCard: "" },
+    player1: {_id: 1, _hand: [...Array(13).keys()], wonBids: [], socketID: "", currentBid: ""},
+    player2: {_id: 2, _hand: [...Array(13).keys()], wonBids: [], socketID: "", currentBid: ""}
   };
+
+  const gameData = {};
 
   // testing information load in
   // const game1 = require('../../db/sampleData.js');
@@ -42,11 +44,14 @@ module.exports = function(io) {
     const startMatch = function() {
       // assign initial values
       const player3 = new Player;
+      const player4 = new Player;
+      const dealer = new Dealer;
       player3.setId(3);
-      console.log(player3);
+      player4.setId(4);
+      gameData.game1 = {phase: 0, player1: player3, player2: player4, dealer};
 
-      io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({ phase: 0, player_id: 1, player: game.player1, opponent: game.player2, dealer: game.dealer }));
-      io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({ phase: 0, player_id: 2, player: game.player2, opponent: game.player1, dealer: game.dealer }));
+      io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({ phase: 0, player_id: 1, player: game.player1, opponent: game.player2, dealer }));
+      io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({ phase: 0, player_id: 2, player: game.player2, opponent: game.player1, dealer }));
     };
 
     // when there are 2 connected players send notification to all and run update function

@@ -43,9 +43,9 @@ $(document).ready(() => {
     });
 
     // display current dealer card
-    const dealerPlay = function(arr) {
-      arr = arr.slice(1);
-      $('.dealer-bid').append($('<img src="/images/cards/2C.png">'));
+    const dealerPlay = function(card) {
+      console.log(card);
+      $('.dealer-bid').append($((cardImage.club[card])));
     }
 
     // place cards at the beginning at the start of a game
@@ -55,10 +55,10 @@ $(document).ready(() => {
           let num = index.toString();
           let playerColor, opponentColor = "";
           // assign preset colors(suits) for each player
-          if (data.player.id === 1) {
+          if (data.player._id === 1) {
             playerColor = "spade";
             opponentColor = "heart";
-          } else if (data.player.id === 2) {
+          } else if (data.player._id === 2) {
             playerColor = "heart";
             opponentColor = "spade";
           }
@@ -78,7 +78,8 @@ $(document).ready(() => {
           spawnCardsWithDelay(index + 1);
         }, 30);
       } else {
-        dealerPlay(data.dealer.hand);
+        console.log(data.dealer);
+        dealerPlay(data.dealer._currentCard);
         data.phase = 1;
         console.log('new gamePhase: phase: ' + data.phase);
       }
@@ -99,7 +100,7 @@ $(document).ready(() => {
         console.log('initialization');
       } else if (data.phase < 14) {
         // at the start of each phase
-        dealerPlay(data.dealer.hand);
+        dealerPlay(data.dealer._currentCard);
       }
     })
 
@@ -113,10 +114,10 @@ $(document).ready(() => {
         if (update.item === "bid") {
           // find location of opponent card that is sent to bid
           cardValue = update.value;
-          cardIndex = jQuery.inArray(cardValue * 1, data.opponent.hand);
+          cardIndex = jQuery.inArray(cardValue * 1, data.opponent._hand);
 
           // remove opponent card from hand in data
-          data.opponent.hand.splice(cardIndex, 1);
+          data.opponent._hand.splice(cardIndex, 1);
           // update opponent current bid in data
           data.opponent.currentBid = update.value;
           // place opponent card in bid
@@ -128,17 +129,17 @@ $(document).ready(() => {
             }
           }
           console.log('opponent bid: ' + data.opponent.currentBid);
-          console.log('opponent hand: ' + data.opponent.hand);
+          console.log('opponent hand: ' + data.opponent._hand);
           // console.log(data);
         }
       } else {
         if (update.item === "bid") {
           // find location of opponent card that is sent to bid
           cardValue = update.value;
-          cardIndex = jQuery.inArray(cardValue * 1, data.player.hand);
+          cardIndex = jQuery.inArray(cardValue * 1, data.player._hand);
 
           // remove opponent card from hand in data
-          data.player.hand.splice(cardIndex, 1);
+          data.player._hand.splice(cardIndex, 1);
           // update opponent current bid in data
           data.player.currentBid = update.value;
           // place opponent card in bid
@@ -150,7 +151,7 @@ $(document).ready(() => {
             }
           }
           console.log('opponent bid: ' + data.player.currentBid);
-          console.log('opponent hand: ' + data.player.hand);
+          console.log('opponent hand: ' + data.player._hand);
           // console.log(data);
         }
       }
