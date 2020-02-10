@@ -119,6 +119,8 @@
 
           // when game phase changing data is received
           socket.on('gamePhase', function(msg) {
+            // $('.bids').empty(); -- set up for future
+
             data = JSON.parse(msg);
             console.log('new gamePhase: phase: ' + data.phase);
 

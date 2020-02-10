@@ -31,10 +31,10 @@ app.use("/styles", sass({
 app.use(express.static("public"));
 
 // Separated Routes for each Resource
-// const usersRoutes = require("./routes/users");
+const usersRoutes = require("./routes/users");
 
 // Mount all resource routes
-// app.use("/api/users", usersRoutes(db));
+app.use("/users", usersRoutes(db));
 
 // Separate them into separate routes files
 app.get("/", (req, res) => {
@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/game", (req, res) => {
-  res.sendFile(__dirname + '/views/game.html');
+  // res.sendFile(__dirname + '/views/game.html');
   res.render("game");
 });
 
