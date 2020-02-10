@@ -10,11 +10,11 @@ module.exports = function(io) {
 
   const game = {
     dealer: {_id: 0, _hand: [...Array(13).keys()], _currentCard: "" },
-    player1: {_id: 1, _hand: [...Array(13).keys()], wonBids: [], socketID: "", currentBid: ""},
-    player2: {_id: 2, _hand: [...Array(13).keys()], wonBids: [], socketID: "", currentBid: ""}
+    player1: {_id: 1, _hand: [...Array(13).keys()], _wonBids: [], _socketID: "", _currentBid: ""},
+    player2: {_id: 2, _hand: [...Array(13).keys()], _wonBids: [], _socketID: "", _currentBid: ""}
   };
 
-  const gameData = {};
+  let gameData = {};
 
   // testing information load in
   // const game1 = require('../../db/sampleData.js');
@@ -37,21 +37,34 @@ module.exports = function(io) {
       const data = JSON.parse(msg);
       console.log(data);
       console.log('updating');
-      io.of('/game').emit('gameUpdate', msg);
+
+      if (data.item === 'bid') {
+        gameData[`player${data.player}`].currentBid = data.value;
+
+        io.of('/game').emit('gameUpdate:bid', msg);
+      }
+
     });
 
     // send each player their own data and send everyone dealer data
     const startMatch = function() {
       // assign initial values
-      const player3 = new Player;
-      const player4 = new Player;
-      const dealer = new Dealer;
-      player3.setId(3);
-      player4.setId(4);
-      gameData.game1 = {phase: 0, player1: player3, player2: player4, dealer};
+      gameData = {
+        phase: 0,
+        player_id: null,
+        player1: new Player,
+        player2: new Player,
+        dealer: new Dealer
+      },
+      gameData.player1.setId(1);
+      gameData.player2.setId(2);
 
-      io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({ phase: 0, player_id: 1, player: game.player1, opponent: game.player2, dealer }));
-      io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({ phase: 0, player_id: 2, player: game.player2, opponent: game.player1, dealer }));
+      io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({
+        phase: 0, player: gameData.player1, opponent: gameData.player2, dealer: gameData.dealer
+      }));
+      io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({
+        phase: 0, player: gameData.player2, opponent: gameData.player1, dealer: gameData.dealer
+      }));
     };
 
     // when there are 2 connected players send notification to all and run update function

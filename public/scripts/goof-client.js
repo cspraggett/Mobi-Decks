@@ -105,12 +105,12 @@ $(document).ready(() => {
     })
 
     // when game update information is received
-    socket.on('gameUpdate', function(msg){
+    socket.on('gameUpdate:bid', function(msg){
     const update = JSON.parse(msg);
     // console.log('update recieved');
     // console.log(update);
 
-      if (data.player_id !== update.player * 1) {
+      if (data.player._id !== update.player * 1) {
         if (update.item === "bid") {
           // find location of opponent card that is sent to bid
           cardValue = update.value;
@@ -119,7 +119,7 @@ $(document).ready(() => {
           // remove opponent card from hand in data
           data.opponent._hand.splice(cardIndex, 1);
           // update opponent current bid in data
-          data.opponent.currentBid = update.value;
+          data.opponent._currentBid = update.value;
           // place opponent card in bid
           for (let i = 0; i < handDivs.opponent.length; i++) {
             if (handDivs.opponent[i].attr("value") === cardValue) {
@@ -128,7 +128,7 @@ $(document).ready(() => {
               $(handDivs.opponent[i]).addClass('row bid-card');
             }
           }
-          console.log('opponent bid: ' + data.opponent.currentBid);
+          console.log('opponent bid: ' + data.opponent._currentBid);
           console.log('opponent hand: ' + data.opponent._hand);
           // console.log(data);
         }
@@ -141,7 +141,7 @@ $(document).ready(() => {
           // remove opponent card from hand in data
           data.player._hand.splice(cardIndex, 1);
           // update opponent current bid in data
-          data.player.currentBid = update.value;
+          data.player._currentBid = update.value;
           // place opponent card in bid
           for (let i = 0; i < handDivs.player.length; i++) {
             if (handDivs.player[i].attr("value") === cardValue) {
@@ -150,7 +150,7 @@ $(document).ready(() => {
               $(handDivs.player[i]).addClass('row bid-card');
             }
           }
-          console.log('opponent bid: ' + data.player.currentBid);
+          console.log('opponent bid: ' + data.player._currentBid);
           console.log('opponent hand: ' + data.player._hand);
           // console.log(data);
         }
@@ -163,7 +163,7 @@ $(document).ready(() => {
 
     // when player picks a card
     $(".p1-hand").on('click', function(event) {
-      if (data.player.currentBid === "") {
+      if (data.player._currentBid === null) {
         // pick a card
         cardValue = $(event.target.parentNode).attr("value");
         // cardIndex = jQuery.inArray(cardValue * 1, data.player.hand);
@@ -171,16 +171,16 @@ $(document).ready(() => {
         // // remove card from hand in data
         // data.player.hand.splice(cardIndex, 1);
         // // update current bid in data
-        // data.player.currentBid = cardValue;
+        // data.player._currentBid = cardValue;
         // // place card div in bid
         // $(event.target.parentNode).appendTo('.bids');
         // $(event.target.parentNode).removeClass('cards bot');
         // $(event.target.parentNode).addClass('row bid-card');
-        // console.log('player bid: ' + data.player.currentBid);
+        // console.log('player bid: ' + data.player._currentBid);
         // console.log('player hand: ' + data.player.hand);
         // // console.log(data);
 
-        socket.emit('gameUpdate', `{"player": "${data.player_id}", "item": "bid", "value": "${cardValue}" }`);
+        socket.emit('gameUpdate', `{"player": "${data.player._id}", "item": "bid", "value": "${cardValue}" }`);
       }
     });
 
