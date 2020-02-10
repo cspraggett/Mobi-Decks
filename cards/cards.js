@@ -13,10 +13,15 @@ class Cards {
 
 class Player {
   constructor() {
+    this._id = null;
     this._hand = this.sethand();
     this._wonBids = [];
     this._socketID = null;
     this._currentBid = null;
+  }
+
+  setId(num) {
+    this._id = num;
   }
 
   sethand() {
@@ -92,31 +97,31 @@ const compareHands = ((p1, p2, dealer) => {
   dealer.updateCurrentCard();
 });
 
-const d = new Dealer();
-console.log(d);
+// const d = new Dealer();
+// console.log(d);
 
-const p1 = new Player();
-p1.shuffle();
-const p2 = new Player();
-p2.shuffle();
-console.log('p1:', p1);
-console.log('p2:', p2);
+// const p1 = new Player();
+// p1.shuffle();
+// const p2 = new Player();
+// p2.shuffle();
+// console.log('p1:', p1);
+// console.log('p2:', p2);
 
-for (let i = 0; i < 13; i++) {
-  p1.currentBid = (p1._hand[0]);
-  p2.currentBid = (p2._hand[0]);
-  console.log(`---hand #${i}---`);
-  console.log('dealer:', d);
-  compareHands(p1, p2, d);
-  console.log('p1:', p1);
-  console.log('p2:', p2);
-  console.log('\n\n-----------------------\n\n');
-}
+// for (let i = 0; i < 13; i++) {
+//   p1.currentBid = (p1._hand[0]);
+//   p2.currentBid = (p2._hand[0]);
+//   console.log(`---hand #${i}---`);
+//   console.log('dealer:', d);
+//   compareHands(p1, p2, d);
+//   console.log('p1:', p1);
+//   console.log('p2:', p2);
+//   console.log('\n\n-----------------------\n\n');
+// }
 
-console.log('---end---');
-console.log('dealer', d);
-console.log('player 1:', p1);
-console.log('player 2', p2);
+// console.log('---end---');
+// console.log('dealer', d);
+// console.log('player 1:', p1);
+// console.log('player 2', p2);
 
 // const shuffle = (arr) => {
 //   for (let i = arr.length - 1; i > 0; i--) {

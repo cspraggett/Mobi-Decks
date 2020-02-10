@@ -1,4 +1,4 @@
-let Data = {};
+let data = {};
 const handDivs = {player: [], opponent: []};
 
 $(document).ready(() => {
@@ -27,10 +27,10 @@ $(document).ready(() => {
 
     // system message: include clear table at start of game
     socket.on('system', function(msg){
-      const data = JSON.parse(msg);
-      console.log('system: ' + data.msg);
+      const text = JSON.parse(msg);
+      console.log('system: ' + text.msg);
 
-      if (data.type === 'start') {
+      if (text.type === 'start') {
         $('.p2-won').empty();
         $('.p2-hand').empty();
         // $('.bid-table').empty();
@@ -131,6 +131,28 @@ $(document).ready(() => {
           console.log('opponent hand: ' + data.opponent.hand);
           // console.log(data);
         }
+      } else {
+        if (update.item === "bid") {
+          // find location of opponent card that is sent to bid
+          cardValue = update.value;
+          cardIndex = jQuery.inArray(cardValue * 1, data.player.hand);
+
+          // remove opponent card from hand in data
+          data.player.hand.splice(cardIndex, 1);
+          // update opponent current bid in data
+          data.player.currentBid = update.value;
+          // place opponent card in bid
+          for (let i = 0; i < handDivs.player.length; i++) {
+            if (handDivs.player[i].attr("value") === cardValue) {
+              $(handDivs.player[i]).appendTo('.bids');
+              $(handDivs.player[i]).removeClass('cards');
+              $(handDivs.player[i]).addClass('row bid-card');
+            }
+          }
+          console.log('opponent bid: ' + data.player.currentBid);
+          console.log('opponent hand: ' + data.player.hand);
+          // console.log(data);
+        }
       }
     })
 
@@ -143,19 +165,19 @@ $(document).ready(() => {
       if (data.player.currentBid === "") {
         // pick a card
         cardValue = $(event.target.parentNode).attr("value");
-        cardIndex = jQuery.inArray(cardValue * 1, data.player.hand);
+        // cardIndex = jQuery.inArray(cardValue * 1, data.player.hand);
 
-        // remove card from hand in data
-        data.player.hand.splice(cardIndex, 1);
-        // update current bid in data
-        data.player.currentBid = cardValue;
-        // place card div in bid
-        $(event.target.parentNode).appendTo('.bids');
-        $(event.target.parentNode).removeClass('cards bot');
-        $(event.target.parentNode).addClass('row bid-card');
-        console.log('player bid: ' + data.player.currentBid);
-        console.log('player hand: ' + data.player.hand);
-        // console.log(data);
+        // // remove card from hand in data
+        // data.player.hand.splice(cardIndex, 1);
+        // // update current bid in data
+        // data.player.currentBid = cardValue;
+        // // place card div in bid
+        // $(event.target.parentNode).appendTo('.bids');
+        // $(event.target.parentNode).removeClass('cards bot');
+        // $(event.target.parentNode).addClass('row bid-card');
+        // console.log('player bid: ' + data.player.currentBid);
+        // console.log('player hand: ' + data.player.hand);
+        // // console.log(data);
 
         socket.emit('gameUpdate', `{"player": "${data.player_id}", "item": "bid", "value": "${cardValue}" }`);
       }

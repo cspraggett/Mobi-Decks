@@ -1,5 +1,7 @@
 module.exports = function(io) {
 
+  const {compareHands, Cards, Player} = require('../../cards/cards.js');
+
   const players = {
     "count": 0,
     "player1": null,
@@ -8,8 +10,8 @@ module.exports = function(io) {
 
   const game = {
     dealer: {id: 0, phase: 0, hand: [...Array(13).keys()], heldCard: [], currentCard: "" },
-    player1: {id: 1, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""},
-    player2: {id: 2, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""}
+    player1: {id: 1, hand: [...Array(13).keys()], wonBids: [], socketID: "", currentBid: ""},
+    player2: {id: 2, hand: [...Array(13).keys()], wonBids: [], socketID: "", currentBid: ""}
   };
 
   // testing information load in
@@ -38,7 +40,11 @@ module.exports = function(io) {
 
     // send each player their own data and send everyone dealer data
     const startMatch = function() {
-      // io.of('/game').emit('gameInfo', JSON.stringify({ phase: 0, player1: game.player1, player2: game.player2, dealer: game.dealer }));
+      // assign initial values
+      const player3 = new Player;
+      player3.setId(3);
+      console.log(player3);
+
       io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({ phase: 0, player_id: 1, player: game.player1, opponent: game.player2, dealer: game.dealer }));
       io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({ phase: 0, player_id: 2, player: game.player2, opponent: game.player1, dealer: game.dealer }));
     };
