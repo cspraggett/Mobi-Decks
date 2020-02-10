@@ -1,5 +1,7 @@
 module.exports = function(io) {
 
+  const {compareHands, Cards, Dealer, Player} = require('../../cards/cards.js');
+
   const players = {
     "count": 0,
     "player1": null,
@@ -7,10 +9,12 @@ module.exports = function(io) {
   };
 
   const game = {
-    dealer: {id: 0, phase: 0, hand: [...Array(13).keys()], heldCard: [], currentCard: "" },
-    player1: {id: 1, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""},
-    player2: {id: 2, hand: [...Array(13).keys()], wonBids: [], score: 0, socketID: "", currentBid: ""}
+    dealer: {_id: 0, _hand: [...Array(13).keys()], _currentCard: "" },
+    player1: {_id: 1, _hand: [...Array(13).keys()], _wonBids: [], _socketID: "", _currentBid: ""},
+    player2: {_id: 2, _hand: [...Array(13).keys()], _wonBids: [], _socketID: "", _currentBid: ""}
   };
+
+  let gameData = {};
 
   // testing information load in
   // const game1 = require('../../db/sampleData.js');
@@ -31,16 +35,71 @@ module.exports = function(io) {
 
     socket.on('gameUpdate', (msg) => {
       const data = JSON.parse(msg);
-      console.log(data);
-      console.log('updating');
-      io.of('/game').emit('gameUpdate', msg);
+      // console.log(data);
+      // console.log('updating');
+
+      if (data.item === 'bid') {
+        let currentPlayer = `player${data.player}`;
+        gameData[currentPlayer].currentBid = parseInt(data.value);
+        // verifyBid to be implemented
+
+        io.of('/game').emit('gameUpdate:bid', msg);
+        if (gameData.player1.currentBid !== null & gameData.player2.currentBid !== null) {
+          compareHands(gameData.player1, gameData.player2, gameData.dealer);
+          gameData.player1.currentBid = null;
+          gameData.player2.currentBid = null;
+          console.log('--------------------');
+          console.log(gameData);
+          console.log(gameData.player1.score);
+
+          gameData.phase += 1;
+          io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({
+            phase: gameData.phase,
+            ready: false,
+            pScore: gameData.player1.score,
+            oScore: gameData.player2.score,
+            player: gameData.player1,
+            opponent: gameData.player2,
+            dealer: gameData.dealer
+          }));
+          io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({
+            phase: gameData.phase,
+            ready: false,
+            pScore: gameData.player2.score,
+            oScore: gameData.player1.score,
+            player: gameData.player2,
+            opponent: gameData.player1,
+            dealer: gameData.dealer
+          }));
+          if (gameData.phase === 14) {
+            //victory effect here;
+          }
+        }
+      }
+
     });
 
     // send each player their own data and send everyone dealer data
     const startMatch = function() {
-      // io.of('/game').emit('gameInfo', JSON.stringify({ phase: 0, player1: game.player1, player2: game.player2, dealer: game.dealer }));
-      io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({ phase: 0, player_id: 1, player: game.player1, opponent: game.player2, dealer: game.dealer }));
-      io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({ phase: 0, player_id: 2, player: game.player2, opponent: game.player1, dealer: game.dealer }));
+      // assign initial values
+      gameData = {
+        phase: 0,
+        player_id: null,
+        player1: new Player,
+        player2: new Player,
+        dealer: new Dealer
+      },
+      gameData.player1.setId(1);
+      gameData.player2.setId(2);
+
+      io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({
+        phase: 0, player: gameData.player1, opponent: gameData.player2, dealer: gameData.dealer
+      }));
+      io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({
+        phase: 0, player: gameData.player2, opponent: gameData.player1, dealer: gameData.dealer
+      }));
+
+      gameData.phase = 1;
     };
 
     // when there are 2 connected players send notification to all and run update function

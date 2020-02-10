@@ -137,6 +137,16 @@ const compareHands = ((player1, player2, dealer) => {
 
 // }
 
+<<<<<<< HEAD
+=======
+const compareHands = ((p1, p2, dealer) => {
+  console.log(p1.currentBid > p2.currentBid);
+  p1.currentBid > p2.currentBid ? p1.addToWonBids(dealer.currentCard) : p2.currentBid > p1.currentBid ? p2.addToWonBids(dealer.currentCard) : undefined;
+  p1.updateHand();
+  p2.updateHand();
+  dealer.updateCurrentCard();
+});
+>>>>>>> 5152a077184a254a61d219287a0d25f1612751c0
 
 const deck = new Deck(52);
 const dealer = new GoofDealer(deck);
@@ -151,7 +161,12 @@ console.log(player1);
 console.log(player2);
 console.log(deck._deck.length);
 
+<<<<<<< HEAD
 
+=======
+// const d = new Dealer();
+// console.log(d);
+>>>>>>> 5152a077184a254a61d219287a0d25f1612751c0
 
 // const p1 = new Player();
 // p1.shuffle();
