@@ -16,8 +16,10 @@ class game {
   constructor() {
     this.deck = new Deck(52);
     this.deck.shuffle();
-    this.player1 = new CrazyPlayer(this.deck);
-    this.player2 = new CrazyPlayer(this.deck);
+    this.players = [];
+    players[0] = new CrazyPlayer(this.deck);
+    players[1] = new CrazyPlayer(this.deck);
+    // this.player2 = new CrazyPlayer(this.deck);
     this.currentPlayer = 0;
     this.faceUpCard = this.deck.deal(1);
   }
@@ -105,6 +107,14 @@ class game {
     return cards.map(curr => this.translateCard(curr));
   }
 
+  makeMove(player, card) {
+    if (this.checkIfCardValid(card)) {
+      if (this.translateCard(card).value === '2') {
+        this.pickUp2(this.players[(player + 1) % 2]);
+      }
+    }
+  }
+
 }
 const g = new game();
 
@@ -112,7 +122,7 @@ console.log(g.showCards(g.player1._hand));
 g.pickUp2(g.player1);
 console.log(g.showCards(g.player1._hand));
 // console.log(g.showCards(g.player1._hand));
-// console.log(g.showCards(g.deck._deck));
+console.log(g.showCards(g.deck._deck));
 
 // console.log(g);
 
