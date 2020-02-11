@@ -32,22 +32,24 @@ app.use(express.static("public"));
 
 // Separated Routes for each Resource
 const usersRoutes = require("./routes/users");
+const goofRoutes = require("./routes/goof");
 
 // Mount all resource routes
 app.use("/users", usersRoutes(db));
+app.use("/goof", goofRoutes(db));
 
 // Separate them into separate routes files
 app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/login", (req, res) => {
-  res.render("login");
-});
+// app.get("/login", (req, res) => { * moved to routes/users.js: use "/users/login"
+//   res.render("login");
+// });
 
-app.get("/register", (req, res) => {
-  res.render("register");
-});
+// app.get("/register", (req, res) => {
+//   res.render("register");
+// });
 
 app.get("/game", (req, res) => {
   // res.sendFile(__dirname + '/views/game.html');
