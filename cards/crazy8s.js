@@ -16,8 +16,18 @@ class game {
   constructor() {
     this.deck = new Deck(52);
     this.deck.shuffle();
+    this.player1 = new CrazyPlayer(this.deck);
+    this.player2 = new CrazyPlayer(this.deck);
     this.currentPlayer = 0;
-    this.faceUpCard = null;
+    this.faceUpCard = this.deck.deal(1);
+  }
+
+  // set faceUpCard() {
+  //   this.faceUpCard = card;
+  // }
+
+  addToDeck() {
+    this.deck.push(this.faceUpCard);
   }
 
   translateCard(card) {
@@ -91,27 +101,41 @@ class game {
     player.recieveCards(this.deck.deal(2));
   }
 
+  showCards(cards) {
+    return cards.map(curr => this.translateCard(curr));
+  }
 
 }
-const dealer = new game();
-console.log(dealer);
-console.log(dealer.deck._deck.length);
+const g = new game();
 
-const player1 = new CrazyPlayer(dealer
-  .deck);
-const player2 = new CrazyPlayer(dealer
-  .deck);
+console.log(g.showCards(g.player1._hand));
+g.pickUp2(g.player1);
+console.log(g.showCards(g.player1._hand));
+// console.log(g.showCards(g.player1._hand));
+// console.log(g.showCards(g.deck._deck));
 
-console.log(player1);
-console.log(player2);
-console.log(dealer);
-console.log(dealer.deck._deck.length);
-dealer.pickUp2(player1);
-console.log(player1);
-console.log(dealer);
-console.log(dealer.deck._deck.length);
+// console.log(g);
 
-for (let i = 0; i < player1._hand.length; i++) {
-  console.log(dealer.translateCard(player1._hand[i]));
-}
+// g.pickUp2(g.player1);
 
+// console.log(g);
+// console.log(dealer);
+// console.log(dealer.deck._deck.length);
+
+// const player1 = new CrazyPlayer(dealer
+//   .deck);
+// const player2 = new CrazyPlayer(dealer
+//   .deck);
+
+// console.log(player1);
+// console.log(player2);
+// console.log(dealer);
+// console.log(dealer.deck._deck.length);
+// dealer.pickUp2(player1);
+// console.log(player1);
+// console.log(dealer);
+// console.log(dealer.deck._deck.length);
+
+// for (let i = 0; i < player1._hand.length; i++) {
+//   console.log(dealer.translateCard(player1._hand[i]));
+// }
