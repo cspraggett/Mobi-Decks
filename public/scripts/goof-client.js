@@ -68,8 +68,14 @@ $(document).ready(() => {
           let innerDivTop = $(`<div class="cards">`).append($(cardImage[opponentColor][num]));
           let innerDivBot = $(`<div class="cards bot">`).append($(cardImage[playerColor][num]));
           // this assigns a hidden value to div that holds imgs, required to track specific card in handDivs
-          $(innerDivTop).attr({ value: num });
-          $(innerDivBot).attr({ value: num });
+          $(innerDivTop).attr({
+            value: num ,
+            style: `z-index: ${num}`
+          });
+          $(innerDivBot).attr({
+            value: num,
+            style: `z-index: ${num}`
+          });
           // push newly made divs(cards) into handDivs, array that holds divs equal to hand cards
           handDivs.opponent.push(innerDivTop);
           handDivs.player.push(innerDivBot);
