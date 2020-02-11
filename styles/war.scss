@@ -1,0 +1,284 @@
+.board {
+  height: 100vh;
+  padding: 1.5em 1em;
+  background-color: #EE3E40;
+}
+
+// Modal
+.pop-up {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  animation: fadeBG 2s ease forwards;
+  background-color: #17020287;
+}
+@keyframes fadeBG {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+.pop-up h1 {
+  color: #171718;
+}
+
+.pop-up .card {
+  border: none;
+  border-radius: 1em;
+  padding-bottom: 1em;
+  animation: fadeIn 1s ease forwards;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  to {
+    opacity: 100%;
+    transform: translateY(0px);
+  }
+}
+
+.pop-up .card img {
+  width: 20vw;
+  max-width: 120px;
+  margin: 2vh 0 3vh;
+}
+
+
+.pop-up .card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20vw;
+  min-width: 300px;
+  text-align: center;
+}
+
+.pop-up .card-body button {
+  margin-bottom: 0.4em;
+}
+
+// P2 Table
+.p2-won {
+  height: 5vh;
+  justify-content: center;
+}
+
+.p2-won img {
+  width: 16vw;
+}
+
+.p2-cards-won {
+  width: 16vw;
+  margin-left: -5.4em;
+  margin-top: -9.7em;
+}
+
+.p2-deck {
+  height: 20vh;
+  justify-content: center;
+  align-items: flex-end;
+  margin-top: 5vh;
+}
+
+.cards {
+  width: 15vw;
+  margin-left: -5.4em;
+}
+
+.top:hover {
+  position: relative;
+  top: 10px;
+}
+
+.bot:hover {
+  position: relative;
+  top: -10px;
+}
+
+.p2-deck img {
+  // width: 100%;
+  width: 8vw;
+}
+
+.centering {
+  width: 8vw;
+  height: 9vh;
+}
+
+
+
+// Bidding table
+.bid-table {
+  height: 50vh;
+  align-content: center;
+  align-items: center;
+}
+
+.draws img {
+  width: 15vw;
+}
+
+// User Side
+
+.user-scores {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-scores img {
+  width: 9vw;
+  margin-left: 3vw;
+  margin-top: 2vw;
+}
+
+.user-scores p {
+  font-size: 1.5em;
+}
+
+.p2-score {
+  width: 2.5vw;
+}
+
+.p1-score {
+  width: 2.5vw;
+}
+
+// Bidding Side
+.draw-card {
+  justify-content: center;
+  margin: 1vh 0;
+}
+
+// Pile Side
+.pile-side {
+  display: flex;
+  align-items: center;
+}
+
+.pile-counter {
+  position: absolute;
+  width: 8vw;
+  text-align: center;
+  font-size: 2em;
+}
+
+.pile-side img {
+  width: 8vw;
+  text-align: center;
+}
+
+
+
+
+
+// P1 Table
+
+.p1-deck {
+  height: 20vh;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.p1-deck img {
+  // width: 100%;
+  width: 8vw;
+}
+
+.p1-won {
+  height: 5vh;
+  justify-content: center;
+}
+
+.p1-won img {
+  width: 16vw;
+}
+
+.p1-cards-won {
+  width: 16vw;
+  margin-left: -5.4em;
+}
+
+@media only screen and (max-width: 768px) {
+  .cards {
+    width: 12vw;
+    margin-left: -1.6em;
+  }
+
+  .user-scores img {
+    margin-left: 7vw;
+  }
+
+  .user-scores p {
+    font-size: 1em;
+  }
+
+  .p2-deck img {
+    width: 16vw;
+  }
+
+  .p1-deck img {
+    width: 16vw;
+  }
+
+  .pile-side img {
+    width: 15vw;
+  }
+
+  .pile-counter {
+    width: 15vw;
+  }
+
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 768px)  {
+  .draws img {
+    width: 8vw;
+  }
+}
+
+
+@media only screen and (min-width: 1024px) {
+  .bid-table {
+    height: 40vh;
+  }
+
+  .p2-deck {
+    height: 25vh;
+  }
+
+  .user-scores img {
+    width: 5vw;
+  }
+
+  .user-scores .row {
+    justify-content: flex-end;
+  }
+
+  .draws img {
+    width: 6vw;
+  }
+
+  .p1-deck {
+    height: 25vh;
+  }
+
+  .cards {
+    width: 5.5vw;
+    margin-left: -1.5em
+  }
+
+  .dealer-bid img {
+    width: 6vw;
+  }
+
+}
