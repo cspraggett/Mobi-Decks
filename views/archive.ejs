@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
     <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
     <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/game.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/archive.css" type="text/css" />
     <link rel="stylesheet" href="/styles/header.css" type="text/css" />
     <link rel="stylesheet" href="/styles/index.css" type="text/css" />
 
@@ -37,30 +37,40 @@
   <body>
     <%- include('./partials/_header'); -%>
 
-
-    <div class="game container">
-      <div class="game card">
-        <a href='/game'>
-          <div class="card-body">
-            <h1 class="card-title">Goofyspiel</h1>
-            <img src='/images/graphics/face.png' />
-            <p class="card-text">Play a quick game of Goofyspiel with a random player or your friend.</p>
-          </div>
-        </a>
-    </div>
-
-    <div class="game card">
-      <a href='/game'>
-        <div class="card-body">
-          <h1 class="card-title">War</h1>
-          <img src='/images/graphics/battle.png' />
-          <p class="card-text">Play a quick game of War with a random player or your friend.</p>
-        </div>
-      </a>
-    </div>
-
-
-
+    <div class='container archive'>
+      <div class='card archive-container'>
+        <h1>Archive</h1>
+        <table class="table archive-box">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Opponent</th>
+              <th scope="col">Game</th>
+              <th scope="col">Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>Jumpin James</td>
+              <td>Goofyspiel</td>
+              <td>Win</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>Charred Chris</td>
+              <td>War</td>
+              <td>Lose</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Codename Christo</td>
+              <td>Goofyspiel</td>
+              <td>Win</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
   </body>
