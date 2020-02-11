@@ -26,10 +26,15 @@ module.exports = (db) => {
     res.render("error");
   });
 
-  app.get("/goof/:room_id", (req, res) => {
+  router.get("/:room_id", (req, res) => {
     res.render("game", {
-      room_id: req.params.num
+      room_id: req.params.room_id
     });
+  });
+
+  router.post("/new", (req, res) => {
+    const newRoomUrl = generateRandomString(10);
+    res.redirect(`/goof/${newRoomUrl}`);
   });
 
   return router;

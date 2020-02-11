@@ -30,11 +30,11 @@ module.exports = (db) => {
     res.render("error");
   });
 
-  app.get("/login", (req, res) => {
+  router.get("/login", (req, res) => {
     res.render("login");
   });
 
-  app.get("/register", (req, res) => {
+  router.get("/register", (req, res) => {
     res.render("register");
   });
 

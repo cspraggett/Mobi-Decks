@@ -32,7 +32,7 @@ app.use(express.static("public"));
 
 // Separated Routes for each Resource
 const usersRoutes = require("./routes/users");
-const goofRoutes = require("./goof/users");
+const goofRoutes = require("./routes/goof");
 
 // Mount all resource routes
 app.use("/users", usersRoutes(db));
