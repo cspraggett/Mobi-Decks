@@ -1,4 +1,4 @@
-.card {
+.game .card {
   width: 18rem;
   height: 55vh;
   margin: 2vw;
@@ -7,15 +7,20 @@
   transition: box-shadow 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
 }
 
-.card p {
+.game .card:hover {
+  box-shadow: 10px 10px rgb(165, 36, 38);
+  transform: translate(-0.5em,-0.5em);
+}
+
+.game .card p {
   line-height: 1.2em;
 }
 
-.card h1 {
+.game .card h1 {
   text-align: center;
 }
 
-.card img {
+.game .card img {
   width: 20vw;
   max-width: 120px;
   margin: 2vh 0 6vh;
@@ -25,10 +30,6 @@
   text-align: center;
 }
 
-.card:hover {
-  box-shadow: 10px 10px rgb(165, 36, 38);
-  transform: translate(-0.5em,-0.5em);
-}
 
 a {
   color: #181819;
