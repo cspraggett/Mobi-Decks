@@ -32,28 +32,6 @@ class Deck {
 class Player {
   constructor(deckObject, numOfCards) {
     this._hand = deckObject.deal(numOfCards);
-    //this.id = '';
-  }
-  get id() {
-    return this.id;
-  }
-  // set id(id) {
-  //   this.id = id;
-  // }
-}
-
-
-  deal(numCards) {
-    const ret = this._deck.slice(0, numCards);
-    this._deck.splice(0, numCards);
-    return ret;
-  }
-
-}
-
-class Player {
-  constructor(deckObject, numOfCards) {
-    this._hand = deckObject.deal(numOfCards);
     this._id = '';
   }
   get id() {
