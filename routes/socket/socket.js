@@ -1,6 +1,6 @@
 module.exports = function(io) {
 
-  const {compareHands, Cards, Dealer, Player} = require('../../cards/cards.js');
+  const {compareHands, Deck, GoofDealer, GoofPlayer} = require('../../cards/cards.js');
 
   const players = {
     "count": 0,
@@ -48,9 +48,6 @@ module.exports = function(io) {
           compareHands(gameData.player1, gameData.player2, gameData.dealer);
           gameData.player1.currentBid = null;
           gameData.player2.currentBid = null;
-          console.log('--------------------');
-          console.log(gameData);
-          console.log(gameData.player1.score);
 
           gameData.phase += 1;
           io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({
@@ -82,21 +79,34 @@ module.exports = function(io) {
     // send each player their own data and send everyone dealer data
     const startMatch = function() {
       // assign initial values
+      const deck = new Deck(52);
       gameData = {
         phase: 0,
         player_id: null,
-        player1: new Player,
-        player2: new Player,
-        dealer: new Dealer
+        player1: new GoofPlayer(deck),
+        player2: new GoofPlayer(deck),
+        dealer: new GoofDealer(deck)
       },
       gameData.player1.setId(1);
       gameData.player2.setId(2);
 
       io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({
-        phase: 0, player: gameData.player1, opponent: gameData.player2, dealer: gameData.dealer
+        phase: gameData.phase,
+        ready: false,
+        pScore: gameData.player1.score,
+        oScore: gameData.player2.score,
+        player: gameData.player1,
+        opponent: gameData.player2,
+        dealer: gameData.dealer
       }));
       io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({
-        phase: 0, player: gameData.player2, opponent: gameData.player1, dealer: gameData.dealer
+        phase: gameData.phase,
+        ready: false,
+        pScore: gameData.player2.score,
+        oScore: gameData.player1.score,
+        player: gameData.player2,
+        opponent: gameData.player1,
+        dealer: gameData.dealer
       }));
 
       gameData.phase = 1;
