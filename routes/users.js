@@ -38,5 +38,9 @@ module.exports = (db) => {
     res.render("register");
   });
 
+  router.get("/war", (req, res) => {
+    res.render("war");
+  });
+
   return router;
 };

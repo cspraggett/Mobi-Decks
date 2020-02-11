@@ -56,6 +56,18 @@ app.get("/game", (req, res) => {
   res.render("game");
 });
 
+app.get("/war", (req, res) => {
+  res.render("war");
+});
+
+app.get("/archive", (req, res) => {
+  res.render("archive");
+});
+
+app.get("/leaderboard", (req, res) => {
+  res.render("leaderboard");
+});
+
 require('./routes/socket/socket.js')(io);
 
 http.listen(PORT, () => {

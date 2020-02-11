@@ -1,0 +1,32 @@
+.archive {
+  display: flex;
+  justify-content: center;
+  padding-top: 13vh;
+  color: black;
+}
+
+.archive-container {
+  text-align: center;
+  padding: 1em;
+  border-radius: 1em;
+}
+
+.archive-box {
+  background-color: white;
+  border-radius: 1em;
+  width: 50vw;
+}
+
+.game-toggle {
+  padding-bottom: 1vh;
+}
+
+.game-toggle img {
+  width: 4vw;
+  margin: 0 0.5vw;
+  transition: transform 0.5s ease;
+}
+
+.game-toggle img:hover {
+  transform: scale(1.2, 1.2);
+}
