@@ -14,20 +14,81 @@ module.exports = function(io) {
     player2: {_id: 2, _hand: [...Array(13).keys()], _wonBids: [], _socketID: "", _currentBid: ""}
   };
 
+  const goofServer = {
+    rooms: {
+      sample: {
+        "id": 0,
+        "count": 0,
+        "player1": null,
+        "player2": null
+      }
+    },
+    players: {
+      'name' : [
+        'room_id',
+        'room_id',
+        'room_id'
+      ]
+    }
+  };
+
   let gameData = {};
 
   // testing information load in
   // const game1 = require('../../db/sampleData.js');
   // console.log(game1);
 
-  io.of("/game").on('connection', function(socket){
+  // 1. when joining server, add player info
+  io.of("/game").on('connection', function(socket) {
+    if (!goofServer.players[socket.id]) {
+      goofServer.players[socket.id] = [];
+    }
+
+
+    // 2. receive room name
+    socket.on('join', (room_id) => {
+      console.log('join received');
+
+      // 3. check if player is already in this room
+      if (goofServer.players[socket.id].includes(room_id)) {
+        // leave
+      // 4. if there is empty slot join
+      } else {
+        if (!goofServer.rooms[room_id]) {
+          goofServer.rooms[room_id] = {
+            "id": 0,
+            "count": 0,
+            "player1": null,
+            "player2": null
+          }
+        }
+        for (const slot in goofServer.rooms[room_id]) {
+          if (goofServer.rooms[slot] === null) {
+            goofServer.rooms[slot] = socket;
+            goofServer.players[socket.id].push(room_id);
+          }
+        }
+
+        // if no empty slot, leave
+        if (goofServer.players[socket.id].includes(room_id)) {
+          // leave
+        }
+      console.log('this is goofServer:\n', goofServer);
+      }
+
+
+
+    })
+
+
+
     // assign player # and socket id to newly connected socket
     for (const player in players) {
       if (players[player] === null) {
         players[player] = socket.id;
         players.count += 1;
-        console.log('new connection');
-        console.log(players);
+        // console.log('new connection');
+        // console.log(players);
         socket.emit('system', `{ "type": "announcement", "msg": "you are ${player}!" }`);
         break;
       }
@@ -136,8 +197,8 @@ module.exports = function(io) {
         if (players[player] === socket.id) {
           players[player] = null;
           players.count -= 1;
-          console.log('lost connection');
-          console.log(players);
+          // console.log('lost connection');
+          // console.log(players);
           break;
         }
       }
