@@ -38,8 +38,8 @@ $(document).ready(() => {
         $('.dealer-bid').empty();
         $('.p1-hand').empty();
         $('.p1-won').empty();
-        $('.p2score').text(0);
-        $('.p1score').text(0);
+        $('.p2-score').text(0);
+        $('.p1-score').text(0);
       }
 
     });
@@ -102,8 +102,8 @@ $(document).ready(() => {
         setTimeout(() => {
           $('.bids').empty();
           $('.dealer-bid').empty();
-          $('.p2score').text(data.oScore);
-          $('.p1score').text(data.pScore);
+          $('.p2-score').text(data.oScore);
+          $('.p1-score').text(data.pScore);
           dealerPlay(data.dealer._hand[0]);
         }, 1000);
       } else if (data.phase === 14) {

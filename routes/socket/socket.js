@@ -87,8 +87,8 @@ module.exports = function(io) {
         player2: new GoofPlayer(deck),
         dealer: new GoofDealer(deck)
       },
-      gameData.player1.setId(1);
-      gameData.player2.setId(2);
+      gameData.player1._id = 1;
+      gameData.player2._id = 2;
 
       io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({
         phase: gameData.phase,
