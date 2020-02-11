@@ -13,13 +13,53 @@
   justify-content: center;
   align-items: center;
   z-index: 1;
+  animation: fadeBG 2s ease forwards;
   background-color: #17020287;
 }
+@keyframes fadeBG {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100%;
+  }
+}
 
-.card img {
+.pop-up .card {
+  border: none;
+  border-radius: 1em;
+  padding-bottom: 1em;
+  animation: fadeIn 1s ease forwards;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  to {
+    opacity: 100%;
+    transform: translateY(0px);
+  }
+}
+
+.pop-up .card img {
   width: 20vw;
   max-width: 120px;
-  margin: 2vh 0 6vh;
+  margin: 2vh 0 3vh;
+}
+
+
+.pop-up .card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40vw;
+  min-width: 300px;
+  text-align: center;
+}
+
+.pop-up .card-body button {
+  margin-bottom: 0.4em;
 }
 
 // P2 Table
@@ -40,6 +80,7 @@
 
 .p2-hand {
   height: 20vh;
+  padding-left: 10vw;
   justify-content: center;
   align-items: flex-end;
   margin-top: 4vh;
@@ -61,7 +102,8 @@
 }
 
 .p2-hand img {
-  width: 100%;
+  // width: 100%;
+  width: 8vw;
 }
 
 .centering {
@@ -94,6 +136,14 @@
   font-size: 1.5em;
 }
 
+.p2-score {
+  width: 2.5vw;
+}
+
+.p1-score {
+  width: 2.5vw;
+}
+
 // Bidding Side
 .bid-card {
   justify-content: center;
@@ -118,12 +168,14 @@
 
 .p1-hand {
   height: 20vh;
+  padding-left: 10vw;
   justify-content: center;
   align-items: flex-start;
 }
 
 .p1-hand img {
-  width: 100%;
+  // width: 100%;
+  width: 8vw;
 }
 
 .p1-won {
@@ -140,7 +192,20 @@
   margin-left: -5.4em;
 }
 
+@media only screen and (max-width: 600px) {
+  .cards {
+    width: 12vw;
+    margin-left: -1.6em;
+  }
 
+  .user-scores img {
+    margin-left: 7vw;
+  }
+
+  .user-scores p {
+    font-size: 1em;
+  }
+}
 
 @media only screen and (min-width: 1024px) {
   .bid-table {
@@ -149,6 +214,7 @@
 
   .p2-hand {
     height: 25vh;
+    padding-left: 0;
   }
 
   .user-scores img {
@@ -165,10 +231,12 @@
 
   .p1-hand {
     height: 25vh;
+    padding-left: 0;
   }
 
   .cards {
     width: 5.5vw;
+    margin-left: -1.5em
   }
 
   .dealer-bid img {

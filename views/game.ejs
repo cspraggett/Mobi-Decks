@@ -37,12 +37,26 @@
   <body>
     <%- include('./partials/_header'); -%>
 
+    <!-- Winner pop-up -->
     <!-- <div class='pop-up'>
       <div class="card">
         <div class="card-body">
           <h1 class="card-title">You Won!</h1>
           <img src='/images/graphics/face.png' />
           <button type="submit" class="btn btn-danger">Play Again</button>
+          <a href='/' type="submit" class="btn btn-danger">Go Back</a>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- Loser pop-up -->
+    <!-- <div class='pop-up'>
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title">You Lost!</h1>
+          <img src='/images/graphics/sad.png' />
+          <button type="submit" class="btn btn-danger">Play Again</button>
+          <a href='/' type="submit" class="btn btn-danger">Go Back</a>
         </div>
       </div>
     </div> -->
@@ -76,11 +90,15 @@
         <div class='col user-scores'>
           <div class='row'>
             <img src='/images/avatars/avatar.png' />
-            <p>10</p>
+            <div class='p2-score'>
+              <p>10</p>
+            </div>
           </div>
           <div class='row'>
             <img src='/images/avatars/avatar2.png' />
-            <p>10</p>
+            <div class='p1-score'>
+              <p>10</p>
+            </div>
           </div>
         </div>
 
