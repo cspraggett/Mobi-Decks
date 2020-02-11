@@ -11,7 +11,7 @@ const PORT       = process.env.PORT || 8080;
 
 const bodyParser = require("body-parser");
 const sass       = require("node-sass-middleware");
-const morgan     = require('morgan');
+// const morgan     = require('morgan');
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -56,7 +56,6 @@ app.get("/game", (req, res) => {
   res.render("game");
 });
 
-<<<<<<< 0ecb5a0da43a10486c36eac263ba5098d17183af
 app.get("/war", (req, res) => {
   res.render("war");
 });
@@ -67,10 +66,10 @@ app.get("/archive", (req, res) => {
 
 app.get("/leaderboard", (req, res) => {
   res.render("leaderboard");
-=======
+});
+
 app.get("/game2/:random", (req, res) => {
   res.render("newSocket");
->>>>>>> reworking on socket rooms
 });
 
 require('./routes/socket/socket.js')(io);

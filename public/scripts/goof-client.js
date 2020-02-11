@@ -15,48 +15,6 @@ $(function () {
     socket.emit('join', room_id);
   })
 
-<<<<<<< 0ecb5a0da43a10486c36eac263ba5098d17183af
-    // place cards at the beginning at the start of a game
-    const spawnCardsWithDelay = function(index) {
-      if (index < 13) {
-        setTimeout(() => {
-          let num = index.toString();
-          let playerColor, opponentColor = "";
-          // assign preset colors(suits) for each player
-          if (data.player._id === 1) {
-            playerColor = "spade";
-            opponentColor = "heart";
-          } else if (data.player._id === 2) {
-            playerColor = "heart";
-            opponentColor = "spade";
-          }
-          // make new divs and place image inside
-          let innerDivTop = $(`<div class="cards">`).append($(cardImage[opponentColor][num]));
-          let innerDivBot = $(`<div class="cards bot">`).append($(cardImage[playerColor][num]));
-          // this assigns a hidden value to div that holds imgs, required to track specific card in handDivs
-          $(innerDivTop).attr({
-            value: num ,
-            style: `z-index: ${num}`
-          });
-          $(innerDivBot).attr({
-            value: num,
-            style: `z-index: ${num}`
-          });
-          // push newly made divs(cards) into handDivs, array that holds divs equal to hand cards
-          handDivs.opponent.push(innerDivTop);
-          handDivs.player.push(innerDivBot);
-          // append newly made divs to appropriate div in html
-          $(".p2-hand").append($(innerDivTop));
-          $(".p1-hand").append($(innerDivBot));
-
-          spawnCardsWithDelay(index + 1);
-        }, 30);
-      } else {
-        dealerPlay(data.dealer._hand[0]);
-        data.phase = 1;
-        console.log('new gamePhase: phase: ' + data.phase);
-      }
-=======
   // system message: include clear table at start of game
   socket.on('system', function(msg){
     const text = JSON.parse(msg);
@@ -72,7 +30,6 @@ $(function () {
       $('.p1-won').empty();
       $('.p2-score').text(0);
       $('.p1-score').text(0);
->>>>>>> reworking on socket rooms
     }
 
   });
@@ -207,5 +164,5 @@ $(function () {
     }
   });
 
-})
+});
 
