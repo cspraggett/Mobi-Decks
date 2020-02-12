@@ -91,14 +91,21 @@
   margin-left: -5.4em;
 }
 
+.top {
+  transition: transform 0.5s ease;
+}
+
+.bot {
+  transition: transform 0.5s ease;
+}
+
+
 .top:hover {
-  position: relative;
-  top: 10px;
+  transform: translateY(-15px);
 }
 
 .bot:hover {
-  position: relative;
-  top: -10px;
+  transform: translateY(-15px);
 }
 
 .p2-hand img {
