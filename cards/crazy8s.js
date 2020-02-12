@@ -31,7 +31,7 @@ class game {
   }
 
   changeFaceUpCard(card) {
-    this.faceUpCard.shift(card);
+    this.faceUpCard.unshift(card);
   }
 
   addToDeck() {
@@ -128,9 +128,20 @@ class game {
     player.recieveCards(this.deck.deal(num));
   }
 
+  moveFaceUpToDeck() {
+    this.deck = this.faceUpCard.filter(value => this.faceUpCard[0] !== value);
+  }
+
   makeMove(frontEndObject) {
+    if (this.deck._deck.length === 0) {
+      this.moveFaceUpToDeck();
+    }
     if (frontEndObject.pickUp) {
       this.takeTopCard(this.players[frontEndObject.player]);
+      if (!this.checkIfMove(this.players[frontEndObject[player]])) {
+        this.currentPlayer = ((frontEndObject.player + 1) % 2);
+        return;
+      }
     }
     if (this.checkIfCardValid(frontEndObject.cards[0])) {
       if (this.translateCard(frontEndObject.card[0]).value === '2') {
@@ -150,7 +161,7 @@ class game {
 debugger;
 const g = new game();
 
-const frontEndObject = makeMove({player: 0, cards: [0], newSuit: null};
+const frontEndObject = {player: 0, cards: [0], newSuit: null};
 
 console.log(g.showCards(g.players[0]._hand));
 g.pickUpCards(g.players[0], 2);
