@@ -109,7 +109,7 @@ $(function () {
   })
 
   // when game update information is received
-  socket.on('gameUpdate:bid', function(msg){
+  socket.on('gameUpdate:goof', function(msg){
   const update = JSON.parse(msg);
 
     if (data.player._id !== update.player * 1) {
@@ -167,7 +167,7 @@ $(function () {
       && $(event.target.parentNode).attr("value") !== undefined
       ) {
       cardValue = $(event.target.parentNode).attr("value");
-      socket.emit('gameUpdate', `{"room_id": "${room_id}", "player": "${data.player._id}", "item": "bid", "value": "${cardValue}" }`);
+      socket.emit('gameUpdate:goof', `{"room_id": "${room_id}", "player": "${data.player._id}", "item": "bid", "value": "${cardValue}" }`);
       data.player.ready = false;
     }
   });
