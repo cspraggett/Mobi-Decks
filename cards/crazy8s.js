@@ -100,6 +100,12 @@ class game {
     return cards.map(curr => this.translateCard(curr));
   }
 
+  displayCards(cards) {
+    cards.forEach(curr => {
+      console.log(this.translateCard(curr), curr);
+    });
+  }
+
   checkIfCardValid(card) {
     return this.translateCard(card).value === this.translateCard(this.faceUpCard).suit ||
      this.translateCard(card).suit === this.translateCard(this.faceUpCard).suit;
@@ -141,7 +147,7 @@ class game {
 
 }
 
-
+debugger;
 const g = new game();
 
 const frontEndObject = {player: 0, cards: [0], newSuit: null};
