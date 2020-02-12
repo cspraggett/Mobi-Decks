@@ -1,0 +1,354 @@
+.board {
+  height: 100vh;
+  padding: 1.5em 1em;
+  background-color: #EE3E40;
+}
+
+.btn-warning {
+  color: #14191C;
+  background-color: #FFE05C;
+  border-color: #FFE05C;
+}
+
+.btn-warning:hover {
+  background-color: #f1a84f;
+  border-color: #f1a84f;
+}
+
+
+// Modal
+.pop-up {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  animation: fadeBG 2s ease forwards;
+  background-color: #17020287;
+}
+@keyframes fadeBG {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+.pop-up h1 {
+  color: black;
+  font-size: 3em;
+}
+
+.pop-up .card {
+  border: none;
+  border-radius: 4em;
+  padding: 0 1em;
+  animation: fadeIn 1s ease forwards;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(80px);
+  }
+  to {
+    opacity: 100%;
+    transform: translateY(0px);
+  }
+}
+
+.pop-up .card img {
+  max-width: 80%;
+  margin: 2vh 0 3vh;
+  transition: transform 1s ease;
+}
+
+.pop-up .card img:hover {
+  transform: scale(1.1, 1.1);
+}
+
+
+.pop-up .card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50vw;
+  min-width: 200px;
+  text-align: center;
+}
+
+.pop-up .card-body button {
+  margin-bottom: 0.4em;
+}
+
+// P2 Table
+
+.p2-hand {
+  height: 20vh;
+  padding-left: 30vw;
+  width: 90vw;
+  justify-content: center;
+  align-items: flex-end;
+  margin-top: 10vh;
+}
+
+.cards {
+  width: 15vw;
+  margin-left: -5.4em;
+}
+
+.top {
+  transition: transform 0.5s ease;
+}
+
+.bot {
+  transition: transform 0.5s ease;
+}
+
+
+.top:hover {
+  transform: translateY(-15px);
+}
+
+.bot:hover {
+  transform: translateY(-15px);
+}
+
+.p2-hand img {
+  width: 8vw;
+}
+
+.centering {
+  width: 8vw;
+  height: 9vh;
+}
+
+
+
+// Bidding table
+.bid-table {
+  height: 40vh;
+  align-content: center;
+  align-items: center;
+}
+
+// P1 Side
+
+.p1-score-side .row {
+  justify-content: center;
+}
+
+.p1-score-side img {
+  width: 9vw;
+  margin-left: 3vw;
+  margin-top: 2vw;
+}
+
+.p1-score-side p {
+  font-size: 1.5em;
+}
+
+.p1-score {
+  width: 5vw;
+}
+
+// Pile Side
+.pile-side {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.pile-side p {
+  margin-bottom: 0;
+}
+
+.pile-side img {
+  max-width: 100%;
+}
+
+.bid-card {
+  margin: 0 1vw;
+}
+
+@-webkit-keyframes levitate {
+  0% {
+    transform: translatey(0px);
+  }
+
+  50% {
+    transform: translatey(-10px);
+  }
+
+  100% {
+    transform: translatey(0px);
+  }
+}
+
+.pile-side .fa-sort-down {
+  -webkit-animation: levitate 2s infinite;
+}
+
+@-webkit-keyframes grow {
+  0% {
+    transform: scale(1, 1);
+  }
+
+  50% {
+    transform: scale(1.1, 1.1);
+  }
+
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+.turn-alert h1 {
+  -webkit-animation: grow 2.5s infinite;
+}
+
+// P2 Side
+
+.p2-score-side .row {
+  justify-content: center;
+}
+
+.p2-score-side img {
+  width: 9vw;
+  margin-top: 2vw;
+}
+
+.p2-score-side p {
+  font-size: 1.5em;
+}
+
+.p2-score {
+  width: 5vw;
+  text-align: right;
+}
+
+// P1 Table
+
+.p1-hand {
+  height: 20vh;
+  padding-left: 30vw;
+  width: 90vw;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.p1-hand img {
+  width: 8vw;
+}
+
+@media only screen and (max-width: 600px) {
+  .pop-up .card img {
+    margin: 1vh 0 3vh;
+  }
+
+  .pop-up h1 {
+    font-size: 1.5em;
+  }
+
+  .cards {
+    width: 12vw;
+    margin-left: -1.6em;
+  }
+
+  .p1-score-side img {
+    margin-left: 7vw;
+  }
+
+  .p1-score-side p {
+    font-size: 1em;
+  }
+
+  .p1-score-side img {
+    width: 13vw;
+  }
+
+  .p2-score-side img {
+    width: 13vw;
+  }
+
+  .p2-score-side p {
+    font-size: 1em;
+  }
+
+  .pile-side p {
+    font-size: 0.5em;
+  }
+
+  .turn-alert h1 {
+    font-size: 1em;
+  }
+
+}
+
+
+@media only screen and (min-width: 700px) {
+  .cards {
+    width: 13vw;
+  }
+
+  .p2-hand img {
+    width: 5vw;
+  }
+
+  .p1-hand img {
+    width: 5vw;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .pop-up .card-body {
+    width: 25vw;
+  }
+
+  .bid-table {
+    height: 40vh;
+  }
+
+  .p2-hand {
+    height: 25vh;
+    padding-left: 9vw;
+    margin-top: 5vh;
+  }
+
+  .p1-score-side img {
+    width: 5vw;
+  }
+
+  .p1-score-side .row {
+    justify-content: flex-end;
+  }
+
+  .p2-score-side img {
+    width: 5vw;
+  }
+
+  .p2-score-side .row {
+    justify-content: flex-start;
+  }
+
+  .pile-side img {
+    width: 6vw;
+  }
+
+  .p1-hand {
+    height: 25vh;
+    padding-left: 9vw;
+  }
+
+  .cards {
+    width: 4.5vw;
+    margin-left: -1.7em
+  }
+
+  .dealer-bid img {
+    width: 6vw;
+  }
+
+}

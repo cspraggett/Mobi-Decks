@@ -67,6 +67,10 @@ app.get("/war", (req, res) => {
   res.render("war");
 });
 
+app.get("/crazy", (req, res) => {
+  res.render("crazy");
+});
+
 app.get("/archive", (req, res) => {
   res.render("archive");
 });
