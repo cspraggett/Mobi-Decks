@@ -1,6 +1,13 @@
+body .game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 8vh;
+}
 .game .card {
   width: 18rem;
-  height: 55vh;
+  height: 36vh;
   margin: 2vw;
   border: none;
   border-radius: 1em;
@@ -18,6 +25,7 @@
 
 .game .card h1 {
   text-align: center;
+  font-size: 1.5em;
 }
 
 .game .card img {
@@ -41,4 +49,18 @@ a:hover {
   text-decoration: none;
 }
 
+@media only screen and (max-width: 1024px) {
+  body .game {
+    padding-top: 10vh;
+  }
 
+  .game .card {
+    height: initial;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .game .card {
+    height: 55vh;
+  }
+}
