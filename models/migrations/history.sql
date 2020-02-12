@@ -5,5 +5,5 @@ CREATE TABLE history (
   player_1 INTEGER REFERENCES users(id) ON DELETE CASCADE,
   player_2 INTEGER REFERENCES users(id) ON DELETE CASCADE,
   result VARCHAR(255),
-  time_played TIMESTAMP NOT NULL
+  time_played TIMESTAMP NOT NULL DEFAULT now()
 );
