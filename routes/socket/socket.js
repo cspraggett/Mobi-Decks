@@ -3,14 +3,16 @@ module.exports = function(io) {
   const {compareHands, Deck, GoofDealer, GoofPlayer} = require('../../cards/cards.js');
   const {gameData, goofServer} = require('../../db/gameData.js');
 
-  // 1. when joining server, add player info
-  io.of("/game").on('connection', function(socket) {
-    if (!goofServer.players[socket.id]) {
-      goofServer.players[socket.id] = [];
-    }
+  // 1. when joining server
+  io.of('/goof').on('connect', function(socket) {
+  if (!goofServer.players[socket.id]) {
+    goofServer.players[socket.id] = [];
+  }
 
-    // 2. receive room name
+    // 2. receive room name, add player info
     socket.on('join', (room_id) => {
+
+      // console.log('this is goofServer at start: ', goofServer);
 
       // 3. check if player is already in this room
       if (goofServer.players[socket.id].includes(room_id)) {
@@ -39,7 +41,7 @@ module.exports = function(io) {
 
             // when there are 2 connected players send notification to all and run update function
             if (goofServer.rooms[room_id].count === 2) {
-              io.of('/game').to(room_id).emit('system', `{ "type": "start", "msg": "2 players detected!" }`);
+              io.of('/goof').to(room_id).emit('system', `{ "type": "start", "msg": "2 players detected!" }`);
               if (room_id.substring(1, 5 === 'goof')) startGoofMatch(room_id);
             }
             break;
@@ -50,6 +52,17 @@ module.exports = function(io) {
           // leave
         }
         // console.log('this is goofServer:\n', goofServer);
+        console.log('*-connected----------------------');
+        console.log('*-object keys io.nsps------------');
+        console.log(Object.keys(io.nsps));
+        console.log('*-all rooms----------------------');
+        console.log(Object.keys(io.nsps['/goof'].adapter.rooms));
+        console.log('*-goofServer rooms---------------');
+        console.log(goofServer.rooms);
+        console.log('*-goofServer players-------------');
+        console.log(goofServer.players);
+        console.log('--------------------------------*');
+        console.log('');
       }
     })
 
@@ -64,14 +77,14 @@ module.exports = function(io) {
         gameData.goof[room_id][currentPlayer].currentBid = parseInt(data.value);
         // verifyBid to be implemented
 
-        io.of('/game').to(room_id).emit('gameUpdate:goof', msg);
+        io.of('/goof').to(room_id).emit('gameUpdate:goof', msg);
         if (gameData.goof[room_id].player1.currentBid !== null & gameData.goof[room_id].player2.currentBid !== null) {
           compareHands(gameData.goof[room_id].player1, gameData.goof[room_id].player2, gameData.goof[room_id].dealer);
           gameData.goof[room_id].player1.currentBid = null;
           gameData.goof[room_id].player2.currentBid = null;
 
           gameData.goof[room_id].phase += 1;
-          io.of('/game').to(goofServer.rooms[room_id].player1).emit('gamePhase', JSON.stringify({
+          io.of('/goof').to(goofServer.rooms[room_id].player1).emit('gamePhase', JSON.stringify({
             phase: gameData.goof[room_id].phase,
             ready: false,
             pScore: gameData.goof[room_id].player1.score,
@@ -80,7 +93,7 @@ module.exports = function(io) {
             opponent: gameData.goof[room_id].player2,
             dealer: gameData.goof[room_id].dealer
           }));
-          io.of('/game').to(goofServer.rooms[room_id].player2).emit('gamePhase', JSON.stringify({
+          io.of('/goof').to(goofServer.rooms[room_id].player2).emit('gamePhase', JSON.stringify({
             phase: gameData.goof[room_id].phase,
             ready: false,
             pScore: gameData.goof[room_id].player2.score,
@@ -89,7 +102,7 @@ module.exports = function(io) {
             opponent: gameData.goof[room_id].player1,
             dealer: gameData.goof[room_id].dealer
           }));
-          console.log(gameData);
+          // console.log(gameData);
           if (gameData.goof[room_id].phase === 14) {
             //victory effect here;
           }
@@ -112,7 +125,7 @@ module.exports = function(io) {
       gameData.goof[room_id].player1._id = 1;
       gameData.goof[room_id].player2._id = 2;
 
-      io.of('/game').to(goofServer.rooms[room_id].player1).emit('gamePhase', JSON.stringify({
+      io.of('/goof').to(goofServer.rooms[room_id].player1).emit('gamePhase', JSON.stringify({
         phase: gameData.goof[room_id].phase,
         ready: false,
         pScore: gameData.goof[room_id].player1.score,
@@ -121,7 +134,7 @@ module.exports = function(io) {
         opponent: gameData.goof[room_id].player2,
         dealer: gameData.goof[room_id].dealer
       }));
-      io.of('/game').to(goofServer.rooms[room_id].player2).emit('gamePhase', JSON.stringify({
+      io.of('/goof').to(goofServer.rooms[room_id].player2).emit('gamePhase', JSON.stringify({
         phase: gameData.goof[room_id].phase,
         ready: false,
         pScore: gameData.goof[room_id].player2.score,
@@ -157,13 +170,12 @@ module.exports = function(io) {
 
         // console.log(goofServer.players);
         // 2. check if the room is still there in socket io
-
-        if (io.nsps['/game'].adapter.rooms[room]) {
+        if (io.nsps['/goof'].adapter.rooms[room]) {
           // console.log('found', io.nsps['/game'].adapter.rooms[room]);
           let found = false;
 
           // 3. look into room and check individual users remaining
-          for (const sockId of Object.keys(io.nsps['/game'].adapter.rooms[room].sockets)) {
+          for (const sockId of Object.keys(io.nsps['/goof'].adapter.rooms[room].sockets)) {
 
             // 4. check if socket has left this room (found === false)
             if (socket.id === sockId) {
@@ -193,6 +205,11 @@ module.exports = function(io) {
               goofServer.rooms[room][slot] = null; // room to user tracking system
             }
           }
+
+          if (goofServer.rooms[room].count === 0) {
+            console.log('test');
+            delete goofServer.rooms[room];
+          }
           //socket.leave(room_id); // actual socket room leave: done automatically
           if (goofServer.players[socket.id].includes(room)) {
           let index = goofServer.players[socket.id].indexOf(room);
@@ -203,22 +220,21 @@ module.exports = function(io) {
       }
       // 6. delete list if it is empty
       // console.log(goofServer.players[socket.id]);
-
       if (goofServer.players[socket.id].length <= 0) {
         delete goofServer.players[socket.id];
       }
 
-      // console.log('*-start--------------------------');
-      // console.log('*-object keys io.nsps------------');
-      // console.log(Object.keys(io.nsps));
-      // console.log('*-all rooms----------------------');
-      // console.log(Object.keys(io.nsps['/game'].adapter.rooms));
-      // console.log('*-specific room length-----------');
-      // console.log(io.nsps['/game2'].adapter.rooms[room_id].length);
-      // console.log('*-specific room sockets----------');
-      // console.log(io.nsps['/game2'].adapter.rooms[room_id].sockets);
-      // console.log('--------------------------------*');
-      // console.log('*---------------------------end-*');
+      console.log('*-connected----------------------');
+      console.log('*-object keys io.nsps------------');
+      console.log(Object.keys(io.nsps));
+      console.log('*-all rooms----------------------');
+      console.log(Object.keys(io.nsps['/goof'].adapter.rooms));
+      console.log('*-goofServer rooms---------------');
+      console.log(goofServer.rooms);
+      console.log('*-goofServer players-------------');
+      console.log(goofServer.players);
+      console.log('--------------------------------*');
+      console.log('');
     })
 
   })

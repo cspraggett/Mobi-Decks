@@ -1,6 +1,6 @@
 let data = {};
 const handDivs = {player: [], opponent: []};
-const socket = io('http://localhost:8080/goof');
+const socket = io('http://localhost:8080/crazy');
 const room_id = window.location.pathname;
 
 //---------------------------------------------------------/
@@ -173,4 +173,3 @@ $(function () {
     }
   });
 });
-

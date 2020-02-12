@@ -23,7 +23,7 @@
         </li>
       </ul>
 
-      <% if (user_id === undefined) { %>
+      <% if (username === undefined) { %>
         <form class="form-inline">
             <button class="btn btn-outline-danger" type="button">Log in</button>
         </form>
@@ -32,7 +32,7 @@
         </form>
       <% } else { %>
         <span class="navbar-text username">
-          Logged in as: <%= user_id %>
+          Logged in as: <%= username %>
         </span>
         <form class="form-inline" action="/users/logout" method="POST">
           <button class="btn btn-outline-danger" type="submit">Logout</button>

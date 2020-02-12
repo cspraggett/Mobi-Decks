@@ -8,17 +8,7 @@
 const express = require('express');
 const router  = express.Router();
 
-const generateRandomString = function(n) {
-  let result = '';
-  for (let i = 0; i < n; i++) {
-    switch(Math.floor(Math.random() * 3)) {
-      case 0: result += String.fromCharCode(Math.floor(Math.random() * 26) + 97); break;
-      case 1: result += String.fromCharCode(Math.floor(Math.random() * 26) + 65); break;
-      default: result += String.fromCharCode(Math.floor(Math.random() * 10) + 48);
-    }
-  }
-  return result;
-};
+const { generateRandomString, findMatchingRoom } = require('../serverHelper.js');
 
 module.exports = (db) => {
 
@@ -27,11 +17,17 @@ module.exports = (db) => {
   });
 
   router.get("/:room_id", (req, res) => {
-    res.render("game");
+    const templateVars = {username: undefined};
+    if (req.session.user_id) {
+      templateVars.username = req.session.user_id;
+    }
+    res.render("game", templateVars);
   });
 
   router.post("/new", (req, res) => {
-    const newRoomUrl = generateRandomString(10);
+    const username = req.session.user_id;
+    const newRoomurl = findMatchingRoom(username, "goof");
+    if (newRoomurl === null) newRoomUrl = generateRandomString(10);
     res.redirect(`/goof/${newRoomUrl}`);
   });
 

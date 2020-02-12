@@ -36,9 +36,9 @@ const {users} = require('../db/tempUsers.js');
 // };
 
 // helper funcs
-const getPassFromUser = function(user_id) {
+const getPassFromUser = function(username) {
   for (const user in users) {
-    if (users[user].name === user_id) {
+    if (users[user].name === username) {
       return users[user].password;
     }
   }
@@ -57,12 +57,17 @@ module.exports = (db) => {
       res.redirect('/');
       return;
     }
-    const templateVars = {user_id: undefined};
+    const templateVars = {username: undefined};
     res.render("login", templateVars);
   });
 
   router.get("/register", (req, res) => {
-    res.render("register");
+    if (req.session.user_id) {
+      res.redirect('/');
+      return;
+    }
+    const templateVars = {username: undefined};
+    res.render("register", templateVars);
   });
 
   router.get("/war", (req, res) => {

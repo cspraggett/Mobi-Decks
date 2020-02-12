@@ -5,8 +5,13 @@ const goofServer = {
   players: {}
 };
 
+const crazyServer = {
+  rooms: {},
+  players: {}
+};
+
 let gameData = {
   goof: {}
 };
 
-module.exports = { gameData, goofServer };
+module.exports = { gameData, goofServer, crazyServer };

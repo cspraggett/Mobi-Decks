@@ -39,16 +39,23 @@ app.use(cookieSession({
 // Separated Routes for each Resource
 const usersRoutes = require("./routes/users");
 const goofRoutes = require("./routes/goof");
+const crazyRoutes = require("./routes/crazy");
 
 // Mount all resource routes
+<<<<<<< 6a5424e6a9569c0d78bbc903c6393032a4f95db8
 // app.use("/users", usersRoutes(db));
 // app.use("/goof", goofRoutes(db));
+=======
+app.use("/users", usersRoutes(db));
+app.use("/goof", goofRoutes(db));
+app.use("/crazy", crazyRoutes(db));
+>>>>>>> made groundwork for crazy8 game, prepared to add username to have effect in the game
 
 // Separate them into separate routes files
 app.get("/", (req, res) => {
-  const templateVars = {user_id: undefined};
+  const templateVars = {username: undefined};
   if (req.session.user_id) {
-    templateVars.user_id = req.session.user_id;
+    templateVars.username = req.session.user_id;
   }
   res.render("index", templateVars);
 });
@@ -62,16 +69,15 @@ app.get("/", (req, res) => {
 // });
 
 app.get("/game", (req, res) => {
-  // res.sendFile(__dirname + '/views/game.html');
-  res.render("game");
+  const templateVars = {username: undefined};
+  if (req.session.user_id) {
+    templateVars.username = req.session.user_id;
+  }
+  res.render("game", templateVars);
 });
 
 app.get("/war", (req, res) => {
   res.render("war");
-});
-
-app.get("/crazy", (req, res) => {
-  res.render("crazy");
 });
 
 app.get("/archive", (req, res) => {
@@ -82,12 +88,8 @@ app.get("/leaderboard", (req, res) => {
   res.render("leaderboard");
 });
 
-app.get("/game2/:random", (req, res) => {
-  res.render("newSocket");
-});
-
 require('./routes/socket/socket.js')(io);
-require('./routes/socket/newSocket.js')(io);
+require('./routes/socket/socket-crazy.js')(io);
 
 http.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
