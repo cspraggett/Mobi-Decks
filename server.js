@@ -11,7 +11,6 @@ const PORT       = process.env.PORT || 8080;
 
 const bodyParser = require("body-parser");
 const sass       = require("node-sass-middleware");
-const cookieSession = require('cookie-session');
 // const morgan     = require('morgan');
 
 // PG database client/connection setup
@@ -30,12 +29,12 @@ app.use("/styles", sass({
   outputStyle: 'expanded'
 }));
 app.use(express.static("public"));
+const cookieSession = require('cookie-session');
 app.use(cookieSession({
   name: 'session',
   secret: 'test',
   maxAge: 24 * 60 * 60 * 1000,
-}),
-);
+}));
 
 // Separated Routes for each Resource
 const usersRoutes = require("./routes/users");
@@ -47,7 +46,11 @@ const goofRoutes = require("./routes/goof");
 
 // Separate them into separate routes files
 app.get("/", (req, res) => {
-  res.render("index");
+  const templateVars = {user_id: undefined};
+  if (req.session.user_id) {
+    templateVars.user_id = req.session.user_id;
+  }
+  res.render("index", templateVars);
 });
 
 // app.get("/login", (req, res) => { * moved to routes/users.js: use "/users/login"
