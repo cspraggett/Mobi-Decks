@@ -149,10 +149,10 @@ Deck.shuffle(player1._hand);
 Deck.shuffle(player2._hand);
 
 
-console.log(dealer);
-console.log(player1);
-console.log(player2);
-console.log(deck._deck.length);
+// console.log(dealer);
+// console.log(player1);
+// console.log(player2);
+// console.log(deck._deck.length);
 
 
 
@@ -166,12 +166,12 @@ console.log(deck._deck.length);
 for (let i = 0; i < 13; i++) {
   player1.currentBid = (player1._hand[0]);
   player2.currentBid = (player2._hand[0]);
-  console.log(`---hand #${i}---`);
-  console.log('dealer:', dealer);
-  compareHands(player1, player2, dealer);
-  console.log('p1:', player1);
-  console.log('p2:', player2);
-  console.log('\n\n-----------------------\n\n');
+  // console.log(`---hand #${i}---`);
+  // console.log('dealer:', dealer);
+  // compareHands(player1, player2, dealer);
+  // console.log('p1:', player1);
+  // console.log('p2:', player2);
+  // console.log('\n\n-----------------------\n\n');
 }
 
 // console.log('---end---');
