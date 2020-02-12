@@ -10,6 +10,12 @@ class CrazyPlayer extends Player {
     this._hand = this._hand.concat(cards);
   }
 
+  removePlayedCards(player, cards) {
+    for (const card of cards) {
+      Deck.removeInnerCard(card, player._hand);
+    }
+  }
+
 }
 
 class game {
@@ -17,16 +23,16 @@ class game {
     this.deck = new Deck(52);
     this.deck.shuffle();
     this.players = [];
-    players[0] = new CrazyPlayer(this.deck);
-    players[1] = new CrazyPlayer(this.deck);
-    // this.player2 = new CrazyPlayer(this.deck);
+    this.players[0] = new CrazyPlayer(this.deck);
+    this.players[1] = new CrazyPlayer(this.deck);
     this.currentPlayer = 0;
-    this.faceUpCard = this.deck.deal(1);
+    this.faceUpCard = [this.deck.deal(1)];
+    this.runOf2 = 0;
   }
 
-  // set faceUpCard() {
-  //   this.faceUpCard = card;
-  // }
+  changeFaceUpCard(card) {
+    this.faceUpCard.shift(card);
+  }
 
   addToDeck() {
     this.deck.push(this.faceUpCard);
@@ -90,37 +96,59 @@ class game {
     return translater[card];
   }
 
+  showCards(cards) {
+    return cards.map(curr => this.translateCard(curr));
+  }
+
   checkIfCardValid(card) {
     return this.translateCard(card).value === this.translateCard(this.faceUpCard).suit ||
      this.translateCard(card).suit === this.translateCard(this.faceUpCard).suit;
+  }
+
+  checkIfMove(player) {
+    for (const card of this.players[player]) {
+      if (this.checkIfCardValid(card) || this.translateCard(card).value === '8') {
+        return true;
+      }
+      return false;
+    }
   }
 
   takeTopCard(player) {
     player.recieveCards(this.deck.deal(1));
   }
 
-  pickUp2(player) {
-    player.recieveCards(this.deck.deal(2));
+  pickUpCards(player, num) {
+    player.recieveCards(this.deck.deal(num));
   }
 
-  showCards(cards) {
-    return cards.map(curr => this.translateCard(curr));
-  }
-
-  makeMove(player, card) {
-    if (this.checkIfCardValid(card)) {
-      if (this.translateCard(card).value === '2') {
-        this.pickUp2(this.players[(player + 1) % 2]);
+  makeMove(frontEndObject) {
+    if (frontEndObject.pickUp) {
+      this.takeTopCard(this.players[frontEndObject.player]);
+    }
+    if (this.checkIfCardValid(frontEndObject.cards[0])) {
+      if (this.translateCard(frontEndObject.card[0]).value === '2') {
+        this.runOf2++;
+        this.pickUpCards(this.players[(frontEndObject.player + 1) % 2], 2 * this.runOf2);
+      } else {
+        this.runOf2 = 0;
       }
+      this.changeFaceUpCard(frontEndObject.cards[frontEndObject.cards.length - 1]);
+      this.players[frontEndObject.player].removePlayedCards(frontEndObject.cards, this.players[frontEndObject.player]);
+      this.currentPlayer = ((frontEndObject.player + 1) % 2);
     }
   }
 
 }
+
+
 const g = new game();
 
-console.log(g.showCards(g.player1._hand));
-g.pickUp2(g.player1);
-console.log(g.showCards(g.player1._hand));
+const frontEndObject = {player: 0, cards: [0], newSuit: null};
+
+console.log(g.showCards(g.players[0]._hand));
+g.pickUpCards(g.players[0], 2);
+console.log(g.showCards(g.players[0]._hand));
 // console.log(g.showCards(g.player1._hand));
 console.log(g.showCards(g.deck._deck));
 
