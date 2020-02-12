@@ -31,7 +31,12 @@ module.exports = (db) => {
   });
 
   router.get("/login", (req, res) => {
-    res.render("login");
+    if (req.session.user_id) {
+      res.redirect('/');
+      return;
+    }
+    const templateVars = {user: [req.session.user_id]};
+    res.render("login", templateVars);
   });
 
   router.get("/register", (req, res) => {
