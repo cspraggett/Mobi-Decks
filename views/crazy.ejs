@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Home Page</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/crazy.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/header.css" type="text/css" />
+
+
+    <!-- Scripts for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <!-- Imported Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+
+    <!-- Local Scripts -->
+    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+    <script type="text/javascript" src="/scripts/cardImage.js"></script>
+    <script type="text/javascript" src="/scripts/goof-client.js"></script>
+    <!-- <script type="text/javascript" src="/scripts/app.js"></script> : DISABLED UNTIL REIMPLEMENTATION -->
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <%- include('./partials/_header'); -%>
+
+    <!-- Winner pop-up -->
+    <!-- <div class='pop-up'>
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title">You Won!</h1>
+          <img src='/images/graphics/face.png' />
+          <button type="submit" class="btn btn-danger">Play Again</button>
+          <a href='/' type="submit" class="btn btn-danger">Go Back</a>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- Loser pop-up -->
+    <!-- <div class='pop-up'>
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title">You Lost!</h1>
+          <img src='/images/graphics/sad.png' />
+          <button type="submit" class="btn btn-danger">Play Again</button>
+          <a href='/' type="submit" class="btn btn-danger">Go Back</a>
+        </div>
+      </div>
+    </div> -->
+
+
+    <div class='board'>
+
+      <div class='p2-hand row id=p2_hand'>
+        <div class="cards bot" value="0" style="z-index: 0">
+          <img src="/images/cards/AS.png">
+        </div>
+        <div class='centering'>
+        </div>
+      </div>
+
+      <div class='bid-table row'>
+
+        <div class='col user-scores'>
+          <div class='row'>
+            <img src='/images/avatars/avatar.png' />
+            <div>
+              <p class='p2-score'>9</p>
+            </div>
+          </div>
+          <div class='row'>
+            <img src='/images/avatars/avatar2.png' />
+            <div>
+              <p class='p1-score'>10</p>
+            </div>
+          </div>
+        </div>
+
+        <div class='col pile-side'>
+          <div class='row bid-card'>
+            <img src='/images/cards/stack-blank.png' />
+          </div>
+          <div class='row bid-card'>
+            <img src='/images/cards/2C.png' />
+          </div>
+        </div>
+
+        <div class='col dealer-side'>
+          <div class='dealer-bid'>
+            <img src='/images/cards/2C.png' />
+          </div>
+        </div>
+
+      </div>
+
+      <div class='p1-hand row id=p2_hand'>
+        <div class='centering'>
+        </div>
+      </div>
+
+    </div>
+  </body>
+
+</html>
