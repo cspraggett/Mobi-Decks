@@ -13,6 +13,11 @@ $(function () {
   //socket initialization
   socket.on('connect', () => {
     socket.emit('join', room_id);
+
+    //socket disconnect message
+    socket.on('disconnect', () => {
+      socket.emit('leave', 'hello');
+    })
   })
 
   // system message: include clear table at start of game
@@ -163,6 +168,5 @@ $(function () {
       data.player.ready = false;
     }
   });
-
 });
 
