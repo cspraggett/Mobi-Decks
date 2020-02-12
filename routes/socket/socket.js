@@ -8,11 +8,11 @@ module.exports = function(io) {
     "player2": null
   };
 
-  const game = {
-    dealer: {_id: 0, _hand: [...Array(13).keys()], _currentCard: "" },
-    player1: {_id: 1, _hand: [...Array(13).keys()], _wonBids: [], _socketID: "", _currentBid: ""},
-    player2: {_id: 2, _hand: [...Array(13).keys()], _wonBids: [], _socketID: "", _currentBid: ""}
-  };
+  // const game = {
+  //   dealer: {_id: 0, _hand: [...Array(13).keys()], _currentCard: "" },
+  //   player1: {_id: 1, _hand: [...Array(13).keys()], _wonBids: [], _socketID: "", _currentBid: ""},
+  //   player2: {_id: 2, _hand: [...Array(13).keys()], _wonBids: [], _socketID: "", _currentBid: ""}
+  // };
 
   const goofServer = {
     rooms: {},
@@ -33,7 +33,6 @@ module.exports = function(io) {
 
     // 2. receive room name
     socket.on('join', (room_id) => {
-      console.log('join received');
 
       // 3. check if player is already in this room
       if (goofServer.players[socket.id].includes(room_id)) {
@@ -62,9 +61,8 @@ module.exports = function(io) {
 
             // when there are 2 connected players send notification to all and run update function
             if (goofServer.rooms[room_id].count === 2) {
-              console.log('announcement to room: ', room_id);
               io.of('/game').to(room_id).emit('system', `{ "type": "start", "msg": "2 players detected!" }`);
-              startMatch();
+              startMatch(room_id);
             }
             break;
           }
@@ -79,6 +77,7 @@ module.exports = function(io) {
 
     socket.on('gameUpdate', (msg) => {
       const data = JSON.parse(msg);
+      const room_id = data.room_id;
       // console.log(data);
       // console.log('updating');
 
@@ -87,14 +86,14 @@ module.exports = function(io) {
         gameData[currentPlayer].currentBid = parseInt(data.value);
         // verifyBid to be implemented
 
-        io.of('/game').emit('gameUpdate:bid', msg);
+        io.of('/game').to(room_id).emit('gameUpdate:bid', msg);
         if (gameData.player1.currentBid !== null & gameData.player2.currentBid !== null) {
           compareHands(gameData.player1, gameData.player2, gameData.dealer);
           gameData.player1.currentBid = null;
           gameData.player2.currentBid = null;
 
           gameData.phase += 1;
-          io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({
+          io.of('/game').to(goofServer.rooms[room_id].player1).emit('gamePhase', JSON.stringify({
             phase: gameData.phase,
             ready: false,
             pScore: gameData.player1.score,
@@ -103,7 +102,7 @@ module.exports = function(io) {
             opponent: gameData.player2,
             dealer: gameData.dealer
           }));
-          io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({
+          io.of('/game').to(goofServer.rooms[room_id].player2).emit('gamePhase', JSON.stringify({
             phase: gameData.phase,
             ready: false,
             pScore: gameData.player2.score,
@@ -121,7 +120,7 @@ module.exports = function(io) {
     });
 
     // send each player their own data and send everyone dealer data
-    const startMatch = function() {
+    const startMatch = function(room_id) {
       // assign initial values
       const deck = new Deck(52);
       gameData = {
@@ -134,7 +133,7 @@ module.exports = function(io) {
       gameData.player1._id = 1;
       gameData.player2._id = 2;
 
-      io.of('/game').to(players.player1).emit('gamePhase', JSON.stringify({
+      io.of('/game').to(goofServer.rooms[room_id].player1).emit('gamePhase', JSON.stringify({
         phase: gameData.phase,
         ready: false,
         pScore: gameData.player1.score,
@@ -143,7 +142,7 @@ module.exports = function(io) {
         opponent: gameData.player2,
         dealer: gameData.dealer
       }));
-      io.of('/game').to(players.player2).emit('gamePhase', JSON.stringify({
+      io.of('/game').to(goofServer.rooms[room_id].player2).emit('gamePhase', JSON.stringify({
         phase: gameData.phase,
         ready: false,
         pScore: gameData.player2.score,

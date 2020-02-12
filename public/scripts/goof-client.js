@@ -3,7 +3,6 @@ const handDivs = {player: [], opponent: []};
 const socket = io('http://localhost:8080/game');
 const room_id = window.location.pathname;
 
-
 //---------------------------------------------------------/
 // socket specific events ---------------------------------/
 //---------------------------------------------------------/
@@ -162,9 +161,13 @@ $(function () {
 
   // when player picks a card
   $(".p1-hand").on('click', function(event) {
-    if (data.player._currentBid === null && data.player.ready === true) {
+    if (
+      data.player._currentBid === null
+      && data.player.ready === true
+      && $(event.target.parentNode).attr("value") !== undefined
+      ) {
       cardValue = $(event.target.parentNode).attr("value");
-      socket.emit('gameUpdate', `{"player": "${data.player._id}", "item": "bid", "value": "${cardValue}" }`);
+      socket.emit('gameUpdate', `{"room_id": "${room_id}", "player": "${data.player._id}", "item": "bid", "value": "${cardValue}" }`);
       data.player.ready = false;
     }
   });
