@@ -22,12 +22,25 @@
           <a class="nav-link" href="/leaderboard">Leaderboard</a>
         </li>
       </ul>
-      <span class="navbar-text username">
-        Logged in as: User1
-      </span>
-      <form class="form-inline">
-        <button class="btn btn-outline-danger" type="button">Logout</button>
-      </form>
+
+      <% if (user_id === undefined) { %>
+        <form class="form-inline">
+            <button class="btn btn-outline-danger" type="button">Log in</button>
+        </form>
+        <form class="form-inline">
+            <button class="btn btn-outline-danger" type="button">Register</button>
+        </form>
+      <% } else { %>
+        <span class="navbar-text username">
+          Logged in as: <%= user_id %>
+        </span>
+        <form class="form-inline" action="/users/logout" method="POST">
+          <button class="btn btn-outline-danger" type="submit">Logout</button>
+        </form>
+      <% } %>
+
+
+
     </div>
   </nav>
 </header>
