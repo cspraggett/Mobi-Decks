@@ -11,6 +11,7 @@ const PORT       = process.env.PORT || 8080;
 
 const bodyParser = require("body-parser");
 const sass       = require("node-sass-middleware");
+const cookieSession = require('cookie-session');
 // const morgan     = require('morgan');
 
 // PG database client/connection setup
@@ -29,6 +30,12 @@ app.use("/styles", sass({
   outputStyle: 'expanded'
 }));
 app.use(express.static("public"));
+app.use(cookieSession({
+  name: 'session',
+  secret: 'test',
+  maxAge: 24 * 60 * 60 * 1000,
+}),
+);
 
 // Separated Routes for each Resource
 const usersRoutes = require("./routes/users");
