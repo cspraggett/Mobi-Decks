@@ -27,9 +27,7 @@ module.exports = (db) => {
   });
 
   router.get("/:room_id", (req, res) => {
-    res.render("game", {
-      room_id: req.params.room_id
-    });
+    res.render("game");
   });
 
   router.post("/new", (req, res) => {

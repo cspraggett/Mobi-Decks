@@ -11,7 +11,7 @@ const PORT       = process.env.PORT || 8080;
 
 const bodyParser = require("body-parser");
 const sass       = require("node-sass-middleware");
-const morgan     = require('morgan');
+// const morgan     = require('morgan');
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -19,7 +19,7 @@ const dbParams = require('./lib/db.js');
 const db = new Pool(dbParams);
 db.connect();
 
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/styles", sass({
@@ -68,7 +68,12 @@ app.get("/leaderboard", (req, res) => {
   res.render("leaderboard");
 });
 
+app.get("/game2/:random", (req, res) => {
+  res.render("newSocket");
+});
+
 require('./routes/socket/socket.js')(io);
+require('./routes/socket/newSocket.js')(io);
 
 http.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
