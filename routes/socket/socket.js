@@ -1,29 +1,7 @@
 module.exports = function(io) {
 
   const {compareHands, Deck, GoofDealer, GoofPlayer} = require('../../cards/cards.js');
-
-  const players = {
-    "count": 0,
-    "player1": null,
-    "player2": null
-  };
-
-  // const game = {
-  //   dealer: {_id: 0, _hand: [...Array(13).keys()], _currentCard: "" },
-  //   player1: {_id: 1, _hand: [...Array(13).keys()], _wonBids: [], _socketID: "", _currentBid: ""},
-  //   player2: {_id: 2, _hand: [...Array(13).keys()], _wonBids: [], _socketID: "", _currentBid: ""}
-  // };
-
-  const goofServer = {
-    rooms: {},
-    players: {}
-  };
-
-  let gameData = {};
-
-  // testing information load in
-  // const game1 = require('../../db/sampleData.js');
-  // console.log(game1);
+  const {gameData, goofServer} = require('../../db/gameData.js');
 
   // 1. when joining server, add player info
   io.of("/game").on('connection', function(socket) {
@@ -62,7 +40,7 @@ module.exports = function(io) {
             // when there are 2 connected players send notification to all and run update function
             if (goofServer.rooms[room_id].count === 2) {
               io.of('/game').to(room_id).emit('system', `{ "type": "start", "msg": "2 players detected!" }`);
-              startMatch(room_id);
+              if (room_id.substring(1, 5 === 'goof')) startGoofMatch(room_id);
             }
             break;
           }
@@ -71,11 +49,11 @@ module.exports = function(io) {
         if (!goofServer.players[socket.id].includes(room_id)) {
           // leave
         }
-        console.log('this is goofServer:\n', goofServer);
+        // console.log('this is goofServer:\n', goofServer);
       }
     })
 
-    socket.on('gameUpdate', (msg) => {
+    socket.on('gameUpdate:goof', (msg) => {
       const data = JSON.parse(msg);
       const room_id = data.room_id;
       // console.log(data);
@@ -83,35 +61,36 @@ module.exports = function(io) {
 
       if (data.item === 'bid') {
         let currentPlayer = `player${data.player}`;
-        gameData[currentPlayer].currentBid = parseInt(data.value);
+        gameData.goof[room_id][currentPlayer].currentBid = parseInt(data.value);
         // verifyBid to be implemented
 
-        io.of('/game').to(room_id).emit('gameUpdate:bid', msg);
-        if (gameData.player1.currentBid !== null & gameData.player2.currentBid !== null) {
-          compareHands(gameData.player1, gameData.player2, gameData.dealer);
-          gameData.player1.currentBid = null;
-          gameData.player2.currentBid = null;
+        io.of('/game').to(room_id).emit('gameUpdate:goof', msg);
+        if (gameData.goof[room_id].player1.currentBid !== null & gameData.goof[room_id].player2.currentBid !== null) {
+          compareHands(gameData.goof[room_id].player1, gameData.goof[room_id].player2, gameData.goof[room_id].dealer);
+          gameData.goof[room_id].player1.currentBid = null;
+          gameData.goof[room_id].player2.currentBid = null;
 
-          gameData.phase += 1;
+          gameData.goof[room_id].phase += 1;
           io.of('/game').to(goofServer.rooms[room_id].player1).emit('gamePhase', JSON.stringify({
-            phase: gameData.phase,
+            phase: gameData.goof[room_id].phase,
             ready: false,
-            pScore: gameData.player1.score,
-            oScore: gameData.player2.score,
-            player: gameData.player1,
-            opponent: gameData.player2,
-            dealer: gameData.dealer
+            pScore: gameData.goof[room_id].player1.score,
+            oScore: gameData.goof[room_id].player2.score,
+            player: gameData.goof[room_id].player1,
+            opponent: gameData.goof[room_id].player2,
+            dealer: gameData.goof[room_id].dealer
           }));
           io.of('/game').to(goofServer.rooms[room_id].player2).emit('gamePhase', JSON.stringify({
-            phase: gameData.phase,
+            phase: gameData.goof[room_id].phase,
             ready: false,
-            pScore: gameData.player2.score,
-            oScore: gameData.player1.score,
-            player: gameData.player2,
-            opponent: gameData.player1,
-            dealer: gameData.dealer
+            pScore: gameData.goof[room_id].player2.score,
+            oScore: gameData.goof[room_id].player1.score,
+            player: gameData.goof[room_id].player2,
+            opponent: gameData.goof[room_id].player1,
+            dealer: gameData.goof[room_id].dealer
           }));
-          if (gameData.phase === 14) {
+          console.log(gameData);
+          if (gameData.goof[room_id].phase === 14) {
             //victory effect here;
           }
         }
@@ -120,39 +99,39 @@ module.exports = function(io) {
     });
 
     // send each player their own data and send everyone dealer data
-    const startMatch = function(room_id) {
+    const startGoofMatch = function(room_id) {
       // assign initial values
       const deck = new Deck(52);
-      gameData = {
+      gameData.goof[room_id] = {
         phase: 0,
         player_id: null,
         player1: new GoofPlayer(deck),
         player2: new GoofPlayer(deck),
         dealer: new GoofDealer(deck)
       },
-      gameData.player1._id = 1;
-      gameData.player2._id = 2;
+      gameData.goof[room_id].player1._id = 1;
+      gameData.goof[room_id].player2._id = 2;
 
       io.of('/game').to(goofServer.rooms[room_id].player1).emit('gamePhase', JSON.stringify({
-        phase: gameData.phase,
+        phase: gameData.goof[room_id].phase,
         ready: false,
-        pScore: gameData.player1.score,
-        oScore: gameData.player2.score,
-        player: gameData.player1,
-        opponent: gameData.player2,
-        dealer: gameData.dealer
+        pScore: gameData.goof[room_id].player1.score,
+        oScore: gameData.goof[room_id].player2.score,
+        player: gameData.goof[room_id].player1,
+        opponent: gameData.goof[room_id].player2,
+        dealer: gameData.goof[room_id].dealer
       }));
       io.of('/game').to(goofServer.rooms[room_id].player2).emit('gamePhase', JSON.stringify({
-        phase: gameData.phase,
+        phase: gameData.goof[room_id].phase,
         ready: false,
-        pScore: gameData.player2.score,
-        oScore: gameData.player1.score,
-        player: gameData.player2,
-        opponent: gameData.player1,
-        dealer: gameData.dealer
+        pScore: gameData.goof[room_id].player2.score,
+        oScore: gameData.goof[room_id].player1.score,
+        player: gameData.goof[room_id].player2,
+        opponent: gameData.goof[room_id].player1,
+        dealer: gameData.goof[room_id].dealer
       }));
 
-      gameData.phase = 1;
+      gameData.goof[room_id].phase = 1;
     };
 
 
@@ -171,16 +150,16 @@ module.exports = function(io) {
     // 1. when a socket leave server find list of rooms the socket was connected to
     //    delete list if no contents exist
     socket.on('disconnect', function() {
-      console.log('a player has left');
+      // console.log('a player has left');
 
       for (let i = 0; i < goofServer.players[socket.id].length; i++) {
         let room = goofServer.players[socket.id][i];
 
-        console.log(goofServer.players);
+        // console.log(goofServer.players);
         // 2. check if the room is still there in socket io
 
         if (io.nsps['/game'].adapter.rooms[room]) {
-          console.log('found', io.nsps['/game'].adapter.rooms[room]);
+          // console.log('found', io.nsps['/game'].adapter.rooms[room]);
           let found = false;
 
           // 3. look into room and check individual users remaining
@@ -223,7 +202,7 @@ module.exports = function(io) {
         }
       }
       // 6. delete list if it is empty
-      console.log(goofServer.players[socket.id]);
+      // console.log(goofServer.players[socket.id]);
 
       if (goofServer.players[socket.id].length <= 0) {
         delete goofServer.players[socket.id];
@@ -242,16 +221,5 @@ module.exports = function(io) {
       // console.log('*---------------------------end-*');
     })
 
-
-      for (const player in players) {
-        if (players[player] === socket.id) {
-          players[player] = null;
-          players.count -= 1;
-          // console.log('lost connection');
-          // console.log(players);
-          break;
-        }
-      }
-    })
-
+  })
 };
