@@ -28,14 +28,12 @@ const findMatchingRoom = function(username, gametype) {
   else if (gametype === 'crazy') type = crazyServer;
 
   let foundRoom = null;
-  for (const room in goofServer.rooms) {
-    if (goofServer.rooms[room].player1.user === null || goofServer.rooms[room].player2.user === null) {
-      console.log('passed null');
-      if (goofServer.rooms[room].player1.user !== username
-        && goofServer.rooms[room].player2.user !== username
+  for (const room in type.rooms) {
+    if (type.rooms[room].player1.user === null || type.rooms[room].player2.user === null) {
+      if (type.rooms[room].player1.user !== username
+        && type.rooms[room].player2.user !== username
         || username === 'guest'
       ) {
-        console.log('passed guest');
         foundRoom = room;
         break;
       }

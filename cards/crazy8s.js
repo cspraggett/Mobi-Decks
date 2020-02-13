@@ -102,7 +102,7 @@ class game {
 
   displayCards(cards) {
     cards.forEach(curr => {
-      console.log(this.translateCard(curr), curr);
+      // console.log(this.translateCard(curr), curr);
     });
   }
 
@@ -163,11 +163,11 @@ const g = new game();
 
 const frontEndObject = {player: 0, cards: [0], newSuit: null};
 
-console.log(g.showCards(g.players[0]._hand));
+// console.log(g.showCards(g.players[0]._hand));
 g.pickUpCards(g.players[0], 2);
-console.log(g.showCards(g.players[0]._hand));
+// console.log(g.showCards(g.players[0]._hand));
 // console.log(g.showCards(g.player1._hand));
-console.log(g.showCards(g.deck._deck));
+// console.log(g.showCards(g.deck._deck));
 
 // console.log(g);
 
@@ -193,4 +193,10 @@ console.log(g.showCards(g.deck._deck));
 
 // for (let i = 0; i < player1._hand.length; i++) {
 //   console.log(dealer.translateCard(player1._hand[i]));
+<<<<<<< 02551d65dcaef7618adbd2d7feccc8f231300ae4
 //
+=======
+// }
+
+module.exports = { game };
+>>>>>>> middle of making crazy-client

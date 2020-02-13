@@ -1,6 +1,6 @@
 module.exports = function(io) {
 
-  const {compareHands, Deck, game} = require('../../cards/crazy8s.js');
+  const {game} = require('../../cards/crazy8s.js');
   const {gameData, crazyServer} = require('../../db/gameData.js');
 
   // 1. when joining server
@@ -67,25 +67,25 @@ module.exports = function(io) {
           // leave
         }
         // console.log('this is crazyServer:\n', crazyServer);
-        console.log('*-connected----------------------');
-        console.log('*-object keys io.nsps------------');
-        console.log(Object.keys(io.nsps));
-        console.log('*-all rooms----------------------');
-        console.log(Object.keys(io.nsps['/crazy'].adapter.rooms));
-        console.log('*-crazyServer rooms---------------');
-        console.log(crazyServer.rooms);
-        console.log('*-crazyServer players-------------');
-        console.log(crazyServer.players);
-        console.log('--------------------------------*');
-        console.log('');
+        // console.log('*-connected----------------------');
+        // console.log('*-object keys io.nsps------------');
+        // console.log(Object.keys(io.nsps));
+        // console.log('*-all rooms----------------------');
+        // console.log(Object.keys(io.nsps['/crazy'].adapter.rooms));
+        // console.log('*-crazyServer rooms---------------');
+        // console.log(crazyServer.rooms);
+        // console.log('*-crazyServer players-------------');
+        // console.log(crazyServer.players);
+        // console.log('--------------------------------*');
+        // console.log('');
       }
     })
 
-    // socket.on('gameUpdate:crazy', (msg) => {
-    //   const data = JSON.parse(msg);
-    //   const room_id = data.room_id;
-    //   // console.log(data);
-    //   // console.log('updating');
+    socket.on('gameUpdate:crazy', (msg) => {
+      const data = JSON.parse(msg);
+      const room_id = data.room_id;
+      console.log(data);
+      console.log('updating');
 
     //   if (data.item === 'bid') {
     //     let currentPlayer = `player${data.player}`;
@@ -124,41 +124,30 @@ module.exports = function(io) {
     //     }
     //   }
 
-    // });
+    });
 
-    // // send each player their own data and send everyone dealer data
+    // send each player their own data and send everyone dealer data
     const startCrazyMatch = function(room_id) {
-    //   // assign initial values
-    //   const deck = new Deck(52);
-    //   gameData.crazy[room_id] = {
-    //     phase: 0,
-    //     player_id: null,
-    //     player1: new crazyPlayer(deck),
-    //     player2: new crazyPlayer(deck),
-    //     dealer: new crazyDealer(deck)
-    //   },
-    //   gameData.crazy[room_id].player1._id = 1;
-    //   gameData.crazy[room_id].player2._id = 2;
+      const crazy8 = new game();
 
-    //   io.of('/crazy').to(crazyServer.rooms[room_id].player1.socket).emit('gamePhase', JSON.stringify({
-    //     phase: gameData.crazy[room_id].phase,
-    //     ready: false,
-    //     pScore: gameData.crazy[room_id].player1.score,
-    //     oScore: gameData.crazy[room_id].player2.score,
-    //     player: gameData.crazy[room_id].player1,
-    //     opponent: gameData.crazy[room_id].player2,
-    //     dealer: gameData.crazy[room_id].dealer
-    //   }));
-    //   io.of('/crazy').to(crazyServer.rooms[room_id].player2.socket).emit('gamePhase', JSON.stringify({
-    //     phase: gameData.crazy[room_id].phase,
-    //     ready: false,
-    //     pScore: gameData.crazy[room_id].player2.score,
-    //     oScore: gameData.crazy[room_id].player1.score,
-    //     player: gameData.crazy[room_id].player2,
-    //     opponent: gameData.crazy[room_id].player1,
-    //     dealer: gameData.crazy[room_id].dealer
-    //   }));
+      // assign initial values
+      gameData.crazy[room_id] = {
+        phase: 0,
+        crazy8
+      }
 
+      io.of('/crazy').to(crazyServer.rooms[room_id].player1.socket).emit('gamePhase', JSON.stringify({
+        playerNum: 0,
+        phase: 0,
+        ready: false,
+        crazy8
+      }));
+      io.of('/crazy').to(crazyServer.rooms[room_id].player2.socket).emit('gamePhase', JSON.stringify({
+        playerNum: 1,
+        phase: 0,
+        ready: false,
+        crazy8
+      }));
     //   gameData.crazy[room_id].phase = 1;
     };
 
@@ -221,8 +210,8 @@ module.exports = function(io) {
           }
         } else {
 
-          console.log('crazyServer: ', crazyServer);
-          console.log('room: ', room);
+          // console.log('crazyServer: ', crazyServer);
+          // console.log('room: ', room);
           crazyServer.rooms[room].count -= 1; // room population tracker
           for (const slot in crazyServer.rooms[room]) {
             if (crazyServer.rooms[room][slot].socket === socket.id) {
@@ -245,21 +234,20 @@ module.exports = function(io) {
       // 6. delete list if it is empty
       // console.log(crazyServer.players[socket.id]);
       if (crazyServer.players[user_id] === {}) {
-        console.log('should delete now');
+        // console.log('should delete now');
         delete crazyServer.players[user_id];
       }
-
-      console.log('*-connected----------------------');
-      console.log('*-object keys io.nsps------------');
-      console.log(Object.keys(io.nsps));
-      console.log('*-all rooms----------------------');
-      console.log(Object.keys(io.nsps['/crazy'].adapter.rooms));
-      console.log('*-crazyServer rooms---------------');
-      console.log(crazyServer.rooms);
-      console.log('*-crazyServer players-------------');
-      console.log(crazyServer.players);
-      console.log('--------------------------------*');
-      console.log('');
+      // console.log('*-connected----------------------');
+      // console.log('*-object keys io.nsps------------');
+      // console.log(Object.keys(io.nsps));
+      // console.log('*-all rooms----------------------');
+      // console.log(Object.keys(io.nsps['/crazy'].adapter.rooms));
+      // console.log('*-crazyServer rooms---------------');
+      // console.log(crazyServer.rooms);
+      // console.log('*-crazyServer players-------------');
+      // console.log(crazyServer.players);
+      // console.log('--------------------------------*');
+      // console.log('');
     })
 
   })
