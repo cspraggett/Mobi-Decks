@@ -27,11 +27,12 @@
     <!-- Local Scripts -->
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/cardImage.js"></script>
-    <script type="text/javascript" src="/scripts/goof-client.js"></script>
+    <!-- <script type="text/javascript" src="/scripts/goof-client.js"></script> -->
     <!-- <script type="text/javascript" src="/scripts/app.js"></script> : DISABLED UNTIL REIMPLEMENTATION -->
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/cfe976dd3c.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -61,6 +62,29 @@
       </div>
     </div> -->
 
+    <!-- Crazy 8 Modal -->
+    <div class='pop-up'>
+      <div class="card">
+        <div class="card-body">
+          <h1>Pick a Suite</h1>
+          <div class='row'>
+            <div class='col'>
+              <a href='#'><img src='/images/graphics/spade.png' /></a>
+            </div>
+            <div class='col'>
+              <a href='#'><img src='/images/graphics/clubs.png' /></a>
+            </div>
+            <div class="w-100"></div>
+            <div class='col'>
+              <a href='#'><img src='/images/graphics/heart.png' /></a>
+            </div>
+            <div class='col'>
+              <a href='#'><img src='/images/graphics/diamond.png' /></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class='board'>
 
@@ -85,29 +109,128 @@
             <img src='/images/avatars/avatar2.png' />
             <div>
               <p class='p1-score'>10</p>
+        <div class='col p1-score-side'>
+          <div class='row'>
+            <img src='/images/avatars/avatar.png' />
+            <div>
+              <p class='p1-score'>9</p>
             </div>
           </div>
         </div>
 
         <div class='col pile-side'>
-          <div class='row bid-card'>
-            <img src='/images/cards/stack-blank.png' />
-          </div>
-          <div class='row bid-card'>
-            <img src='/images/cards/2C.png' />
+          <div class='row'>
+            <div class="col">
+              <p>Draw</p>
+              <i class="fas fa-sort-down"></i>
+            </div>
+            <div class="col">
+              <p>Place</p>
+              <i class="fas fa-sort-down"></i>
+            </div>
+            <div class="w-100"></div>
+            <div class='col bid-card draw-pile'>
+              <img src='/images/cards/stack-blank.png' />
+            </div>
+            <div class='col bid-card place-pile'>
+              <img src='/images/cards/2C.png' />
+            </div>
+            <div class="w-100"></div>
+            <div class="col turn-alert">
+              <h1>Your Turn!</h1>
+            </div>
           </div>
         </div>
 
-        <div class='col dealer-side'>
-          <div class='dealer-bid'>
-            <img src='/images/cards/2C.png' />
+        <div class='col p2-score-side'>
+          <div class='row'>
+            <div>
+              <p class='p2-score'>10</p>
+            </div>
+            <img src='/images/avatars/avatar2.png' />
           </div>
         </div>
 
       </div>
 
       <div class='p1-hand row id=p2_hand'>
-        <div class='centering'>
+        <div class="cards bot" value="0" style="z-index: 0">
+          <img src="/images/cards/AH.png">
+        </div>
+        <div class="cards bot" value="1" style="z-index: 1">
+          <img src="/images/cards/2H.png">
+        </div>
+        <div class="cards bot" value="2" style="z-index: 2">
+          <img src="/images/cards/3H.png">
+        </div>
+        <div class="cards bot" value="3" style="z-index: 3">
+          <img src="/images/cards/4H.png">
+        </div>
+        <div class="cards bot" value="4" style="z-index: 4">
+          <img src="/images/cards/5H.png">
+        </div>
+        <div class="cards bot" value="5" style="z-index: 5">
+          <img src="/images/cards/6H.png">
+        </div>
+        <div class="cards bot" value="6" style="z-index: 6">
+          <img src="/images/cards/7H.png">
+        </div>
+        <div class="cards bot" value="7" style="z-index: 7">
+          <img src="/images/cards/8H.png">
+        </div>
+        <div class="cards bot" value="8" style="z-index: 8">
+          <img src="/images/cards/9H.png">
+        </div>
+        <div class="cards bot" value="9" style="z-index: 9">
+          <img src="/images/cards/10H.png">
+        </div>
+        <div class="cards bot" value="10" style="z-index: 10">
+          <img src="/images/cards/JH.png">
+        </div>
+        <div class="cards bot" value="11" style="z-index: 11">
+          <img src="/images/cards/QH.png">
+        </div>
+        <div class="cards bot" value="12" style="z-index: 12">
+          <img src="/images/cards/KH.png">
+        </div>
+        <div class="cards bot" value="0" style="z-index: 13">
+          <img src="/images/cards/AH.png">
+        </div>
+        <div class="cards bot" value="1" style="z-index: 14">
+          <img src="/images/cards/2H.png">
+        </div>
+        <div class="cards bot" value="2" style="z-index: 15">
+          <img src="/images/cards/3H.png">
+        </div>
+        <div class="cards bot" value="3" style="z-index: 16">
+          <img src="/images/cards/4H.png">
+        </div>
+        <div class="cards bot" value="4" style="z-index: 17">
+          <img src="/images/cards/5H.png">
+        </div>
+        <div class="cards bot" value="5" style="z-index: 18">
+          <img src="/images/cards/6H.png">
+        </div>
+        <div class="cards bot" value="6" style="z-index: 19">
+          <img src="/images/cards/7H.png">
+        </div>
+        <div class="cards bot" value="7" style="z-index: 20">
+          <img src="/images/cards/8H.png">
+        </div>
+        <div class="cards bot" value="8" style="z-index: 21">
+          <img src="/images/cards/9H.png">
+        </div>
+        <div class="cards bot" value="9" style="z-index: 22">
+          <img src="/images/cards/10H.png">
+        </div>
+        <div class="cards bot" value="10" style="z-index: 23">
+          <img src="/images/cards/JH.png">
+        </div>
+        <div class="cards bot" value="11" style="z-index: 24">
+          <img src="/images/cards/QH.png">
+        </div>
+        <div class="cards bot" value="12" style="z-index: 25">
+          <img src="/images/cards/KH.png">
         </div>
       </div>
 
