@@ -27,13 +27,14 @@
     <!-- Local Scripts -->
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/cardImage.js"></script>
-    <script type="text/javascript" src="/scripts/newClient.js"></script>
+    <script type="text/javascript" src="/scripts/goof-client.js"></script>
     <!-- <script type="text/javascript" src="/scripts/app.js"></script> : DISABLED UNTIL REIMPLEMENTATION -->
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
-
   </head>
+
+
 
   <body>
     <%- include('./partials/_header'); -%>
@@ -92,13 +93,13 @@
           <div class='row'>
             <img src='/images/avatars/avatar.png' />
             <div>
-              <p class='p2-score'>9</p>
+              <p id="opponentName"></p><p class='p2-score'>0</p>
             </div>
           </div>
           <div class='row'>
             <img src='/images/avatars/avatar2.png' />
             <div>
-              <p class='p1-score'>10</p>
+              <p id="playerName"></p><p class='p1-score'>0</p>
             </div>
           </div>
         </div>

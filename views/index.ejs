@@ -22,7 +22,6 @@
 
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
 
     <!-- Scripts for Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -40,17 +39,21 @@
 
     <div class="game container">
       <div class="card">
-        <a href='/game'>
-          <div class="card-body">
-            <h1 class="card-title">Goofyspiel</h1>
-            <img src='/images/graphics/face.png' />
-            <p class="card-text">Play a quick game of Goofyspiel with a random player or your friend.</p>
-          </div>
-        </a>
-    </div>
+        <form class='login-card' action="/goof/new" method="POST">
+          <button id="goofButton" type="submit">
+            <div class="card">
+              <div class="card-body">
+                <h1 class="card-title">Goofyspiel</h1>
+                <img src='/images/graphics/face.png' />
+                <p class="card-text">Play a quick game of Goofyspiel with a random player or your friend.</p>
+              </div>
+            </div>
+          </botton>
+        </form>
+      </div>
 
     <div class="card">
-      <a href='/game'>
+      <a href='/war'>
         <div class="card-body">
           <h1 class="card-title">War</h1>
           <img src='/images/graphics/battle.png' />
@@ -60,7 +63,7 @@
     </div>
 
     <div class="card">
-      <a href='/game'>
+      <a href='/crazy'>
         <div class="card-body">
           <h1 class="card-title">Crazy Eights</h1>
           <img src='/images/graphics/crazy.png' />

@@ -14,20 +14,38 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item active-game" href="/">Game 1</a>
             <a class="dropdown-item active-game" href="/">Game 2</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/archive">Archive</a>
+
+            <% if (username !== undefined) { %>
+              <div class="dropdown-divider"></div>
+              <a class="nav-link" href="/users/archive">archive</a>
+            <% } %>
+
           </div>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/leaderboard">Leaderboard</a>
         </li>
       </ul>
-      <span class="navbar-text username">
-        Logged in as: User1
-      </span>
-      <form class="form-inline">
-        <button class="btn btn-outline-danger" type="button">Logout</button>
-      </form>
+
+      <% if (username === undefined) { %>
+        <div id="username">guest</div>
+        <form class="form-inline" action="/users/login">
+            <button class="btn btn-outline-danger" type="submit">Log in</button>
+        </form>
+        <form class="form-inline" action="/users/register">
+            <button class="btn btn-outline-danger" type="submit">Register</button>
+        </form>
+      <% } else { %>
+        <span class="navbar-text username">
+          Logged in as: <div id="username"><%= username %></div>
+        </span>
+        <form class="form-inline" action="/users/logout" method="POST">
+          <button class="btn btn-outline-danger" type="submit">Logout</button>
+        </form>
+      <% } %>
+
+
+
     </div>
   </nav>
 </header>
