@@ -40,11 +40,13 @@ app.use(cookieSession({
 const usersRoutes = require("./routes/users");
 const goofRoutes = require("./routes/goof");
 const crazyRoutes = require("./routes/crazy");
+const warRoutes = require("./routes/crazy");
 
 // Mount all resource routes
 app.use("/users", usersRoutes());
 app.use("/goof", goofRoutes());
 app.use("/crazy", crazyRoutes());
+app.use("/war", warRoutes());
 
 // Separate them into separate routes files
 app.get("/", (req, res) => {
@@ -55,32 +57,12 @@ app.get("/", (req, res) => {
   res.render("index", templateVars);
 });
 
-// app.get("/login", (req, res) => { * moved to routes/users.js: use "/users/login"
-//   res.render("login");
-// });
-
-// app.get("/register", (req, res) => {
-//   res.render("register");
-// });
-
-app.get("/game", (req, res) => {
+app.get("/leaderboard", (req, res) => {
   const templateVars = {username: undefined};
   if (req.session.user_id) {
     templateVars.username = req.session.user_id;
   }
-  res.render("game", templateVars);
-});
-
-app.get("/war", (req, res) => {
-  res.render("war");
-});
-
-app.get("/archive", (req, res) => {
-  res.render("archive");
-});
-
-app.get("/leaderboard", (req, res) => {
-  res.render("leaderboard");
+  res.render("leaderboard", templateVars);
 });
 
 require('./routes/socket/socket-goof.js')(io);

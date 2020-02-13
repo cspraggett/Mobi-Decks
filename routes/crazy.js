@@ -1,6 +1,8 @@
 const express = require('express');
 const router  = express.Router();
 
+const { generateRandomString, findMatchingRoom } = require('../serverHelper.js');
+
 module.exports = (db) => {
 
   router.get("/", (req, res) => {
@@ -16,8 +18,12 @@ module.exports = (db) => {
   });
 
   router.post("/new", (req, res) => {
-    const newRoomUrl = generateRandomString(10);
-    res.redirect(`/crazy/${newRoomUrl}`);
+    const username = req.session.user_id;
+    let newRoomUrl = findMatchingRoom(username, "crazy");
+    if (newRoomUrl === null) {
+      newRoomUrl = generateRandomString(10);
+    }
+    res.redirect(`${newRoomUrl}`);
   });
 
   return router;

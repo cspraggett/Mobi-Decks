@@ -18,7 +18,6 @@ app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000,
 }));
 
-const {users} = require('../db/tempUsers.js');
 const {getPassFromUser} = require('../serverHelper.js');
 
 // module.exports = (db) => {
@@ -72,8 +71,12 @@ module.exports = (db) => {
     res.render("register", templateVars);
   });
 
-  router.get("/war", (req, res) => {
-    res.render("war");
+  router.get("/archive", (req, res) => {
+    const templateVars = {username: undefined};
+    if (req.session.user_id) {
+      templateVars.username = req.session.user_id;
+    }
+    res.render("archive", templateVars);
   });
 
   router.post("/login", (req, res) => {

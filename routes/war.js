@@ -14,12 +14,12 @@ module.exports = (db) => {
     if (req.session.user_id) {
       templateVars.username = req.session.user_id;
     }
-    res.render("goof", templateVars);
+    res.render("war", templateVars);
   });
 
   router.post("/new", (req, res) => {
     const username = req.session.user_id;
-    let newRoomUrl = findMatchingRoom(username, "goof");
+    let newRoomUrl = findMatchingRoom(username, "war");
     if (newRoomUrl === null) {
       newRoomUrl = generateRandomString(10);
     }
