@@ -111,6 +111,10 @@ class game {
      this.translateCard(card).suit === this.translateCard(this.faceUpCard).suit;
   }
 
+  checkMultipleCards(cards) {
+    return cards.every(this.checkIfCardValid);
+  }
+
   checkIfMove(player) {
     for (const card of this.players[player]) {
       if (this.checkIfCardValid(card) || this.translateCard(card).value === '8') {
