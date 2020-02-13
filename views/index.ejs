@@ -38,8 +38,8 @@
 
 
     <div class="game container">
-      <form class='login-card' action="/goof/new" method="POST">
-        <a href='/goof' target='_blank' id="goofButton" onClick="javascript:this.form.submit();">
+      <form class='login-card' action="/goof/new" method="POST" target="_blank" >
+        <button id="goofButton" type='submit'>
             <div class="card">
               <div class="card-body">
                 <h1 class="card-title">Goofyspiel</h1>
@@ -47,7 +47,7 @@
                 <p class="card-text">Play a quick game of Goofyspiel with a random player or your friend.</p>
               </div>
             </div>
-          </a>
+          </button>
       </form>
 
     <!-- <div class="card">
@@ -60,15 +60,16 @@
       </a>
     </div> -->
 
-    <div class="card">
-        <form class='login-card' action="/crazy/new" method="POST">
-        <a href='/crazy' target='_blank'>
-          <div class="card-body">
-            <h1 class="card-title">Crazy Eights</h1>
-            <img src='/images/graphics/crazy.png' />
-            <p class="card-text">Play a quick game of Crazy Eights with a random player or your friend.</p>
+    <form class='login-card' action="/crazy/new" method="POST" target="_blank">
+      <button id="crazyButton" type='submit'>
+        <div class="card">
+            <div class="card-body">
+              <h1 class="card-title">Crazy Eights</h1>
+              <img src='/images/graphics/crazy.png' />
+              <p class="card-text">Play a quick game of Crazy Eights with a random player or your friend.</p>
+            </div>
           </div>
-        </a>
+        </button>
       </form>
     </div>
 
