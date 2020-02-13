@@ -18,9 +18,8 @@ module.exports = function(io) {
       // console.log('this is goofServer at start: ', goofServer);
 
       // 3. check if player is already in this room
-      if (Object.values(goofServer.players[user_id]).includes(room_id)) {
-        // leave
-      } else {
+      if (!Object.values(goofServer.players[user_id]).includes(room_id) || user_id === 'guest') {
+
         // 4. create room if room does not exist
         if (!goofServer.rooms[room_id]) {
           goofServer.rooms[room_id] = {
@@ -31,7 +30,10 @@ module.exports = function(io) {
         }
         // 5. join room if there is empty slot
         for (const slot in goofServer.rooms[room_id]) {
-          if (goofServer.rooms[room_id][slot] !== "count" && goofServer.rooms[room_id][slot].user === user_id) {
+          if (goofServer.rooms[room_id][slot] !== "count"
+          && goofServer.rooms[room_id][slot].user === user_id
+          && user_id !== 'guest'
+          ) {
             break;
           } else if (goofServer.rooms[room_id][slot].user === null) {
             goofServer.rooms[room_id].count += 1; // room population tracker
@@ -39,7 +41,9 @@ module.exports = function(io) {
             goofServer.rooms[room_id][slot].socket = socket.id;
             socket.emit('system', `{ "type": "announcement", "msg": "you are ${slot}!" }`);
             socket.join(room_id); // actual socket room join
-            if (!Object.values(goofServer.players[user_id]).includes(room_id)) {
+            if (!Object.values(goofServer.players[user_id]).includes(room_id)
+            || user_id === 'guest'
+            ) {
               goofServer.players[user_id][socket.id] = room_id; // user to room tracking system
             }
 
@@ -167,7 +171,6 @@ module.exports = function(io) {
     // 1. when a socket leave server find list of rooms the socket was connected to
     //    delete list if no contents exist
     socket.on('disconnect', function() {
-      // console.log('a player has left');
       let user_id = null;
       let room = null;
       for (const user in goofServer.players) {
@@ -231,12 +234,12 @@ module.exports = function(io) {
           }
 
         }
-        // 6. delete list if it is empty
-        // console.log(goofServer.players[socket.id]);
-        if (goofServer.players[user_id] === {}) {
-          console.log('should delete now');
-          delete goofServer.players[user_id];
-        }
+      }
+      // 6. delete list if it is empty
+      // console.log(goofServer.players[socket.id]);
+      if (goofServer.players[user_id] === {}) {
+        console.log('should delete now');
+        delete goofServer.players[user_id];
       }
 
       console.log('*-connected----------------------');

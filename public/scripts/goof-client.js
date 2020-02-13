@@ -11,6 +11,7 @@ let user_id = null;
 $(function () {
   if ($('#username')) {
     user_id = ($('#username').text());
+    if ($('#username') === 'guest') $('#username').empty();
   } else user_id = 'guest';
 
   //socket initialization

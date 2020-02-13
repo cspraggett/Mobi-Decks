@@ -17,26 +17,23 @@
 
             <% if (username !== undefined) { %>
               <div class="dropdown-divider"></div>
-              <form action="/users/archive" method="GET">
-                <button class="dropdown-item" type="submit">Archive</button>
-              </form>
+              <a class="nav-link" href="/users/archive">archive</a>
             <% } %>
 
           </div>
         </li>
         <li class="nav-item">
-          <form action="/leaderboard" method="GET">
-            <button class="nav-link" type="submit">Leaderboard</button>
-          </form>
+          <a class="nav-link" href="/leaderboard">Leaderboard</a>
         </li>
       </ul>
 
       <% if (username === undefined) { %>
-        <form class="form-inline" action="/users/login" method="GET">
-            <button class="btn btn-outline-danger" type="button">Log in</button>
+        <div id="username">guest</div>
+        <form class="form-inline" action="/users/login">
+            <button class="btn btn-outline-danger" type="submit">Log in</button>
         </form>
-        <form class="form-inline" action="/users/register" method="GET">
-            <button class="btn btn-outline-danger" type="button">Register</button>
+        <form class="form-inline" action="/users/register">
+            <button class="btn btn-outline-danger" type="submit">Register</button>
         </form>
       <% } else { %>
         <span class="navbar-text username">
