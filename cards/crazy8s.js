@@ -138,14 +138,14 @@ class game {
     }
     if (frontEndObject.pickUp) {
       this.takeTopCard(this.players[frontEndObject.player]);
-      if (!this.checkIfMove(this.players[frontEndObject[player]])) {
+      if (!this.checkIfMove(this.players[frontEndObject.player])) {
         this.currentPlayer = ((frontEndObject.player + 1) % 2);
         return;
       }
     }
     if (this.checkIfCardValid(frontEndObject.cards[0])) {
       if (this.translateCard(frontEndObject.card[0]).value === '2') {
-        this.runOf2++;
+        this.runOf2 += frontEndObject.card.length;
         this.pickUpCards(this.players[(frontEndObject.player + 1) % 2], 2 * this.runOf2);
       } else {
         this.runOf2 = 0;
@@ -193,4 +193,4 @@ console.log(g.showCards(g.deck._deck));
 
 // for (let i = 0; i < player1._hand.length; i++) {
 //   console.log(dealer.translateCard(player1._hand[i]));
-// }
+//
