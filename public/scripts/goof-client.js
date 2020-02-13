@@ -11,9 +11,6 @@ let user_id = null;
 $(function () {
   if ($('#username')) {
     user_id = ($('#username').text());
-    console.log(user_id);
-    console.log(user_id);
-    console.log(user_id);
     $('#playerName').text(user_id);
     if ($('#username') === 'guest') $('#username').empty();
   } else user_id = 'guest';
