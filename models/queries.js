@@ -16,29 +16,26 @@ const getArchive = (playerID => {
     join history on game_id = history.id
     where users.id = $1;
   `, [playerID])
-    .then(res => {
-      console.log(res.rows);
-    });
+    .then(res => res.rows);
 });
 // console.log(getArchive(7));
 
 const getLeaderBoard = (() => {
   return db.query(`
-    select users.username, count(results.result) as number_of_wins
-    from results join users on users.id = user_id
-    group by users.username, results.result
+    select history.game_type as game ,users.username,count(results.result) as number_of_wins
+    from results
+    join users on users.id = user_id
+    join history on game_id = history.id
+    group by history.game_type, users.username, results.result
     having results.result = true
-    order by number_of_wins desc
+    order by game desc, number_of_wins desc
     Limit 10;
 
   `,)
-    .then(res => {
-
-      console.log(res.rows);
-    });
+    .then(res => res.rows);
 });
 
-// getLeaderBoard();
+// getLeaderBoard('crazy');
 
 const updateResults = ((player1, player2, game, result) => {
   let p1, p2;
@@ -75,7 +72,20 @@ const updateResults = ((player1, player2, game, result) => {
         returning *;
       `, [p2, res.rows[0].game_id, (result === 2 ? true : false)]);
     })
-    .then(res => console.log(res));
+    .then(res => res.rows);
 });
 
-updateResults('bob', 'Anne', 'goof', 1);
+// updateResults('bob', 'Anne', 'goof', 1);
+module.exports = {
+  updateResults, getLeaderBoard, getArchive
+};
+
+
+
+// let test;
+// getLeaderBoard()
+//   .then(res =>{
+//     test = res;
+//     console.log(test);
+//   });
+
