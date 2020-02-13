@@ -11,7 +11,6 @@ const PORT       = process.env.PORT || 8080;
 
 const bodyParser = require("body-parser");
 const sass       = require("node-sass-middleware");
-const cookieSession = require('cookie-session');
 // const morgan     = require('morgan');
 
 // PG database client/connection setup
@@ -30,61 +29,44 @@ app.use("/styles", sass({
   outputStyle: 'expanded'
 }));
 app.use(express.static("public"));
+const cookieSession = require('cookie-session');
 app.use(cookieSession({
   name: 'session',
   secret: 'test',
   maxAge: 24 * 60 * 60 * 1000,
-}),
-);
+}));
 
 // Separated Routes for each Resource
 const usersRoutes = require("./routes/users");
 const goofRoutes = require("./routes/goof");
+const crazyRoutes = require("./routes/crazy");
+const warRoutes = require("./routes/crazy");
 
 // Mount all resource routes
-// app.use("/users", usersRoutes(db));
-// app.use("/goof", goofRoutes(db));
+app.use("/users", usersRoutes());
+app.use("/goof", goofRoutes());
+app.use("/crazy", crazyRoutes());
+app.use("/war", warRoutes());
 
 // Separate them into separate routes files
 app.get("/", (req, res) => {
-  res.render("index");
-});
-
-// app.get("/login", (req, res) => { * moved to routes/users.js: use "/users/login"
-//   res.render("login");
-// });
-
-// app.get("/register", (req, res) => {
-//   res.render("register");
-// });
-
-app.get("/game", (req, res) => {
-  // res.sendFile(__dirname + '/views/game.html');
-  res.render("game");
-});
-
-app.get("/war", (req, res) => {
-  res.render("war");
-});
-
-app.get("/crazy", (req, res) => {
-  res.render("crazy");
-});
-
-app.get("/archive", (req, res) => {
-  res.render("archive");
+  const templateVars = {username: undefined};
+  if (req.session.user_id) {
+    templateVars.username = req.session.user_id;
+  }
+  res.render("index", templateVars);
 });
 
 app.get("/leaderboard", (req, res) => {
-  res.render("leaderboard");
+  const templateVars = {username: undefined};
+  if (req.session.user_id) {
+    templateVars.username = req.session.user_id;
+  }
+  res.render("leaderboard", templateVars);
 });
 
-app.get("/game2/:random", (req, res) => {
-  res.render("newSocket");
-});
-
-require('./routes/socket/socket.js')(io);
-require('./routes/socket/newSocket.js')(io);
+require('./routes/socket/socket-goof.js')(io);
+require('./routes/socket/socket-crazy.js')(io);
 
 http.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

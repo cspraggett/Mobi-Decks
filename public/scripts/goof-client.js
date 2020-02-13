@@ -1,22 +1,27 @@
 let data = {};
 const handDivs = {player: [], opponent: []};
-const socket = io('http://localhost:8080/game');
+const socket = io('http://localhost:8080/goof');
 const room_id = window.location.pathname;
+let user_id = null;
 
 //---------------------------------------------------------/
 // socket specific events ---------------------------------/
 //---------------------------------------------------------/
 
 $(function () {
-  console.log('start');
+  if ($('#username')) {
+    user_id = ($('#username').text());
+    console.log(user_id);
+    console.log(user_id);
+    console.log(user_id);
+    $('#playerName').text(user_id);
+    if ($('#username') === 'guest') $('#username').empty();
+  } else user_id = 'guest';
+
+
   //socket initialization
   socket.on('connect', () => {
-    socket.emit('join', room_id);
-
-    //socket disconnect message
-    socket.on('disconnect', () => {
-      socket.emit('leave', 'hello');
-    })
+    socket.emit('join', `{ "username": "${user_id}", "room_id": "${room_id}" }`);
   })
 
   // system message: include clear table at start of game
@@ -27,13 +32,16 @@ $(function () {
     if (text.type === 'start') {
       $('.p2-won').empty();
       $('.p2-hand').empty();
-      // $('.bid-table').empty();
       $('.bids').empty();
       $('.dealer-bid').empty();
       $('.p1-hand').empty();
       $('.p1-won').empty();
-      $('.p2-score').text(0);
-      $('.p1-score').text(0);
+      // $('.p2-score').text(0);
+      // $('.p1-score').text(0);
+    }
+
+    if(text.type === 'opponent') {
+      $('#opponentName').text(text.msg);
     }
 
   });
@@ -102,8 +110,8 @@ $(function () {
       setTimeout(() => {
         $('.bids').empty();
         $('.dealer-bid').empty();
-        $('.p2-score').text(data.oScore);
-        $('.p1-score').text(data.pScore);
+        $('.p2-score').text(' ' + data.oScore);
+        $('.p1-score').text(' ' + data.pScore);
         dealerPlay(data.dealer._hand[0]);
       }, 1000);
     } else if (data.phase === 14) {
@@ -115,7 +123,7 @@ $(function () {
   })
 
   // when game update information is received
-  socket.on('gameUpdate:bid', function(msg){
+  socket.on('gameUpdate:goof', function(msg){
   const update = JSON.parse(msg);
 
     if (data.player._id !== update.player * 1) {
@@ -173,7 +181,7 @@ $(function () {
       && $(event.target.parentNode).attr("value") !== undefined
       ) {
       cardValue = $(event.target.parentNode).attr("value");
-      socket.emit('gameUpdate', `{"room_id": "${room_id}", "player": "${data.player._id}", "item": "bid", "value": "${cardValue}" }`);
+      socket.emit('gameUpdate:goof', `{"room_id": "${room_id}", "player": "${data.player._id}", "item": "bid", "value": "${cardValue}" }`);
       data.player.ready = false;
     }
   });

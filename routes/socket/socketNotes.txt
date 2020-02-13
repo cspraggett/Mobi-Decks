@@ -1,0 +1,36 @@
+James' Notes
+
+I've tried to refactor common elements of these socket javascript files
+but was unsuccessful and time's short until the deadline.
+I'll revisit again to try factor them out at later date.
+
+socket-goof.js was the first one to be completed and others should be
+following it's guidelines. Portions regard saving user_id, room_id, socket.id
+data(ones with numbered *perhaps outdated* comments) should be
+mostly identical across the pages.
+
+The above gathered data is saved in db gameData.js. It is mostly empty
+looking at first look, but socket-$(game).js is written to insert
+data as players join games and delete them as they leave. The data has
+been exported to new page so that it may be accessed by multiple files
+if necessary.
+
+routing to and away from client ejs pages are combined effort of these
+socket-$(game).js files and respective js files in routes(folder above).
+There are some degree of double checks between pairs of them
+to eliminate false tracking, and so far it's been mostly accurate,
+but there still can be leaks which I haven't found out.
+
+Current Goals
+(project requirements)
+- implement at least 1 more game
+- push result of each games to database
+- complete leaderboard & archive based on those data
+- create new tabs when a player attempts to join new game
+- add active games for given player to drop-down list
+
+(lessor priorities)
+- allow game to stay when someone disconnect,
+  resume when the player returns
+- smooth out game start rather than abrupt start as
+  another player join
