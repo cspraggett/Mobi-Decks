@@ -7,6 +7,18 @@
 
 const express = require('express');
 const router  = express.Router();
+const app     = express();
+
+app.set("view engine", "ejs");
+const cookieSession = require('cookie-session');
+app.use(cookieSession({
+  name: 'session',
+  httpOnly:false,
+  secret: 'test',
+  maxAge: 24 * 60 * 60 * 1000,
+}));
+
+const {getPassFromUser} = require('../serverHelper.js');
 
 // module.exports = (db) => {
 //   router.get("/", (req, res) => {
@@ -24,6 +36,17 @@ const router  = express.Router();
 //   return router;
 // };
 
+// helper funcs
+// const getPassFromUser = function(username) {
+//   for (const user in users) {
+//     if (users[user].name === username) {
+//       return users[user].password;
+//     }
+//   }
+// };
+
+// user routes
+
 module.exports = (db) => {
 
   router.get("/", (req, res) => {
@@ -35,17 +58,40 @@ module.exports = (db) => {
       res.redirect('/');
       return;
     }
-    const templateVars = {user: [req.session.user_id]};
+    const templateVars = {username: undefined};
     res.render("login", templateVars);
   });
 
   router.get("/register", (req, res) => {
-    res.render("register");
+    if (req.session.user_id) {
+      res.redirect('/');
+      return;
+    }
+    const templateVars = {username: undefined};
+    res.render("register", templateVars);
   });
 
-  router.get("/war", (req, res) => {
-    res.render("war");
+  router.get("/archive", (req, res) => {
+    const templateVars = {username: undefined};
+    if (req.session.user_id) {
+      templateVars.username = req.session.user_id;
+    }
+    res.render("archive", templateVars);
   });
+
+  router.post("/login", (req, res) => {
+    let user = req.body.username;
+    let pass = getPassFromUser(req.body.username);
+    if (pass === req.body.password) {
+      req.session.user_id = user;
+    }
+    res.redirect("/");
+  });
+
+  router.post("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/");
+  })
 
   return router;
 };
