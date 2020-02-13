@@ -13,6 +13,9 @@ const bodyParser = require("body-parser");
 const sass       = require("node-sass-middleware");
 // const morgan     = require('morgan');
 
+// const {db} = require('./models/db');
+const {getLeaderBoard} = require('./models/queries');
+
 // PG database client/connection setup
 // const { Pool } = require('pg');
 // const dbParams = require('./lib/db.js');
@@ -62,7 +65,14 @@ app.get("/leaderboard", (req, res) => {
   if (req.session.user_id) {
     templateVars.username = req.session.user_id;
   }
-  res.render("leaderboard", templateVars);
+  console.log('in /leaderboard:');
+  getLeaderBoard()
+    .then(results => {
+      console.log(results);
+      templateVars['leaderBoard'] = results;
+      res.render("leaderboard", templateVars);
+    });
+  // res.render("leaderboard", templateVars);
 });
 
 require('./routes/socket/socket-goof.js')(io);
