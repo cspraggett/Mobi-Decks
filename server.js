@@ -18,10 +18,8 @@ const cookieSession = require('cookie-session');
 // const { Pool } = require('pg');
 // const dbParams = require('./lib/db.js');
 // const db = new Pool(dbParams);
-const {getUsers, db} = require('./models/db');
 // db.connect();
 
-console.log(getUsers());
 // app.use(morgan('dev'));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
