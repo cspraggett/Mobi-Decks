@@ -32,7 +32,7 @@ const findMatchingRoom = function(username, gametype) {
     if (goofServer.rooms[room].player1.user === null || goofServer.rooms[room].player2.user === null) {
       console.log('passed null');
       if (goofServer.rooms[room].player1.user !== username
-        || goofServer.rooms[room].player2.user !== username
+        && goofServer.rooms[room].player2.user !== username
         || username === 'guest'
       ) {
         console.log('passed guest');
