@@ -1,4 +1,13 @@
 const {goofServer, crazyServer } = require('./db/gameData.js');
+const {users} = require('./db/tempUsers.js');
+
+const getPassFromUser = function(username) {
+  for (const user in users) {
+    if (users[user].name === username) {
+      return users[user].password;
+    }
+  }
+};
 
 const generateRandomString = function(n) {
   let result = '';
@@ -28,4 +37,4 @@ const findMatchingRoom = function(username, gametype) {
   return foundRoom;
 }
 
-module.exports = { generateRandomString, findMatchingRoom };
+module.exports = { generateRandomString, findMatchingRoom, getPassFromUser };

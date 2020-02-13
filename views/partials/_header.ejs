@@ -32,7 +32,7 @@
         </form>
       <% } else { %>
         <span class="navbar-text username">
-          Logged in as: <%= username %>
+          Logged in as: <div id="username"><%= username %></div>
         </span>
         <form class="form-inline" action="/users/logout" method="POST">
           <button class="btn btn-outline-danger" type="submit">Logout</button>

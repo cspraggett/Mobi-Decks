@@ -19,6 +19,7 @@ app.use(cookieSession({
 }));
 
 const {users} = require('../db/tempUsers.js');
+const {getPassFromUser} = require('../serverHelper.js');
 
 // module.exports = (db) => {
 //   router.get("/", (req, res) => {
@@ -37,13 +38,13 @@ const {users} = require('../db/tempUsers.js');
 // };
 
 // helper funcs
-const getPassFromUser = function(username) {
-  for (const user in users) {
-    if (users[user].name === username) {
-      return users[user].password;
-    }
-  }
-};
+// const getPassFromUser = function(username) {
+//   for (const user in users) {
+//     if (users[user].name === username) {
+//       return users[user].password;
+//     }
+//   }
+// };
 
 // user routes
 

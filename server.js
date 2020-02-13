@@ -42,14 +42,9 @@ const goofRoutes = require("./routes/goof");
 const crazyRoutes = require("./routes/crazy");
 
 // Mount all resource routes
-<<<<<<< 6a5424e6a9569c0d78bbc903c6393032a4f95db8
-// app.use("/users", usersRoutes(db));
-// app.use("/goof", goofRoutes(db));
-=======
-app.use("/users", usersRoutes(db));
-app.use("/goof", goofRoutes(db));
-app.use("/crazy", crazyRoutes(db));
->>>>>>> made groundwork for crazy8 game, prepared to add username to have effect in the game
+app.use("/users", usersRoutes());
+app.use("/goof", goofRoutes());
+app.use("/crazy", crazyRoutes());
 
 // Separate them into separate routes files
 app.get("/", (req, res) => {
@@ -88,7 +83,7 @@ app.get("/leaderboard", (req, res) => {
   res.render("leaderboard");
 });
 
-require('./routes/socket/socket.js')(io);
+require('./routes/socket/socket-goof.js')(io);
 require('./routes/socket/socket-crazy.js')(io);
 
 http.listen(PORT, () => {

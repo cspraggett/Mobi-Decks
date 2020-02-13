@@ -9,11 +9,13 @@ let user_id = null;
 //---------------------------------------------------------/
 
 $(function () {
-  user_id = ($('.p1-score').text());
-  $('.p1-score').text(0);
+  if ($('#username')) {
+    user_id = ($('#username').text());
+  } else user_id = 'guest';
+
   //socket initialization
   socket.on('connect', () => {
-    socket.emit('join', `{ "username": "${user_id}", "room_id": "${room_id}"}`);
+    socket.emit('join', `{ "username": "${user_id}", "room_id": "${room_id}" }`);
   })
 
   // system message: include clear table at start of game
