@@ -13,6 +13,7 @@ app.set("view engine", "ejs");
 const cookieSession = require('cookie-session');
 app.use(cookieSession({
   name: 'session',
+  httpOnly:false,
   secret: 'test',
   maxAge: 24 * 60 * 60 * 1000,
 }));

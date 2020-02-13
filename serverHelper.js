@@ -13,14 +13,12 @@ const generateRandomString = function(n) {
 };
 
 const findMatchingRoom = function(username, gametype) {
-  console.log('username', username);
   let type = {};
   if (gametype === 'goof') type = goofServer;
   else if (gametype === 'crazy') type = crazyServer;
 
   let foundRoom = null;
   for (const room in goofServer.rooms) {
-    console.log(room);
     if (goofServer.rooms[room].player1 === null && goofServer.rooms[room].player1 !== username
       || goofServer.rooms[room].player2 === null && goofServer.rooms[room].player2 !== username) {
       foundRoom = room;

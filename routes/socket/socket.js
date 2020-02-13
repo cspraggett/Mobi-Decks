@@ -10,7 +10,11 @@ module.exports = function(io) {
   }
 
     // 2. receive room name, add player info
-    socket.on('join', (room_id) => {
+    socket.on('join', (joinMsg) => {
+      console.log('this is joinMsg here', joinMsg);
+      const joinData = JSON.parse(joinMsg);
+      const user_id = joinData.username;
+      const room_id = joinData.room_id;
 
       // console.log('this is goofServer at start: ', goofServer);
 

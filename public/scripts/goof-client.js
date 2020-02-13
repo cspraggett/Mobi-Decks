@@ -2,16 +2,18 @@ let data = {};
 const handDivs = {player: [], opponent: []};
 const socket = io('http://localhost:8080/goof');
 const room_id = window.location.pathname;
+let user_id = null;
 
 //---------------------------------------------------------/
 // socket specific events ---------------------------------/
 //---------------------------------------------------------/
 
 $(function () {
-  console.log('start');
+  user_id = ($('.p1-score').text());
+  $('.p1-score').text(0);
   //socket initialization
   socket.on('connect', () => {
-    socket.emit('join', room_id);
+    socket.emit('join', `{ "username": "${user_id}", "room_id": "${room_id}"}`);
   })
 
   // system message: include clear table at start of game
