@@ -9,6 +9,8 @@ const express = require('express');
 const router  = express.Router();
 const app     = express();
 
+const {getArchive} = require('../models/queries');
+
 app.set("view engine", "ejs");
 const cookieSession = require('cookie-session');
 app.use(cookieSession({
@@ -75,6 +77,13 @@ module.exports = (db) => {
     const templateVars = {username: undefined};
     if (req.session.user_id) {
       templateVars.username = req.session.user_id;
+      getArchive(templateVars.username)
+        .then(result => {
+          console.log('in archive:', result);
+          templateVars['archive'] = result;
+          res.render('archive', templateVars);
+          return;
+        });
     }
     res.render("archive", templateVars);
   });
@@ -91,7 +100,7 @@ module.exports = (db) => {
   router.post("/logout", (req, res) => {
     req.session = null;
     res.redirect("/");
-  })
+  });
 
   return router;
 };
