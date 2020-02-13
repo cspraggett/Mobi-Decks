@@ -11,6 +11,7 @@ module.exports = function(io) {
       const joinData = JSON.parse(joinMsg);
       const user_id = joinData.username;
       const room_id = joinData.room_id;
+
       if (!goofServer.players[user_id]) {
         goofServer.players[user_id] = {};
       }
