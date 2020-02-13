@@ -15,11 +15,13 @@ const cookieSession = require('cookie-session');
 // const morgan     = require('morgan');
 
 // PG database client/connection setup
-const { Pool } = require('pg');
-const dbParams = require('./lib/db.js');
-const db = new Pool(dbParams);
-db.connect();
+// const { Pool } = require('pg');
+// const dbParams = require('./lib/db.js');
+// const db = new Pool(dbParams);
+const {getUsers, db} = require('./models/db');
+// db.connect();
 
+console.log(getUsers());
 // app.use(morgan('dev'));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -42,8 +44,8 @@ const usersRoutes = require("./routes/users");
 const goofRoutes = require("./routes/goof");
 
 // Mount all resource routes
-app.use("/users", usersRoutes(db));
-app.use("/goof", goofRoutes(db));
+// app.use("/users", usersRoutes(db));
+// app.use("/goof", goofRoutes(db));
 
 // Separate them into separate routes files
 app.get("/", (req, res) => {
