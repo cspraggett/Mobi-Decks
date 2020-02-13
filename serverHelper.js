@@ -24,14 +24,21 @@ const generateRandomString = function(n) {
 const findMatchingRoom = function(username, gametype) {
   let type = {};
   if (gametype === 'goof') type = goofServer;
+  else if (gametype === 'war') type = warServer;
   else if (gametype === 'crazy') type = crazyServer;
 
   let foundRoom = null;
   for (const room in goofServer.rooms) {
-    if (goofServer.rooms[room].player1 === null && goofServer.rooms[room].player1 !== username
-      || goofServer.rooms[room].player2 === null && goofServer.rooms[room].player2 !== username) {
-      foundRoom = room;
-      break;
+    if (goofServer.rooms[room].player1.user === null || goofServer.rooms[room].player2.user === null) {
+      console.log('passed null');
+      if (goofServer.rooms[room].player1.user !== username
+        || goofServer.rooms[room].player2.user !== username
+        || username === 'guest'
+      ) {
+        console.log('passed guest');
+        foundRoom = room;
+        break;
+      }
     }
   }
   return foundRoom;

@@ -27,6 +27,7 @@ module.exports = (db) => {
   router.post("/new", (req, res) => {
     const username = req.session.user_id;
     let newRoomUrl = findMatchingRoom(username, "goof");
+    console.log('this is newRoomUrl: ', newRoomUrl);
     if (newRoomUrl === null) {
       newRoomUrl = generateRandomString(10);
     }
