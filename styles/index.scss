@@ -5,6 +5,17 @@ body .game {
     flex-wrap: wrap;
     padding-top: 8vh;
 }
+
+#goofButton {
+  border: none;
+  background-color: transparent;
+}
+
+#crazyButton {
+  border: none;
+  background-color: transparent;
+}
+
 .game .card {
   width: 18rem;
   height: 36vh;
