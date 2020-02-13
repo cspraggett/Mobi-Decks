@@ -51,6 +51,12 @@ module.exports = function(io) {
             // when there are 2 connected players send notification to all and run update function
             if (goofServer.rooms[room_id].count === 2) {
               io.of('/goof').to(room_id).emit('system', `{ "type": "start", "msg": "2 players detected!" }`);
+              io.of('/goof').to(goofServer.rooms[room_id].player1.socket).emit('system',
+                `{ "type": "opponent", "msg": "${goofServer.rooms[room_id].player2.user}" }`
+              );
+              io.of('/goof').to(goofServer.rooms[room_id].player2.socket).emit('system',
+                `{ "type": "opponent", "msg": "${goofServer.rooms[room_id].player1.user}" }`
+              );
               if (room_id.substring(1, 5 === 'goof')) startGoofMatch(room_id);
             }
             break;

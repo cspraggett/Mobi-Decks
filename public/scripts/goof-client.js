@@ -11,8 +11,13 @@ let user_id = null;
 $(function () {
   if ($('#username')) {
     user_id = ($('#username').text());
+    console.log(user_id);
+    console.log(user_id);
+    console.log(user_id);
+    $('#playerName').text(user_id);
     if ($('#username') === 'guest') $('#username').empty();
   } else user_id = 'guest';
+
 
   //socket initialization
   socket.on('connect', () => {
@@ -27,13 +32,16 @@ $(function () {
     if (text.type === 'start') {
       $('.p2-won').empty();
       $('.p2-hand').empty();
-      // $('.bid-table').empty();
       $('.bids').empty();
       $('.dealer-bid').empty();
       $('.p1-hand').empty();
       $('.p1-won').empty();
-      $('.p2-score').text(0);
-      $('.p1-score').text(0);
+      // $('.p2-score').text(0);
+      // $('.p1-score').text(0);
+    }
+
+    if(text.type === 'opponent') {
+      $('#opponentName').text(text.msg);
     }
 
   });
@@ -102,8 +110,8 @@ $(function () {
       setTimeout(() => {
         $('.bids').empty();
         $('.dealer-bid').empty();
-        $('.p2-score').text(data.oScore);
-        $('.p1-score').text(data.pScore);
+        $('.p2-score').text(' ' + data.oScore);
+        $('.p1-score').text(' ' + data.pScore);
         dealerPlay(data.dealer._hand[0]);
       }, 1000);
     } else if (data.phase === 14) {
