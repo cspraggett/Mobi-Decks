@@ -1,5 +1,25 @@
+const reverser = function(suit, val) {
+  const reverse = {
+    'club': {
+      'A': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5, '7': 6, '8': 7, '9': 8, '10': 9, 'J': 10, 'Q': 11, 'K': 12
+    },
+    'spade': {
+      'A': 13, '2': 14, '3': 15, '4': 16, '5': 17, '6': 18, '7': 19, '8': 20, '9': 21, '10': 22, 'J': 23, 'Q': 24, 'K': 25
+    },
+    'heart': {
+      'A': 26, '2': 27, '3': 28, '4': 29, '5': 30, '6': 31, '7': 32, '8': 33, '9': 34, '10': 35, 'J': 36, 'Q': 37, 'K': 38
+    },
+    'diamond': {
+      'A': 39, '2': 40, '3': 41, '4': 42, '5': 43, '6': 44, '7': 45, '8': 46, '9': 47, '10': 48, 'J': 49, 'Q': 50, 'K': 51
+    }
+  }
+  return reverse[suit][val];
+};
+
 let data = {};
 const handDivs = {player: [], opponent: []};
+let result = [];
+let message = "";
 const socket = io('http://localhost:8080/crazy');
 const room_id = window.location.pathname;
 let user_id = null;
@@ -48,12 +68,11 @@ $(function () {
   // display current face up card
   const placeFaceUpCard = function(card) {
     $('.place-pile').empty();
-    console.log(translateCard(card[0][0]).suit);
-    console.log(card[0][0] % 13);
+    console.log(translateCard(card[0][0]).suit, translateCard(card[0][0]).n);
     $('.place-pile').append($(
       cardImage
       [translateCard(card[0][0]).suit]
-      [card[0][0] % 13]
+      [translateCard(card[0][0]).n]
     ))
   };
 
@@ -72,6 +91,7 @@ $(function () {
           opponentCards = data.crazy8.players['0']._hand;
         }
 
+        console.log(translateCard(playerCards[index]).suit, translateCard(playerCards[index]).value);
         // make new divs and place image inside
         let innerDivTop = $(`<div class="cards">`).append($(
           cardImage[translateCard(opponentCards[index]).suit][translateCard(opponentCards[index]).n]
@@ -194,17 +214,33 @@ $(function () {
       data.ready === true
       && $(event.target.parentNode).attr("value") !== undefined
       ) {
+      console.log('picked card:');
       console.log($(event.target.parentNode).attr("value"), $(event.target.parentNode).attr("suit"));
 
-      socket.emit(
-      'gameUpdate:crazy',
-      `{"room_id": "${room_id}",
-      "player": "${data.playerNum}", "item": "",
-      "value": "${ $(event.target.parentNode).attr("value") }",
-      "suit": "${ $(event.target.parentNode).attr("suit") }"}`
-      );
-      data.ready = false;
+      console.log('adding class');
+      $(event.target.parentNode).addClass("pick");
+      result.push(reverser(
+        $(event.target.parentNode).attr("suit"),
+        $(event.target.parentNode).attr("value")
+      ));
+      console.log(result);
+
+
+      message = `{ "room_id": "${room_id}", "player": "${parseInt(data.playerNum)}", "item": "", "result": ${ JSON.stringify(result) } }`;
+
+      data.ready = true;
+    } else if ($(event.target.parentNode).attr("value") === undefined) {
+      console.log('removing class');
+      $($(".pick")).removeClass("pick");
+      result = [];
     }
   });
-});
 
+  $(".turn-button").on('click', function(event) {
+    console.log('sending message: ', message);
+    socket.emit('gameUpdate:crazy-picks', message);
+  })
+
+  // when player draws a card
+
+});

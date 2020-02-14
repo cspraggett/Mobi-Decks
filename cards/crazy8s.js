@@ -11,8 +11,9 @@ class CrazyPlayer extends Player {
   }
 
   removePlayedCards(player, cards) {
+    console.log('rem played card:', player._hand, cards.length);
     for (const card of cards) {
-      Deck.removeInnerCard(card, player._hand);
+      player._hand = Deck.removeInnerCard(card, player._hand);
     }
   }
 
@@ -31,6 +32,8 @@ class game {
   }
 
   changeFaceUpCard(card) {
+    console.log('this is the card',card)
+    //this.faceUpCard = Array.card.push(this.faceUpCard);
     this.faceUpCard.unshift(card);
   }
 
@@ -107,8 +110,12 @@ class game {
   }
 
   checkIfCardValid(card) {
-    return this.translateCard(card).value === this.translateCard(this.faceUpCard).suit ||
+    return this.translateCard(card).value === this.translateCard(this.faceUpCard).value ||
      this.translateCard(card).suit === this.translateCard(this.faceUpCard).suit;
+  }
+
+  checkMultipleCards(cards) {
+    return cards.every(this.checkIfCardValid);
   }
 
   checkIfMove(player) {
@@ -133,38 +140,56 @@ class game {
   }
 
   makeMove(frontEndObject) {
+    console.log('makeMove initiated');
+    console.log('deck start:', this.deck._deck, this.deck._deck.length);
+    console.log('current player card:', frontEndObject.cards);
     if (this.deck._deck.length === 0) {
+      console.log('if there are cards in deck');
       this.moveFaceUpToDeck();
     }
     if (frontEndObject.pickUp) {
+      console.log('--pick up--')
       this.takeTopCard(this.players[frontEndObject.player]);
       if (!this.checkIfMove(this.players[frontEndObject.player])) {
+        console.log('checking for valid move');
         this.currentPlayer = ((frontEndObject.player + 1) % 2);
         return;
       }
     }
     if (this.checkIfCardValid(frontEndObject.cards[0])) {
-      if (this.translateCard(frontEndObject.card[0]).value === '2') {
-        this.runOf2 += frontEndObject.card.length;
+      console.log('checking if card is valid');
+      if (this.translateCard(frontEndObject.cards[0]).value === '2') {
+        console.log('if 2 is down')
+        this.runOf2 += frontEndObject.cards.length;
         this.pickUpCards(this.players[(frontEndObject.player + 1) % 2], 2 * this.runOf2);
       } else {
+        console.log('if 2 is not down')
         this.runOf2 = 0;
       }
+      console.log('about to exit:', this.players[0]._hand);
       this.changeFaceUpCard(frontEndObject.cards[frontEndObject.cards.length - 1]);
-      this.players[frontEndObject.player].removePlayedCards(frontEndObject.cards, this.players[frontEndObject.player]);
+      this.players[frontEndObject.player].removePlayedCards(this.players[frontEndObject.player], frontEndObject.cards);
       this.currentPlayer = ((frontEndObject.player + 1) % 2);
+      console.log(this.players[0]._hand);
+      console.log(this.players[1]._hand);
+      console.log('deck start:', this.deck._deck, this.deck._deck.length);
+      console.log('face up:', this.faceUpCard);
+    } else {
+      console.log('invalid');
     }
+    // console.log('p1:', g.players[0]._hand);
+    // console.log('p2:', g.players[1]._hand);
   }
 
 }
 
-debugger;
-const g = new game();
+// debugger;
+// const g = new game();
 
-const frontEndObject = {player: 0, cards: [0], newSuit: null};
+// const frontEndObject = {player: 0, cards: [0], newSuit: null};
 
 // console.log(g.showCards(g.players[0]._hand));
-g.pickUpCards(g.players[0], 2);
+// g.pickUpCards(g.players[0], 2);
 // console.log(g.showCards(g.players[0]._hand));
 // console.log(g.showCards(g.player1._hand));
 // console.log(g.showCards(g.deck._deck));
@@ -193,10 +218,6 @@ g.pickUpCards(g.players[0], 2);
 
 // for (let i = 0; i < player1._hand.length; i++) {
 //   console.log(dealer.translateCard(player1._hand[i]));
-<<<<<<< 02551d65dcaef7618adbd2d7feccc8f231300ae4
-//
-=======
 // }
 
 module.exports = { game };
->>>>>>> middle of making crazy-client

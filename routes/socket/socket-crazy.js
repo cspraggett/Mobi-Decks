@@ -81,12 +81,25 @@ module.exports = function(io) {
       }
     })
 
-    socket.on('gameUpdate:crazy', (msg) => {
+    socket.on('gameUpdate:crazy-picks', (msg) => {
       const data = JSON.parse(msg);
+      const player = parseInt(data.player);
       const room_id = data.room_id;
-      console.log(data);
-      console.log('updating');
+      let query = {player, cards: data.result};
+      gameData.crazy[room_id].crazy8.position = 0;
 
+      console.log(gameData.crazy[room_id].crazy8.players)
+      console.log(gameData.crazy[room_id].crazy8.position)
+      console.log(gameData.crazy[room_id].crazy8.faceUpCard)
+      console.log(gameData.crazy[room_id].crazy8.runOf2)
+      console.log('before ----------------------');
+      console.log(query);
+      gameData.crazy[room_id].crazy8.makeMove(query);
+      console.log('after -----------------------');
+      console.log(gameData.crazy[room_id].crazy8.players)
+      console.log(gameData.crazy[room_id].crazy8.position)
+      console.log(gameData.crazy[room_id].crazy8.faceUpCard)
+      console.log(gameData.crazy[room_id].crazy8.runOf2)
     //   if (data.item === 'bid') {
     //     let currentPlayer = `player${data.player}`;
     //     gameData.crazy[room_id][currentPlayer].currentBid = parseInt(data.value);
@@ -129,6 +142,8 @@ module.exports = function(io) {
     // send each player their own data and send everyone dealer data
     const startCrazyMatch = function(room_id) {
       const crazy8 = new game();
+      crazy8.players[0].position = 0;
+      crazy8.players[1].position = 1;
 
       // assign initial values
       gameData.crazy[room_id] = {
@@ -148,7 +163,7 @@ module.exports = function(io) {
         ready: false,
         crazy8
       }));
-    //   gameData.crazy[room_id].phase = 1;
+      gameData.crazy[room_id].phase = 1;
     };
 
 

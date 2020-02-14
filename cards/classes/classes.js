@@ -26,7 +26,11 @@ class Deck {
   }
 
   static removeInnerCard(c, deck) {
-    return  deck.filter(cur => cur !== c);
+    console.log('in remove:', c, deck)
+    console.log(typeof c)
+    console.log(typeof deck[0])
+    deck =  deck.filter(cur => cur !== c);
+    return deck;
   }
 
   deal(numCards) {
