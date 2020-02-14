@@ -81,6 +81,7 @@ module.exports = function(io) {
       }
     })
 
+<<<<<<< HEAD
     socket.on('gameUpdate:crazy-draws', (msg) => {
       const data = JSON.parse(msg);
       const player = parseInt(data.player);
@@ -88,11 +89,17 @@ module.exports = function(io) {
       let query = {player, pickUp: data.pickUp};
     })
 
+=======
+>>>>>>> 497106d179dad73e68aed5e25e00fe09807457c5
     socket.on('gameUpdate:crazy-picks', (msg) => {
       const data = JSON.parse(msg);
       const player = parseInt(data.player);
       const room_id = data.room_id;
       let query = {player, cards: data.result};
+<<<<<<< HEAD
+=======
+      gameData.crazy[room_id].crazy8.position = 0;
+>>>>>>> 497106d179dad73e68aed5e25e00fe09807457c5
 
       console.log(gameData.crazy[room_id].crazy8.players)
       console.log(gameData.crazy[room_id].crazy8.position)
@@ -148,15 +155,22 @@ module.exports = function(io) {
     // send each player their own data and send everyone dealer data
     const startCrazyMatch = function(room_id) {
       const crazy8 = new game();
+<<<<<<< HEAD
       crazy8.position = 0;
       crazy8.players[0].position = 0;
       crazy8.players[1].position = 1;
       console.log(crazy8);
+=======
+      crazy8.players[0].position = 0;
+      crazy8.players[1].position = 1;
+
+>>>>>>> 497106d179dad73e68aed5e25e00fe09807457c5
       // assign initial values
       gameData.crazy[room_id] = {
         phase: 0,
         crazy8
       }
+<<<<<<< HEAD
 
       io.of('/crazy').to(crazyServer.rooms[room_id].player1.socket).emit('gamePhase', JSON.stringify({
         playerNum: 0,
@@ -173,6 +187,24 @@ module.exports = function(io) {
       gameData.crazy[room_id].phase = 1;
     };
 
+=======
+
+      io.of('/crazy').to(crazyServer.rooms[room_id].player1.socket).emit('gamePhase', JSON.stringify({
+        playerNum: 0,
+        phase: 0,
+        ready: false,
+        crazy8
+      }));
+      io.of('/crazy').to(crazyServer.rooms[room_id].player2.socket).emit('gamePhase', JSON.stringify({
+        playerNum: 1,
+        phase: 0,
+        ready: false,
+        crazy8
+      }));
+      gameData.crazy[room_id].phase = 1;
+    };
+
+>>>>>>> 497106d179dad73e68aed5e25e00fe09807457c5
 
 
     // // when a player type something in chat display message to all: DISABLED UNTIL REIMPLEMENTATION

@@ -118,6 +118,7 @@ const translateCard = function(card) {
   };
   return translater[card];
 }
+<<<<<<< HEAD
 
 const reverser = function(suit, val) {
   const reverse = {
@@ -136,3 +137,5 @@ const reverser = function(suit, val) {
   }
   return reverse[suit][val];
 };
+=======
+>>>>>>> 497106d179dad73e68aed5e25e00fe09807457c5
