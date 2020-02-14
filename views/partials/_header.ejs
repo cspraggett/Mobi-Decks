@@ -1,6 +1,6 @@
 <header>
   <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light justify-content-between">
-    <a class="navbar-brand" href="/">Best Card Game Ever</a>
+    <a class="navbar-brand" href="/"><img src='/images/graphics/logo.png' height="50" /></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -17,7 +17,7 @@
 
             <% if (username !== undefined) { %>
               <div class="dropdown-divider"></div>
-              <a class="nav-link" href="/users/archive">archive</a>
+              <a class="dropdown-item" href="/users/archive">Archive</a>
             <% } %>
 
           </div>
@@ -30,17 +30,17 @@
       <% if (username === undefined) { %>
         <div id="username">guest</div>
         <form class="form-inline" action="/users/login">
-            <button class="btn btn-outline-danger" type="submit">Log in</button>
+            <button id='logger' class="btn btn-outline-danger" type="submit">Log in</button>
         </form>
         <form class="form-inline" action="/users/register">
-            <button class="btn btn-outline-danger" type="submit">Register</button>
+            <button id='logger' class="btn btn-outline-danger" type="submit">Register</button>
         </form>
       <% } else { %>
         <span class="navbar-text username">
           Logged in as: <div id="username"><%= username %></div>
         </span>
         <form class="form-inline" action="/users/logout" method="POST">
-          <button class="btn btn-outline-danger" type="submit">Logout</button>
+          <button id='logger' class="btn btn-outline-danger" type="submit">Logout</button>
         </form>
       <% } %>
 

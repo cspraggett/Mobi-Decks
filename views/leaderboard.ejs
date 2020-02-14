@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Home</title>
+    <title>Mobi Decks - Leaderboard</title>
+    <link rel="icon" type="image/png" href="/images/graphics/favicon.png">
+
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -17,7 +19,6 @@
     <link rel="stylesheet" href="/styles/archive.css" type="text/css" />
     <link rel="stylesheet" href="/styles/header.css" type="text/css" />
     <link rel="stylesheet" href="/styles/index.css" type="text/css" />
-
 
 
 
@@ -40,14 +41,17 @@
       <div class='card archive-container'>
         <h1>Leaderboard</h1>
         <div class='game-toggle'>
-          <a href='#'>
-            <img src='/images/graphics/face.png' />
+          <a class='goofToggle'>
+            <img src='/images/graphics/goof-logo.png' />
           </a>
-          <a href='#'>
-            <img src='/images/graphics/battle.png' />
+          <a class='crazyToggle'>
+            <img src='/images/graphics/crazy-logo.png' />
           </a>
         </div>
         <small class='text-muted'>Click a Game to toggle to the Game's Leaderboard</small>
+        <div class='row'>
+          <div class='col'></div>
+        </div>
         <table class="table archive-box">
           <thead>
             <tr>
@@ -56,26 +60,47 @@
               <th scope="col">Wins</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Jumpin James</td>
-              <td>100</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Charred Chris</td>
-              <td>99</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Codename Christo</td>
-              <td>1</td>
-            </tr>
+          <tbody class='goofBoard'>
+            <% let count = 1;  %>
+            <% for(const [idx, result] of leaderBoard.entries()) { %>
+                <% if (result.game === 'goof') { %>
+                  <tr>
+                    <th scope="row"><%= count %></th>
+                    <td><%= result.username %></td>
+                    <td><%= result.number_of_wins %></td>
+                  </tr>
+                  <% count += 1; }%>
+            <% } %>
+          </tbody>
+          <tbody class='crazyBoard'>
+            <% count = 1;  %>
+            <% for(const [idx, result] of leaderBoard.entries()) { %>
+              <% if (result.game === 'crazy') { %>
+                <tr>
+                  <th scope="row"><%= count %></th>
+                  <td><%= result.username %></td>
+                  <td><%= result.number_of_wins %></td>
+                </tr>
+              <% count += 1; }%>
+            <% } %>
           </tbody>
         </table>
       </div>
     </div>
+
+  <script>
+    $(".crazyBoard").hide();
+    $(".goofToggle").click(function() {
+      $(".crazyBoard").hide();
+      $(".goofBoard").show();
+    })
+
+    $(".crazyToggle").click(function() {
+      $(".goofBoard").hide();
+      $(".crazyBoard").show();
+    })
+
+  </script>
 
   </body>
 </html>
