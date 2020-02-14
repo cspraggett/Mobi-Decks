@@ -110,6 +110,10 @@ class game {
     });
   }
 
+  checkForSuit(card) {
+    return this.translateCard(card).suit === this.translateCard(this.faceUpCard).suit;
+  }
+
   checkIfCardValid(card) {
     return this.translateCard(card).value === this.translateCard(this.faceUpCard).value ||
      this.translateCard(card).suit === this.translateCard(this.faceUpCard).suit;
@@ -147,6 +151,19 @@ class game {
     if (this.deck._deck.length === 0) {
       console.log('if there are cards in deck');
       this.moveFaceUpToDeck();
+    }
+    if (frontEndObject.wild && frontEndObject.wild === 1) {
+      this.changeFaceUpCard(frontEndObject.cards.reverse());
+      this.players[frontEndObject.player].removePlayedCards(this.players[frontEndObject.player], frontEndObject.cards);
+      this.currentPlayer = ((frontEndObject.player + 1) % 2);
+      return;
+    }
+    if (frontEndObject.wild && frontEndObject === 2) {
+      this.checkForSuit(frontEndObject.cards[0]);
+      this.changeFaceUpCard(frontEndObject.cards.reverse());
+      this.players[frontEndObject.player].removePlayedCards(this.players[frontEndObject.player], frontEndObject.cards);
+      this.currentPlayer = ((frontEndObject.player + 1) % 2);
+      return;
     }
     if (frontEndObject.pickUp) {
       console.log('--pick up--');
