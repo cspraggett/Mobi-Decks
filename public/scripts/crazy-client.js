@@ -15,8 +15,6 @@ let message = "";
 //---------------------------------------------------------/
 
 $(function () {
-  $('.pop-up').css('z-index', -1);
-
   if ($('#username')) {
     user_id = ($('#username').text());
     $('#playerName').text(user_id);
@@ -206,26 +204,40 @@ $(function () {
   //-------------------------------------------------------/
 
   const pickConfirmation = function(card) {
+    $('.pop-up').css('display', 'flex');
     // result data.crazy8.faceUpCard[0]
     confirmation = false;
     // if first card pick
     if (result.length === 0) {
-      if (
-        translateCard(data.crazy8.faceUpCard[0][0]).suit === card.suit,
-        translateCard(data.crazy8.faceUpCard[0][0]).value === card.value,
-        card.value === '7'
-      ) {
+      if (translateCard(data.crazy8.faceUpCard[0][0]).suit === card.suit) {
+        console.log(1);
         confirmation = true;
+      } else if (translateCard(data.crazy8.faceUpCard[0][0]).value === card.value) {
+        confirmation = true;
+        console.log(2);
+      } else if (card.value === '8') {
+        confirmation = true;
+
+        console.log(3);
+      } else {
+        console.log(4);
       }
     // if second + card pick
     } else {
       if (
-        translateCard(result[result.length - 1]).value === card.value,
-        card.value === '7'
+        translateCard(data.crazy8.faceUpCard[0][0]).value === translateCard(result[result.length - 1]).value
+        && translateCard(data.crazy8.faceUpCard[0][0]).value === card.value
       ) {
-        confirmation = true;
+        console.log(5);
+        // confirmation = true;
+      } else if (card.value === '8') {
+        console.log(6);
+        // confirmation = true;
+      } else {
+        console.log(7);
       }
     }
+    return confirmation;
   }
 
   // when player picks a card
