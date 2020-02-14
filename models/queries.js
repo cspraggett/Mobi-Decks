@@ -12,13 +12,13 @@ const getUsers = (() => {
 const getArchive = (playerID => {
   return db.query(`
     SELECT users.username, history.game_type, results.result
-    from results join users on results.user_id = users.id
+    from results join users on results.user_id = (select users.id from users where users.username = $1)
     join history on game_id = history.id
-    where users.id = $1;
+    where users.username = $1;
   `, [playerID])
-    .then(res => res.rows);
+    .then(res => console.log(res.rows));
 });
-// console.log(getArchive(7));
+console.log(getArchive('bob'));
 
 const getLeaderBoard = (() => {
   return db.query(`

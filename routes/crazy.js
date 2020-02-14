@@ -2,6 +2,7 @@ const express = require('express');
 const router  = express.Router();
 
 const { generateRandomString, findMatchingRoom } = require('../serverHelper.js');
+const { crazyServer } = require('../db/gameData.js');
 
 module.exports = (db) => {
 
@@ -14,7 +15,13 @@ module.exports = (db) => {
     if (req.session.user_id) {
       templateVars.username = req.session.user_id;
     }
-    res.render("crazy", templateVars);
+    const room_id = '/crazy/' + req.params.room_id;
+    if (crazyServer.rooms[room_id]
+      && crazyServer.rooms[room_id].count >= 2) {
+      res.redirect("/");
+    } else {
+      res.render("crazy", templateVars);
+    }
   });
 
   router.post("/new", (req, res) => {

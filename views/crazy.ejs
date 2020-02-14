@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Home Page</title>
+    <title>Crazy Eights</title>
+    <link rel="icon" type="image/png" href="/images/graphics/favicon.png">
+
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -64,7 +66,7 @@
     </div> -->
 
     <!-- Crazy 8 Modal -->
-    <div class='pop-up'>
+    <!-- <div class='pop-up'>
       <div class="card">
         <div class="card-body">
           <h1>Pick a Suite</h1>
@@ -85,7 +87,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class='board'>
 
@@ -174,9 +176,9 @@
 
         <div class='col p1-score-side'>
           <div class='row'>
-            <img src='/images/avatars/avatar.png' />
+            <img src='/images/avatars/p1-logo.png' />
             <div>
-              <p class='p1-score'>9</p>
+                <p id="playerName"></p><p class='p1-score'>9</p>
             </div>
           </div>
         </div>
@@ -188,19 +190,19 @@
               <i class="fas fa-sort-down"></i>
             </div>
             <div class="col">
-              <p>Place</p>
-              <i class="fas fa-sort-down"></i>
+              <!-- <p>Place</p>
+              <i class="fas fa-sort-down"></i> -->
             </div>
             <div class="w-100"></div>
             <div class='col bid-card draw-pile'>
-              <img src='/images/cards/stack-blank.png' />
+              <img src='/images/cards/back-stack.png' />
             </div>
             <div class='col bid-card place-pile'>
               <img src='/images/cards/2C.png' />
             </div>
             <div class="w-100"></div>
             <div class="col turn-alert">
-              <h1>Your Turn!</h1>
+              <button class="turn-button btn btn-primary" type=“button”>Submit</button>
             </div>
           </div>
         </div>
@@ -208,9 +210,9 @@
         <div class='col p2-score-side'>
           <div class='row'>
             <div>
-              <p class='p2-score'>10</p>
+              <p id="opponentName"></p><p class='p2-score'>10</p>
             </div>
-            <img src='/images/avatars/avatar2.png' />
+            <img src='/images/avatars/p2-logo.png' />
           </div>
         </div>
 

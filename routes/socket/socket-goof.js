@@ -132,11 +132,10 @@ module.exports = function(io) {
       const deck = new Deck(52);
       gameData.goof[room_id] = {
         phase: 0,
-        player_id: null,
         player1: new GoofPlayer(deck),
         player2: new GoofPlayer(deck),
         dealer: new GoofDealer(deck)
-      },
+      }
       gameData.goof[room_id].player1._id = 1;
       gameData.goof[room_id].player2._id = 2;
 

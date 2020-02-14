@@ -15,6 +15,17 @@
   border-color: #f1a84f;
 }
 
+.btn-primary {
+  margin-top: 1em;
+  background-color: #1C77C3;
+  border-color: #1C77C3;
+}
+
+.btn-primary:hover {
+  background-color: rgb(19, 95, 156);
+  border-color: rgb(19, 95, 156);
+}
+
 
 // Modal
 .pop-up {
@@ -24,7 +35,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: -100;
   animation: fadeBG 2s ease forwards;
   background-color: #17020287;
 }
@@ -99,17 +110,13 @@
   margin-left: -5.4em;
 }
 
-.top {
+.pick {
   transition: transform 0.5s ease;
+  transform: translateY(-15px);
 }
 
 .bot {
   transition: transform 0.5s ease;
-}
-
-
-.top:hover {
-  transform: translateY(-15px);
 }
 
 .bot:hover {

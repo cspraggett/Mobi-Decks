@@ -11,7 +11,8 @@ const crazyServer = {
 };
 
 let gameData = {
-  goof: {}
+  goof: {},
+  crazy: {}
 };
 
 module.exports = { gameData, goofServer, crazyServer };
