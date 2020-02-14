@@ -12,7 +12,7 @@ const getUsers = (() => {
 const getArchive = (playerID => {
   return db.query(`
     SELECT users.username, history.game_type, results.result
-    from results join users on results.user_id = (select users.id from users where users.username = $1)
+    from results join users on results.user_id = (select users.id from users where users.username = $1 limit 1)
     join history on game_id = history.id
     where users.username = $1;
   `, [playerID])
