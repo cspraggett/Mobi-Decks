@@ -148,7 +148,7 @@ class game {
       }
     }
     if (this.checkIfCardValid(frontEndObject.cards[0])) {
-      if (this.translateCard(frontEndObject.card[0]).value === '2') {
+      if (this.translateCard(frontEndObject.cards[0]).value === '2') {
         this.runOf2 += frontEndObject.card.length;
         this.pickUpCards(this.players[(frontEndObject.player + 1) % 2], 2 * this.runOf2);
       } else {
