@@ -12,11 +12,7 @@ const getUsers = (() => {
 const getArchive = (playerID => {
   return db.query(`
     SELECT users.username, history.game_type, results.result
-<<<<<<< ea016179145ddf665d477629df98874bd6d460be
     from results join users on results.user_id = (select users.id from users where users.username = $1 limit 1)
-=======
-    from results join users on results.user_id = (select users.id from users where users.username = $1 LIMIT 1)
->>>>>>> saving before merge
     join history on game_id = history.id
     where users.username = $1;
   `, [playerID])
