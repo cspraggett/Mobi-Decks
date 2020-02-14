@@ -238,7 +238,6 @@ $(function () {
       data.ready === true
       && $(event.target.parentNode).attr("value") !== undefined
       ) {
-
       //run confirmation
       if (pickConfirmation({
         suit: $(event.target.parentNode).attr("suit"),

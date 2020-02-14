@@ -153,6 +153,7 @@ module.exports = function(io) {
       crazy8.players[0].position = 0;
       crazy8.players[1].position = 1;
       console.log(crazy8);
+
       // assign initial values
       gameData.crazy[room_id] = {
         phase: 0,
@@ -173,8 +174,6 @@ module.exports = function(io) {
       }));
       gameData.crazy[room_id].phase = 1;
     };
-
-
 
     // // when a player type something in chat display message to all: DISABLED UNTIL REIMPLEMENTATION
     // socket.on('chat message', (msg) => {

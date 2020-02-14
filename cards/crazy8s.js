@@ -32,7 +32,7 @@ class game {
   }
 
   changeFaceUpCard(card) {
-    console.log('this is the card',card)
+    console.log('this is the card',card);
     //this.faceUpCard = Array.card.push(this.faceUpCard);
     this.faceUpCard.unshift(card);
     this.faceUpCard = this.faceUpCard.reduce((prev, curr) => prev.concat(curr));
@@ -149,7 +149,7 @@ class game {
       this.moveFaceUpToDeck();
     }
     if (frontEndObject.pickUp) {
-      console.log('--pick up--')
+      console.log('--pick up--');
       this.takeTopCard(this.players[frontEndObject.player]);
       if (!this.checkIfMove(this.players[frontEndObject.player])) {
         console.log('checking for valid move');
