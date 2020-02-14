@@ -64,14 +64,16 @@ $(function () {
           opponentColor = "spade";
         }
         // make new divs and place image inside
-        let innerDivTop = $(`<div class="cards top">`).append($(cardImage[opponentColor][num]));
+        let innerDivTop = $(`<div class="cards top">`).append($(cardImage.back));
         let innerDivBot = $(`<div class="cards bot">`).append($(cardImage[playerColor][num]));
         // this assigns a hidden value to div that holds imgs, required to track specific card in handDivs
         $(innerDivTop).attr({
+          color: opponentColor,
           value: num,
           style: `z-index: ${num}`
         });
         $(innerDivBot).attr({
+          color: playerColor,
           value: num,
           style: `z-index: ${num}`
         });
@@ -103,6 +105,9 @@ $(function () {
       spawnCardsWithDelay(0);
       console.log('initialization');
     } else if (data.phase < 14) {
+      console.log(data.oBid);
+      $(handDivs.opponent[data.oBid]).empty();
+      $(handDivs.opponent[data.oBid]).append($(cardImage[data.oClr][data.oBid]));
       // at the start of each phase
       setTimeout(() => {
         $('.bids').empty();
@@ -110,12 +115,19 @@ $(function () {
         $('.p2-score').text(' ' + data.oScore);
         $('.p1-score').text(' ' + data.pScore);
         dealerPlay(data.dealer._hand[0]);
-      }, 1000);
+      }, 1500);
     } else if (data.phase === 14) {
-      let innerDivTop = $(`<div>`).append(`<p>opponent won cards: ${data.player._wonBids} </p>`);
-      let innerDivBot = $(`<div>`).append(`<p>player won cards: ${data.opponent._wonBids} </p>`);
-      $($(innerDivTop)).prependTo('.bids');
-      $($(innerDivBot)).appendTo('.bids');
+      console.log(data.oScore, data.pScore);
+      console.log(parseInt(data.oScore) > parseInt(data.pScore))
+      if (parseInt(data.oScore) > parseInt(data.pScore)) {
+        $('#lose').css('display', 'flex')
+      } else {
+        $('#win').css('display', 'flex')
+      }
+      // let innerDivTop = $(`<div>`).append(`<p>opponent won cards: ${data.player._wonBids} </p>`);
+      // let innerDivBot = $(`<div>`).append(`<p>player won cards: ${data.opponent._wonBids} </p>`);
+      // $($(innerDivTop)).prependTo('.bids');
+      // $($(innerDivBot)).appendTo('.bids');
     }
   })
 
@@ -138,7 +150,7 @@ $(function () {
           if (handDivs.opponent[i].attr("value") === cardValue) {
             $(handDivs.opponent[i]).prependTo('.bids');
             $(handDivs.opponent[i]).removeClass('cards top');
-            $(handDivs.opponent[i]).addClass('row bid-card');
+            $(handDivs.opponent[i]).addClass('row bid-card opponentCard');
           }
         }
         console.log('opponent bid: ' + data.opponent._currentBid);

@@ -95,6 +95,8 @@ module.exports = function(io) {
         io.of('/goof').to(room_id).emit('gameUpdate:goof', msg);
         if (gameData.goof[room_id].player1.currentBid !== null & gameData.goof[room_id].player2.currentBid !== null) {
           compareHands(gameData.goof[room_id].player1, gameData.goof[room_id].player2, gameData.goof[room_id].dealer);
+          let p1bid = gameData.goof[room_id].player1.currentBid;
+          let p2bid = gameData.goof[room_id].player2.currentBid;
           gameData.goof[room_id].player1.currentBid = null;
           gameData.goof[room_id].player2.currentBid = null;
 
@@ -102,6 +104,8 @@ module.exports = function(io) {
           io.of('/goof').to(goofServer.rooms[room_id].player1.socket).emit('gamePhase', JSON.stringify({
             phase: gameData.goof[room_id].phase,
             ready: false,
+            oBid: p2bid,
+            oClr: 'heart',
             pScore: gameData.goof[room_id].player1.score,
             oScore: gameData.goof[room_id].player2.score,
             player: gameData.goof[room_id].player1,
@@ -111,6 +115,8 @@ module.exports = function(io) {
           io.of('/goof').to(goofServer.rooms[room_id].player2.socket).emit('gamePhase', JSON.stringify({
             phase: gameData.goof[room_id].phase,
             ready: false,
+            oBid: p1bid,
+            oClr: 'spade',
             pScore: gameData.goof[room_id].player2.score,
             oScore: gameData.goof[room_id].player1.score,
             player: gameData.goof[room_id].player2,
@@ -118,6 +124,7 @@ module.exports = function(io) {
             dealer: gameData.goof[room_id].dealer
           }));
           // console.log(gameData);
+
           if (gameData.goof[room_id].phase === 14) {
             //victory effect here;
           }

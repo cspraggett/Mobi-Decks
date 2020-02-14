@@ -9,12 +9,13 @@
   position: fixed;
   height: 100vh;
   width: 100%;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 1;
   animation: fadeBG 2s ease forwards;
   background-color: #17020287;
+  z-index: 100;
 }
 @keyframes fadeBG {
   from {
