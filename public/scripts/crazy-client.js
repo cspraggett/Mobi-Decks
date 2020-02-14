@@ -93,7 +93,7 @@ $(function () {
 
         console.log(translateCard(playerCards[index]).suit, translateCard(playerCards[index]).value);
         // make new divs and place image inside
-        let innerDivTop = $(`<div class="cards">`).append($(
+        let innerDivTop = $(`<div class="cards top">`).append($(
           cardImage[translateCard(opponentCards[index]).suit][translateCard(opponentCards[index]).n]
           ));
         let innerDivBot = $(`<div class="cards bot">`).append($(

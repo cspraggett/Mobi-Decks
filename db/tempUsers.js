@@ -3,7 +3,7 @@
 const users = {
   '1': {
     id: 1,
-    name: 'userA',
+    name: 'bob',
     password: 'password'
   },
   '2': {

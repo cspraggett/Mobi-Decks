@@ -91,42 +91,42 @@
   margin-left: -5.4em;
 }
 
-.top {
-  transition: transform 0.5s ease;
-  animation: dealTop 1.5s ease forwards;
-}
+// .top {
+//   // transition: transform 0.5s ease;
+//   animation: transform 1.5s ease;
+// }
 
 .bot {
+  // transition: transform 0.5s ease;
   transition: transform 0.5s ease;
-  animation: dealBot 1.5s ease forwards;
 }
 
 
-.top:hover {
-  transform: translateY(-15px);
-}
+// .top:hover {
+//   transform: translateY(-15px);
+// }
 
 .bot:hover {
   transform: translateY(-15px);
 }
 
-@keyframes dealTop {
-  0% {
-    transform: rotate(120deg) translate(-50px, -1500px);
-  }
-  100% {
-    transform: rotate(0deg) translate(0px, 0px);
-  }
-}
+// @keyframes dealTop {
+//   0% {
+//     transform: rotate(120deg) translate(-50px, -1500px);
+//   }
+//   100% {
+//     transform: rotate(0deg) translate(0px, 0px);
+//   }
+// }
 
-@keyframes dealBot {
-  0% {
-    transform: rotate(-90deg) translate(50px, 1000px);
-  }
-  100% {
-    transform: rotate(0deg) translate(0px, 0px);
-  }
-}
+// @keyframes dealBot {
+//   0% {
+//     transform: rotate(-90deg) translate(50px, 1000px);
+//   }
+//   100% {
+//     transform: rotate(0deg) translate(0px, 0px);
+//   }
+// }
 
 .p2-hand img {
   // width: 100%;

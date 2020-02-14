@@ -150,11 +150,13 @@
 .p1-score-side img {
   width: 9vw;
   margin-left: 3vw;
-  margin-top: 2vw;
+  margin-top: 2vh;
 }
 
 .p1-score-side p {
-  font-size: 1.5em;
+  font-size: 1em;
+  margin: 0;
+  padding-left: 0.5em;
 }
 
 .p1-score {
@@ -228,7 +230,10 @@
 }
 
 .p2-score-side p {
-  font-size: 1.5em;
+  font-size: 1em;
+  text-align: right;
+  margin: 0;
+  padding-right: 0.5em;
 }
 
 .p2-score {
@@ -326,6 +331,7 @@
 
   .p1-score-side img {
     width: 5vw;
+    height: 5vw;
   }
 
   .p1-score-side .row {
@@ -334,6 +340,7 @@
 
   .p2-score-side img {
     width: 5vw;
+    height: 5vw;
   }
 
   .p2-score-side .row {
