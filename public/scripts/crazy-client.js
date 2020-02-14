@@ -211,17 +211,17 @@ $(function () {
     // if first card pick
     if (result.length === 0) {
       if (
-        translateCard(data.crazy8.faceUpCard[0][0]).suit === card.suit,
-        translateCard(data.crazy8.faceUpCard[0][0]).value === card.value,
-        card.value === '7'
+        translateCard(data.crazy8.faceUpCard[0][0]).suit === card.suit
+        || translateCard(data.crazy8.faceUpCard[0][0]).value === card.value
+        || card.value === '7'
       ) {
         confirmation = true;
       }
     // if second + card pick
     } else {
       if (
-        translateCard(result[result.length - 1]).value === card.value,
-        card.value === '7'
+        translateCard(result[result.length - 1]).value === card.value
+        || card.value === '7'
       ) {
         confirmation = true;
       }
