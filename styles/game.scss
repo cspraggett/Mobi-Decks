@@ -1,6 +1,6 @@
 .board {
   height: 100vh;
-  padding: 1.5em 1em;
+  padding: 3em 1em 1.5em;
   background-color: #EE3E40;
 }
 
@@ -93,10 +93,12 @@
 
 .top {
   transition: transform 0.5s ease;
+  animation: dealTop 1.5s ease forwards;
 }
 
 .bot {
   transition: transform 0.5s ease;
+  animation: dealBot 1.5s ease forwards;
 }
 
 
@@ -106,6 +108,24 @@
 
 .bot:hover {
   transform: translateY(-15px);
+}
+
+@keyframes dealTop {
+  0% {
+    transform: rotate(120deg) translate(-50px, -1500px);
+  }
+  100% {
+    transform: rotate(0deg) translate(0px, 0px);
+  }
+}
+
+@keyframes dealBot {
+  0% {
+    transform: rotate(-90deg) translate(50px, 1000px);
+  }
+  100% {
+    transform: rotate(0deg) translate(0px, 0px);
+  }
 }
 
 .p2-hand img {
@@ -136,11 +156,12 @@
 .user-scores img {
   width: 9vw;
   margin-left: 3vw;
-  margin-top: 2vw;
+  margin-top: 2vh;
 }
 
 .user-scores p {
-  font-size: 1.5em;
+  padding: 0 0.2em;
+  margin-bottom: 0;
 }
 
 .p2-score {
@@ -155,6 +176,15 @@
 .bid-card {
   justify-content: center;
   margin: 1vh 0;
+  animation: fade 1s ease forwards;
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100%;
+  }
 }
 
 // Dealer Side

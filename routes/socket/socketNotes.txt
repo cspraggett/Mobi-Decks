@@ -34,3 +34,19 @@ Current Goals
   resume when the player returns
 - smooth out game start rather than abrupt start as
   another player join
+
+Debugging players joining and leaving socket rooms:
+- place following code at the end of entering and leaving room part
+  to see who is in which room at given time
+
+  console.log('*-connected----------------------');
+  console.log('*-object keys io.nsps------------');
+  console.log(Object.keys(io.nsps));
+  console.log('*-all rooms----------------------');
+  console.log(Object.keys(io.nsps['/goof'].adapter.rooms));
+  console.log('*-goofServer rooms---------------');
+  console.log(goofServer.rooms);
+  console.log('*-goofServer players-------------');
+  console.log(goofServer.players);
+  console.log('--------------------------------*');
+  console.log('');
