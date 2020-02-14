@@ -81,12 +81,18 @@ module.exports = function(io) {
       }
     })
 
+    socket.on('gameUpdate:crazy-draws', (msg) => {
+      const data = JSON.parse(msg);
+      const player = parseInt(data.player);
+      const room_id = data.room_id;
+      let query = {player, pickUp: data.pickUp};
+    })
+
     socket.on('gameUpdate:crazy-picks', (msg) => {
       const data = JSON.parse(msg);
       const player = parseInt(data.player);
       const room_id = data.room_id;
       let query = {player, cards: data.result};
-      gameData.crazy[room_id].crazy8.position = 0;
 
       console.log(gameData.crazy[room_id].crazy8.players)
       console.log(gameData.crazy[room_id].crazy8.position)
@@ -142,9 +148,10 @@ module.exports = function(io) {
     // send each player their own data and send everyone dealer data
     const startCrazyMatch = function(room_id) {
       const crazy8 = new game();
+      crazy8.position = 0;
       crazy8.players[0].position = 0;
       crazy8.players[1].position = 1;
-
+      console.log(crazy8);
       // assign initial values
       gameData.crazy[room_id] = {
         phase: 0,
