@@ -35,7 +35,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: -100;
   animation: fadeBG 2s ease forwards;
   background-color: #17020287;
 }
@@ -110,17 +110,13 @@
   margin-left: -5.4em;
 }
 
-.top {
+.pick {
   transition: transform 0.5s ease;
+  transform: translateY(-15px);
 }
 
 .bot {
   transition: transform 0.5s ease;
-}
-
-
-.top:hover {
-  transform: translateY(-15px);
 }
 
 .bot:hover {
