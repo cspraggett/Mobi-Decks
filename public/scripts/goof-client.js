@@ -64,7 +64,7 @@ $(function () {
           opponentColor = "spade";
         }
         // make new divs and place image inside
-        let innerDivTop = $(`<div class="cards">`).append($(cardImage[opponentColor][num]));
+        let innerDivTop = $(`<div class="cards top">`).append($(cardImage[opponentColor][num]));
         let innerDivBot = $(`<div class="cards bot">`).append($(cardImage[playerColor][num]));
         // this assigns a hidden value to div that holds imgs, required to track specific card in handDivs
         $(innerDivTop).attr({
@@ -137,7 +137,7 @@ $(function () {
         for (let i = 0; i < handDivs.opponent.length; i++) {
           if (handDivs.opponent[i].attr("value") === cardValue) {
             $(handDivs.opponent[i]).prependTo('.bids');
-            $(handDivs.opponent[i]).removeClass('cards');
+            $(handDivs.opponent[i]).removeClass('cards top');
             $(handDivs.opponent[i]).addClass('row bid-card');
           }
         }
