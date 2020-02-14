@@ -58,5 +58,6 @@ const cardImage = {
     '<img src="/images/cards/JC.png">',
     '<img src="/images/cards/QC.png">',
     '<img src="/images/cards/KC.png">'
-  ]
+  ],
+  back: '<img src="/images/cards/back.png">'
 };
