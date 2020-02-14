@@ -62,6 +62,17 @@ $(function () {
     ))
   };
 
+  // shift player turns
+  const turnOver = function() {
+    if (data.playerNum === data.crazy8.currentPlayer) {
+      data.ready = true;
+      $('.turn-alert').slideDown(300, 'swing');
+    } else {
+      data.ready = false;
+      $('.turn-alert').slideUp(300, 'swing');
+    }
+  };
+
   // place cards at the beginning at the start of a game
   const spawnCardsWithDelay = function(index) {
     if (index < 8) {
@@ -106,10 +117,11 @@ $(function () {
         spawnCardsWithDelay(index + 1);
       }, 30);
     } else {
-      placeFaceUpCard(data.crazy8.faceUpCard);
       data.phase = 1;
       console.log('new gamePhase: phase: ' + data.phase);
-      if (data.playerNum === 0) data.ready = true;
+      placeFaceUpCard(data.crazy8.faceUpCard);
+      turnOver();
+      console.log('ready status: ', data.ready);
     }
   }
 
@@ -193,25 +205,57 @@ $(function () {
   // document ready events --------------------------------/
   //-------------------------------------------------------/
 
+  const pickConfirmation = function(card) {
+    // result data.crazy8.faceUpCard[0]
+    confirmation = false;
+    // if first card pick
+    if (result.length === 0) {
+      if (
+        translateCard(data.crazy8.faceUpCard[0][0]).suit === card.suit,
+        translateCard(data.crazy8.faceUpCard[0][0]).value === card.value,
+        card.value === '7'
+      ) {
+        confirmation = true;
+      }
+    // if second + card pick
+    } else {
+      if (
+        translateCard(result[result.length - 1]).value === card.value,
+        card.value === '7'
+      ) {
+        confirmation = true;
+      }
+    }
+  }
+
   // when player picks a card
   $(".p1-hand").on('click', function(event) {
     // check if turn is ready
-    console.log('data.ready: ', data.ready);
+    console.log('ready status: ', data.ready);
 
     // if player hand card is clicked when play is enabled
     if (
       data.ready === true
       && $(event.target.parentNode).attr("value") !== undefined
       ) {
-      $(event.target.parentNode).addClass("pick");
-      result.push(reverser(
-        $(event.target.parentNode).attr("suit"),
-        $(event.target.parentNode).attr("value")
-      ));
-      console.log('result hand: ', result);
 
-      // form message
-      message = `{ "room_id": "${room_id}", "player": "${data.playerNum}", "result": ${ JSON.stringify(result) } }`;
+      //run confirmation
+      if (pickConfirmation({
+        suit: $(event.target.parentNode).attr("suit"),
+        value: $(event.target.parentNode).attr("value")
+      }) === true) {
+        $(event.target.parentNode).addClass("pick");
+        result.push(reverser(
+          $(event.target.parentNode).attr("suit"),
+          $(event.target.parentNode).attr("value")
+        ));
+        console.log('result hand: ', result);
+
+        // form message
+        message = `{ "room_id": "${room_id}", "player": "${data.playerNum}", "result": ${ JSON.stringify(result) } }`;
+      } else {
+        console.log('invalid move!');
+      }
 
       // if board is clicked cancel all picks
     } else if ($(event.target.parentNode).attr("value") === undefined) {
@@ -219,7 +263,6 @@ $(function () {
       result = [];
       console.log('result hand: ', result);
     }
-
   });
 
   $(".turn-button").on('click', function(event) {

@@ -32,11 +32,7 @@ class game {
   }
 
   changeFaceUpCard(card) {
-<<<<<<< HEAD
     console.log('this is the card',card)
-=======
-    console.log('this is the card',card);
->>>>>>> 497106d179dad73e68aed5e25e00fe09807457c5
     //this.faceUpCard = Array.card.push(this.faceUpCard);
     this.faceUpCard.unshift(card);
     this.faceUpCard = this.faceUpCard.reduce((prev, curr) => prev.concat(curr));
@@ -153,11 +149,7 @@ class game {
       this.moveFaceUpToDeck();
     }
     if (frontEndObject.pickUp) {
-<<<<<<< HEAD
       console.log('--pick up--')
-=======
-      console.log('--pick up--');
->>>>>>> 497106d179dad73e68aed5e25e00fe09807457c5
       this.takeTopCard(this.players[frontEndObject.player]);
       if (!this.checkIfMove(this.players[frontEndObject.player])) {
         console.log('checking for valid move');
@@ -168,17 +160,6 @@ class game {
     if (this.checkIfCardValid(frontEndObject.cards[0])) {
       console.log('checking if card is valid');
       if (this.translateCard(frontEndObject.cards[0]).value === '2') {
-<<<<<<< HEAD
-        console.log('if 2 is down')
-        this.runOf2 += frontEndObject.cards.length;
-        this.pickUpCards(this.players[(frontEndObject.player + 1) % 2], 2 * this.runOf2);
-      } else {
-        console.log('if 2 is not down')
-        this.runOf2 = 0;
-      }
-      console.log('about to exit:', this.players[0]._hand);
-      this.changeFaceUpCard(frontEndObject.cards[frontEndObject.cards.length - 1]);
-=======
         console.log('if 2 is down');
         this.runOf2 += frontEndObject.cards.length;
         this.pickUpCards(this.players[(frontEndObject.player + 1) % 2], 2 * this.runOf2);
@@ -188,7 +169,6 @@ class game {
       }
       console.log('about to exit:', this.players[0]._hand);
       this.changeFaceUpCard(frontEndObject.cards.reverse());
->>>>>>> 497106d179dad73e68aed5e25e00fe09807457c5
       this.players[frontEndObject.player].removePlayedCards(this.players[frontEndObject.player], frontEndObject.cards);
       this.currentPlayer = ((frontEndObject.player + 1) % 2);
       console.log(this.players[0]._hand);
